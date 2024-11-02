@@ -4,27 +4,26 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Setter
+@Getter
 @Entity
-public class ReservationEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false)
-    private String surname;
+    private String password;
 
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
-    private String phone;
-
-    @Column(name = "service_type", nullable = false)
-    private String serviceType;
-
+    @Column
+    private LocalDateTime created_at;
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Error Occurred</h1>
+    <p>Sorry, but something went wrong.</p>
+    <p>Status Code: <span id="status-code"></span></p>
+    <p>Message: <span id="error-message"></span></p>
+    <a href="/">Go to Homepage</a>
+</body>
+<script>
+    document.getElementById('status-code').textContent = window.location.search.split('code=')[1] || 'Unknown';
+    document.getElementById('error-message').textContent = window.location.search.split('message=')[1] || 'An unexpected error occurred.';
+</script>
+</html>
