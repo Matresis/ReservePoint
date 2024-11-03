@@ -2,14 +2,12 @@ package cz.cervenka.rp_backend.controllers;
 
 import cz.cervenka.rp_backend.database.entities.UserEntity;
 import cz.cervenka.rp_backend.database.repositories.UserRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -41,7 +39,7 @@ public class UserController {
         userRepository.save(user);
 
         // Redirect to the reservation page upon successful registration
-        return "reserve";
+        return "reserveForm";
     }
 
 
@@ -61,8 +59,8 @@ public class UserController {
 
             // Check if the password matches
             if (foundUser.getPassword().equals(user.getPassword())) {
-                // Successful login, redirect to reserve.html
-                return "reserve";
+                // Successful login, redirect to reserveForm.html
+                return "home";
             }
         }
         // If login fails, redirect to the login page with an error message

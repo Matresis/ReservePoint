@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -26,5 +28,8 @@ public class ReservationEntity {
 
     @Column(name = "service_type", nullable = false)
     private String serviceType;
+
+    @Column
+    private LocalDateTime created_at;
 
 }

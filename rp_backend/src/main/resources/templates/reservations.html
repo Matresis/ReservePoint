@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Reservations</title>
+</head>
+<body>
+<div class="container">
+    <h1>List of Reservations</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Service Type</th>
+            <th>Created At</th>
+        </tr>
+        <th:block th:each="reservation : ${reservations}">
+            <tr>
+                <td th:text="${reservation.id}"></td>
+                <td th:text="${reservation.name}"></td>
+                <td th:text="${reservation.surname}"></td>
+                <td th:text="${reservation.email}"></td>
+                <td th:text="${reservation.phone}"></td>
+                <td th:text="${reservation.serviceType}"></td>
+                <td th:text="${reservation.created_at}"></td>
+            </tr>
+        </th:block>
+    </table>
+    <div class="return-container">
+        <form action="/home" method="get">
+            <button type="submit">Home</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

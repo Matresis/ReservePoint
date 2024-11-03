@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
+import java.util.List;
+
 
 @Controller
 public class ReservationController {
@@ -16,15 +18,23 @@ public class ReservationController {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    @GetMapping("/reserve")
+    @GetMapping("/reserveForm")
     public String showReservationForm(Model model) {
         model.addAttribute("reservation", new ReservationEntity());
-        return "reserve";
+        return "reserveForm";
     }
 
-    @PostMapping("/reserve")
+    @PostMapping("/reserveForm")
     public String handleReservationSubmission(@ModelAttribute ReservationEntity reservation) {
         reservationRepository.save(reservation);
         return "confirmation";
     }
+
+    @GetMapping("/reservations")
+    public String showReservations(Model model) {
+        List<ReservationEntity> reservations = reservationRepository.findAll();
+        model.addAttribute("reservations", reservations);
+        return "reservations";
+    }
+
 }
