@@ -1,5 +1,8 @@
 # Reservation Management System
 
+## Not yet deployed
+**IP link to the page with project:** http://130.162.229.180/ 
+
 ## Overview
 This is a **DEMO** of a project. 
 
