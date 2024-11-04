@@ -31,5 +31,4 @@ public class ReservationEntity {
 
     @Column
     private LocalDateTime created_at;
-
 }

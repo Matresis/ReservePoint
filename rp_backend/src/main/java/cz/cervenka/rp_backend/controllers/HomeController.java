@@ -11,18 +11,18 @@ public class HomeController {
 
     @GetMapping("/")
     public String redirectToRegister() {
-        return "registerPage"; // Redirects to the registration page
+        return "login";
     }
 
     @GetMapping("/make-reservation")
     public String showReservationForm() {
-        return "reserveForm"; // Name of the HTML file for making a reservation
+        return "reserveForm";
     }
 
     @PostMapping("/logout")
     public String logout() {
         // Logic to handle session invalidation if needed
-        return "login"; // Redirect to the login page after logout
+        return "login";
     }
 
     @GetMapping("/home")
