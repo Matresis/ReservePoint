@@ -1,4 +1,4 @@
-# Reservation Management System
+# Reservation Management System (ReservePoint)
 
 ## Not yet deployed
 **IP link to the page with project:** http://130.162.229.180/ 
