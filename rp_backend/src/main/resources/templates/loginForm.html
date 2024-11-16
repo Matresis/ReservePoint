@@ -3,16 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Register</title>
-    <!--<style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Login</title>
+    <style>
         .container {
             max-width: 500px;
             margin: auto;
@@ -20,26 +13,19 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-
         h1 {
             text-align: center;
             color: #333;
         }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
         input, select {
-            width: 100%;
+            width: 95%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
         button {
             width: 100%;
             padding: 10px;
@@ -57,25 +43,20 @@
         p {
             text-align: center;
         }
-
-        a {
-            color: #5cb85c;
-        }
-    </style>-->
+    </style>
 </head>
 <body>
 <div class="container">
-    <h1>Register</h1>
-    <form action="/register" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="text" id="username" name="username" placeholder="Username" required>
+    <h1>Login</h1>
+    <form action="/login" method="post">
+        <input type="text" id="email" name="username" placeholder="Email" required>
 
         <input type="password" id="password" name="password" placeholder="Password" required>
 
-        <input type="email" id="email" name="email" placeholder="Email" required>
-
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
+        <p th:if="${param.error}" style="color:red;">Invalid email or password. Please try again.</p>
     </form>
-    <p>Already have an account? <a href="/login">Login here</a></p>
+    <p>Don't have an account? <a href="/registerForm">Register here</a></p>
 </div>
 </body>
 </html>

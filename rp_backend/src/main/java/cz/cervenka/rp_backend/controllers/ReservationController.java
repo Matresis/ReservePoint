@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ReservationController {
 
     @PostMapping("/reserveForm")
     public String handleReservationSubmission(@ModelAttribute ReservationEntity reservation) {
-        reservation.setCreated_at(LocalDateTime.now());
+        reservation.setCreated_at(LocalDate.now());
         reservationRepository.save(reservation);
         return "confirmation";
     }

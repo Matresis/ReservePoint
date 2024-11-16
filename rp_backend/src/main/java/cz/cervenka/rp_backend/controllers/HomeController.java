@@ -1,5 +1,7 @@
 package cz.cervenka.rp_backend.controllers;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +13,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String redirectToRegister() {
-        return "login";
+        return "loginForm";
     }
 
     @GetMapping("/make-reservation")
@@ -21,12 +23,14 @@ public class HomeController {
 
     @PostMapping("/logout")
     public String logout() {
-        // Logic to handle session invalidation if needed
-        return "login";
+        return "loginForm";
     }
 
     @GetMapping("/home")
     public String showHome() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("User authenticated: " + auth.isAuthenticated() + " with roles: " + auth.getAuthorities());
         return "home";
     }
+
 }
