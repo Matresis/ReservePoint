@@ -2,6 +2,11 @@ package cz.cervenka.rp_backend.controllers;
 
 import cz.cervenka.rp_backend.database.entities.UserEntity;
 import cz.cervenka.rp_backend.database.repositories.UserRepository;
+import cz.cervenka.rp_backend.utils.JwtUtil;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -19,6 +26,11 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping("/registerForm")
     public String showRegistrationForm(Model model) {
@@ -28,32 +40,51 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute UserEntity user) {
-        // Check if username or email already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return "error"; // Display error if email exists
+            return "error"; // Email already exists
         }
 
-        // Hash the password and set the created_at timestamp
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreated_at(LocalDateTime.now());
 
-        // Check if this is the first user
         if (userRepository.count() == 0) {
-            user.setRole("ADMIN");  // Assign ADMIN role to first user
+            user.setRole("ADMIN");
         } else {
-            user.setRole("USER");  // Assign USER role to user
+            user.setRole("USER");
         }
 
-        // Save the user
         userRepository.save(user);
-
-        // Redirect to login page form after successful registration
-        return "loginForm";
+        return "loginForm"; // Redirect to loginForm after registration
     }
+
 
     @GetMapping("/loginForm")
     public String showLoginForm() {
         return "loginForm"; // Return the login view
     }
+
+
+    @PostMapping("/api/login")
+    public ResponseEntity<Map<String, String>> login(@ModelAttribute UserEntity loginRequest) {
+        try {
+            // Authenticate the user
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
+            // Generate JWT token
+            String role = authentication.getAuthorities().iterator().next().getAuthority();
+            String token = jwtUtil.generateToken(authentication.getName(), role);
+
+            // Return the token in a JSON response
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("role", role);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
+        }
+    }
+
 
 }
