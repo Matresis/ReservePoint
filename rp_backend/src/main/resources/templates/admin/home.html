@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Home</title>
+</head>
+<body>
+<div class="home-container">
+    <h1>Home Page - Admin</h1>
+    <form action="/admin/logout" method="post">
+        <button type="submit">Log Out</button>
+    </form>
+
+    <form action="/admin/calendar" method="get">
+        <button type="submit">Make a Reservation</button>
+    </form>
+
+    <form action="/admin/reservations" method="get">
+        <button type="submit">Show Reservations</button>
+    </form>
+</div>
+
+</body>
+</html>

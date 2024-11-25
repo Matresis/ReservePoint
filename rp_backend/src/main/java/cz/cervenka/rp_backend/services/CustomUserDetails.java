@@ -22,15 +22,15 @@ public class CustomUserDetails implements UserDetails {
         return userEntity.getEmail();
     }
 
-    /*@Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRole()));
-    }*/
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(userEntity.getRole()));
     }
+
+    /*@Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }*/
 
     @Override
     public String getPassword() {
@@ -55,5 +55,9 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getRole() {
+        return userEntity.getRole();
     }
 }

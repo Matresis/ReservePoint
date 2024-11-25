@@ -37,10 +37,17 @@ public class UserController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreated_at(LocalDateTime.now());
 
+        // Check if this is the first user
+        if (userRepository.count() == 0) {
+            user.setRole("ADMIN");  // Assign ADMIN role to first user
+        } else {
+            user.setRole("USER");  // Assign USER role to user
+        }
+
         // Save the user
         userRepository.save(user);
 
-        // Redirect to login form after successful registration
+        // Redirect to login page form after successful registration
         return "loginForm";
     }
 

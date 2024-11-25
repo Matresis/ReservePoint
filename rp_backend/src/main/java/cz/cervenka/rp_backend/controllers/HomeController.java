@@ -33,4 +33,11 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/admin/home")
+    public String showAdminHome() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("User authenticated: " + auth.isAuthenticated() + " with roles: " + auth.getAuthorities());
+        return "admin/home";
+    }
+
 }
