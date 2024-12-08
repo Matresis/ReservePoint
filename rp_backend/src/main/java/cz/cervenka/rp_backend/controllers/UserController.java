@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -64,27 +66,25 @@ public class UserController {
     }
 
 
-    @PostMapping("/api/login")
-    public ResponseEntity<Map<String, String>> login(@ModelAttribute UserEntity loginRequest) {
+    /*@PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserEntity request) {
         try {
             // Authenticate the user
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
 
-            // Generate JWT token
-            String role = authentication.getAuthorities().iterator().next().getAuthority();
-            String token = jwtUtil.generateToken(authentication.getName(), role);
+            // If authentication is successful, generate JWT token
+            String token = JwtUtil.generateToken(authentication.getName());
 
             // Return the token in a JSON response
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            response.put("role", role);
+            return ResponseEntity.ok(Map.of("token", token, "username", authentication.getName()));
 
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
+        } catch (AuthenticationException e) {
+            // If authentication fails, return error response
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid username or password"));
         }
-    }
+    }*/
 
 
 }

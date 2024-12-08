@@ -1,4 +1,3 @@
-// src/main/java/cz/cervenka/rp_backend/config/SecurityConfig.java
 package cz.cervenka.rp_backend.config;
 
 import cz.cervenka.rp_backend.filters.JwtAuthenticationFilter;
@@ -57,8 +56,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/registerForm", "/loginForm").permitAll()
-                        .requestMatchers("/home", "/make-reservation", "/reservations", "/reserveForm", "/admin/home").authenticated()
+                        .requestMatchers("/register", "/registerForm", "/loginForm", "/login", "/token").permitAll()
+                        .requestMatchers("/home", "/make-reservation", "/reservations", "/reserveForm").hasAuthority("USER")
+                        .requestMatchers("/admin/reservations", "/admin/home", "/admin/calendar").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -69,15 +69,14 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
+                        .logoutUrl("/admin/logout")
                         .logoutSuccessUrl("/loginForm")
                         .permitAll()
                 )
-                .sessionManagement(session -> session
+                /*.sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Use stateless sessions
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-                );
-
-
+                )*/;
         return http.build();
     }
 

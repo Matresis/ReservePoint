@@ -109,3 +109,34 @@ th, td {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+
+.filter-form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    /*border: 1px solid black;
+    height: 30%;
+    width: 30%;*/
+}
+
+.filter-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.filter-form input, .filter-form button {
+    padding: 5px;
+    font-size: 1em;
+}
+
+.filter-form button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.filter-form button:hover {
+    background-color: #0056b3;
+}

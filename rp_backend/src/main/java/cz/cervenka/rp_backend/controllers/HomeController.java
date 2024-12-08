@@ -26,6 +26,11 @@ public class HomeController {
         return "loginForm";
     }
 
+    @PostMapping("/admin/logout")
+    public String logoutAdmin() {
+        return "loginForm";
+    }
+
     @GetMapping("/home")
     public String showHome() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
