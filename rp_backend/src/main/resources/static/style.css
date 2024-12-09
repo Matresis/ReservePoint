@@ -1,3 +1,4 @@
+/*
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -20,10 +21,10 @@ h1 {
     color: #333;
 }
 
-/*label {
+!*label {
     display: block;
     margin-bottom: 5px;
-}*/
+}*!
 
 input, select {
     width: 95%;
@@ -101,6 +102,16 @@ th, td {
 }
 
 .reservations-container {
+    max-width: 50%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.reservations-container {
     max-width: 1000px;
     margin: auto;
     background: white;
@@ -110,14 +121,24 @@ th, td {
     text-align: center;
 }
 
-.filter-form {
+.reservations-container table {
+    margin-top: 20px;
+}
+
+.reservations-container button {
+    width: 50%;
     margin-bottom: 20px;
+}
+
+.filter-form {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    /*border: 1px solid black;
-    height: 30%;
-    width: 30%;*/
+    width: 55%;
+    margin: auto;
+    padding: 0 50px 30px 50px;
+    text-align: left;
+    border-bottom: 1px solid black;
 }
 
 .filter-form label {
@@ -135,8 +156,180 @@ th, td {
     color: white;
     border: none;
     cursor: pointer;
+    text-align: center;
+    width: 100%;
 }
 
 .filter-form button:hover {
     background-color: #0056b3;
+}*/
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Dark background */
+    margin: 0;
+    padding: 20px;
+    color: #e0e0e0; /* Light text color */
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    background: #1e1e1e; /* Dark container background */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Subtle shadow */
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    color: #ffffff; /* White text for headings */
+}
+
+input, select {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #2a2a2a; /* Dark input background */
+    color: #ffffff; /* White input text */
+    border: 1px solid #444444; /* Subtle border */
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #5cb85c; /* Keep green for button */
+    color: #121212; /* Contrast with dark mode */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4cae4c; /* Slightly darker green */
+}
+
+p {
+    text-align: center;
+    color: #b0b0b0; /* Lighter gray text */
+}
+
+a {
+    color: #5cb85c; /* Green links */
+}
+
+table, th, td {
+    border: 1px solid #444444; /* Dark border */
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th, td {
+    padding: 15px;
+    background-color: #1e1e1e; /* Dark cell background */
+    color: #e0e0e0; /* Light text */
+}
+
+.home-container {
+    max-width: 500px;
+    margin: auto;
+    background: #1e1e1e; /* Dark container */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Subtle shadow */
+    text-align: center;
+}
+
+.home-container form {
+    margin: 10px 0 10px 0;
+}
+
+.return-container {
+    max-width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+.return-container button {
+    width: 50%;
+    padding: 10px;
+    background-color: #313131; /* Dark button */
+    color: #ffffff; /* Light text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.return-container button:hover {
+    background-color: #5b5b5b; /* Slightly lighter button */
+}
+
+.reservations-container {
+    max-width: 1000px;
+    margin: auto;
+    background: #1e1e1e; /* Dark container */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Subtle shadow */
+    text-align: center;
+}
+
+.reservations-container table {
+    margin-top: 20px;
+}
+
+.reservations-container button {
+    width: 50%;
+    margin-bottom: 20px;
+    background-color: #007BFF; /* Keep blue for filter button */
+    color: #ffffff; /* Contrast text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.reservations-container button:hover {
+    background-color: #0056b3; /* Darker blue */
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 55%;
+    margin: auto;
+    padding: 0 50px 30px 50px;
+    text-align: left;
+    border-bottom: 1px solid #444444; /* Subtle border */
+}
+
+.filter-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #e5e5e5; /* Light label text */
+}
+
+.filter-form input, .filter-form button {
+    padding: 5px;
+    font-size: 1em;
+    background-color: #2a2a2a; /* Dark input/button background */
+    color: #ffffff; /* Light text */
+    border: 1px solid #444444; /* Subtle border */
+}
+
+.filter-form button {
+    background-color: #007BFF; /* Blue filter button */
+    color: #ffffff; /* White text */
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.filter-form button:hover {
+    background-color: #0056b3; /* Darker blue */
 }

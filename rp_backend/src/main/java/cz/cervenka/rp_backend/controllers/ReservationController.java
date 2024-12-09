@@ -20,8 +20,11 @@ import java.util.List;
 @Controller
 public class ReservationController {
 
-    @Autowired
-    private ReservationRepository reservationRepository;
+    public ReservationController(ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
+
+    private final ReservationRepository reservationRepository;
 
     @GetMapping("/reserveForm")
     public String showReservationForm(Model model) {
@@ -49,11 +52,18 @@ public class ReservationController {
         List<ReservationEntity> reservations;
 
         // Check if any filters are provided; if not, fetch all reservations
-        if (name == null && surname == null && filterDate == null && serviceType == null) {
+        /*if (name == null && surname == null && filterDate == null && serviceType == null) {
             reservations = reservationRepository.findAll();
         } else {
             reservations = reservationRepository.findFilteredReservations(name, surname, filterDate, serviceType);
-        }
+        }*/
+
+        reservations = reservationRepository.findFilteredReservations(
+                name != null && !name.isEmpty() ? name : null,
+                surname != null && !surname.isEmpty() ? surname : null,
+                filterDate,
+                serviceType != null && !serviceType.isEmpty() ? serviceType : null
+        );
 
         model.addAttribute("reservations", reservations);
         return "admin/reservations";

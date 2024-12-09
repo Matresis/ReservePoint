@@ -4,6 +4,7 @@ import cz.cervenka.rp_backend.filters.JwtAuthenticationFilter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -56,6 +57,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/style.css").permitAll()
                         .requestMatchers("/register", "/registerForm", "/loginForm", "/login", "/token").permitAll()
                         .requestMatchers("/home", "/make-reservation", "/reservations", "/reserveForm").hasAuthority("USER")
                         .requestMatchers("/admin/reservations", "/admin/home", "/admin/calendar").hasAuthority("ADMIN")
@@ -82,21 +84,17 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
-        return new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                Authentication authentication) throws IOException {
-                // Get the user's role
-                String role = authentication.getAuthorities().iterator().next().getAuthority();
+        return (request, response, authentication) -> {
+            // Get the user's role
+            String role = authentication.getAuthorities().iterator().next().getAuthority();
 
-                // Redirect based on the role
-                if ("ADMIN".equals(role)) {
-                    response.sendRedirect("/admin/home");  // Redirect admin to dashboard
-                } else if ("USER".equals(role)) {
-                    response.sendRedirect("/home");            // Redirect regular users to home
-                } else {
-                    response.sendRedirect("/loginForm?error=unknown_role");
-                }
+            // Redirect based on the role
+            if ("ADMIN".equals(role)) {
+                response.sendRedirect("/admin/home");  // Redirect admin to dashboard
+            } else if ("USER".equals(role)) {
+                response.sendRedirect("/home");            // Redirect regular users to home
+            } else {
+                response.sendRedirect("/loginForm?error=unknown_role");
             }
         };
     }

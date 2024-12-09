@@ -9,20 +9,22 @@
 <div class="reservations-container">
     <h1>List of Reservations</h1>
 
-    <form action="/reservations" method="get" class="filter-form">
+    <button onclick="toggleFilterForm()">Filter</button>
+
+    <form id="filter-form" action="/admin/reservations" method="get" class="filter-form" style="display: none;">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter name">
+        <input type="text" id="name" name="name" placeholder="Name">
 
         <label for="surname">Surname:</label>
-        <input type="text" id="surname" name="surname" placeholder="Enter surname">
+        <input type="text" id="surname" name="surname" placeholder="Surname">
 
-        <label for="date">Created At:</label>
+        <label for="date">Created:</label>
         <input type="date" id="date" name="date">
 
-        <label for="serviceType">Service Type:</label>
-        <input type="text" id="serviceType" name="serviceType" placeholder="Enter service type">
+        <label for="serviceType">Service:</label>
+        <input type="text" id="serviceType" name="serviceType" placeholder="Service">
 
-        <button type="submit">Filter</button>
+        <button type="submit">Apply Filters</button>
     </form>
 
     <table>
@@ -52,4 +54,5 @@
     </div>
 </div>
 </body>
+<script src="script.js"></script>
 </html>

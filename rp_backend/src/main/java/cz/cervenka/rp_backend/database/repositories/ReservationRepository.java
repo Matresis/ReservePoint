@@ -13,13 +13,14 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
     List<ReservationEntity> findByEmail(String email);
 
     @Query("SELECT r FROM ReservationEntity r WHERE " +
-            "(:name IS NULL OR LOWER(r.name) = LOWER(:name)) AND " +
-            "(:surname IS NULL OR LOWER(r.surname) = LOWER(:surname)) AND " +
+            "(:name IS NULL OR r.name LIKE %:name%) AND " +
+            "(:surname IS NULL OR r.surname LIKE %:surname%) AND " +
             "(:date IS NULL OR r.created_at = :date) AND " +
-            "(:serviceType IS NULL OR LOWER(r.serviceType) = LOWER(:serviceType))")
+            "(:serviceType IS NULL OR r.serviceType LIKE %:serviceType%)")
     List<ReservationEntity> findFilteredReservations(
             @Param("name") String name,
             @Param("surname") String surname,
             @Param("date") LocalDate date,
             @Param("serviceType") String serviceType);
+
 }
