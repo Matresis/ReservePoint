@@ -64,8 +64,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/loginForm")                              // Custom login page at /loginForm
-                        .loginProcessingUrl("/login")                         // Spring Security handles POST /login for authentication
+                        .loginPage("/loginForm")
+                        .loginProcessingUrl("/login")
                         .successHandler(customSuccessHandler())
                         .permitAll()
                 )
@@ -90,9 +90,9 @@ public class SecurityConfig {
 
             // Redirect based on the role
             if ("ADMIN".equals(role)) {
-                response.sendRedirect("/admin/home");  // Redirect admin to dashboard
+                response.sendRedirect("/admin/home");
             } else if ("USER".equals(role)) {
-                response.sendRedirect("/home");            // Redirect regular users to home
+                response.sendRedirect("/home");
             } else {
                 response.sendRedirect("/loginForm?error=unknown_role");
             }

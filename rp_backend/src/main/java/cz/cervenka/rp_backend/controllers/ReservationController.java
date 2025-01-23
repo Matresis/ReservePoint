@@ -2,8 +2,6 @@ package cz.cervenka.rp_backend.controllers;
 
 import cz.cervenka.rp_backend.database.entities.ReservationEntity;
 import cz.cervenka.rp_backend.database.repositories.ReservationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +32,7 @@ public class ReservationController {
 
     @PostMapping("/reserveForm")
     public String handleReservationSubmission(@ModelAttribute ReservationEntity reservation) {
-        reservation.setCreated_at(LocalDate.now());
+        reservation.setCreatedAt(LocalDateTime.now());
         reservationRepository.save(reservation);
         return "confirmation";
     }
@@ -50,13 +48,6 @@ public class ReservationController {
         LocalDate filterDate = (date != null && !date.isEmpty()) ? LocalDate.parse(date) : null;
 
         List<ReservationEntity> reservations;
-
-        // Check if any filters are provided; if not, fetch all reservations
-        /*if (name == null && surname == null && filterDate == null && serviceType == null) {
-            reservations = reservationRepository.findAll();
-        } else {
-            reservations = reservationRepository.findFilteredReservations(name, surname, filterDate, serviceType);
-        }*/
 
         reservations = reservationRepository.findFilteredReservations(
                 name != null && !name.isEmpty() ? name : null,
@@ -85,7 +76,6 @@ public class ReservationController {
 
         List<ReservationEntity> reservations;
 
-        // Check if any filters are provided; if not, fetch all reservations
         if (name == null && surname == null && filterDate == null && serviceType == null) {
             reservations = reservationRepository.findByEmail(email);
         } else {
@@ -95,33 +85,4 @@ public class ReservationController {
         model.addAttribute("reservations", reservations);
         return "reservations";
     }
-
-
-    /*@GetMapping("/admin/reservations")
-    public ResponseEntity<List<ReservationEntity>> getAllReservations(Authentication authentication) {
-        String role = authentication.getAuthorities().iterator().next().getAuthority();
-
-        if (role.equals("ADMIN")) {
-            List<ReservationEntity> reservations = reservationRepository.findAll();
-            System.out.println("Reservations: " + reservations);
-            return ResponseEntity.ok(reservations);
-        } else {
-            throw new RuntimeException("Unauthorized access");
-        }
-    }
-
-    @GetMapping("/reservations")
-    public ResponseEntity<List<ReservationEntity>> getUserReservations(Authentication authentication) {
-        String email = authentication.getName();
-        String role = authentication.getAuthorities().iterator().next().getAuthority();
-
-        if (role.equals("USER")) {
-            // Return only the reservations matching the user's email
-            List<ReservationEntity> reservations = reservationRepository.findByEmail(email);
-            System.out.println("Reservations: " + reservations);
-            return ResponseEntity.ok(reservations);
-        } else {
-            throw new RuntimeException("Unauthorized access");
-        }
-    }*/
 }

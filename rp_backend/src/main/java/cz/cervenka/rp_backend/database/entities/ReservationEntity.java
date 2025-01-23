@@ -4,32 +4,36 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter
 @Setter
+@Getter
 @Entity
 public class ReservationEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private CustomerEntity customer;
+
+    @ManyToOne
+    @JoinColumn(name = "service_id", nullable = false)
+    private ServiceEntity service;
 
     @Column(nullable = false)
-    private String surname;
+    private java.time.LocalDate reservationDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String email;
+    private Status status;
 
-    @Column(nullable = false)
-    private String phone;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "service_type", nullable = false)
-    private String serviceType;
-
-    @Column
-    private LocalDate created_at;
+    public enum Status {
+        PENDING, CONFIRMED, CANCELED
+    }
 }

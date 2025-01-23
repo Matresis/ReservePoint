@@ -3,11 +3,7 @@ package cz.cervenka.rp_backend.controllers;
 import cz.cervenka.rp_backend.database.entities.UserEntity;
 import cz.cervenka.rp_backend.database.repositories.UserRepository;
 import cz.cervenka.rp_backend.utils.JwtUtil;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -46,23 +41,23 @@ public class UserController {
             return "error"; // Email already exists
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCreated_at(LocalDateTime.now());
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        user.setCreatedAt(LocalDateTime.now());
 
         if (userRepository.count() == 0) {
-            user.setRole("ADMIN");
+            user.setRole(UserEntity.Role.ADMIN);
         } else {
-            user.setRole("USER");
+            user.setRole(UserEntity.Role.USER);
         }
 
         userRepository.save(user);
-        return "loginForm"; // Redirect to loginForm after registration
+        return "loginForm";
     }
 
 
     @GetMapping("/loginForm")
     public String showLoginForm() {
-        return "loginForm"; // Return the login view
+        return "loginForm";
     }
 
 
@@ -85,6 +80,4 @@ public class UserController {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid username or password"));
         }
     }*/
-
-
 }
