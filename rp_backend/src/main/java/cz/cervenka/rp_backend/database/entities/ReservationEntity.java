@@ -36,4 +36,7 @@ public class ReservationEntity {
     public enum Status {
         PENDING, CONFIRMED, CANCELED
     }
+
+    @Column()
+    private LocalDateTime orderedTime;
 }

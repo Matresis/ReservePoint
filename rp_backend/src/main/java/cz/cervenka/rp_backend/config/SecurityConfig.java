@@ -66,29 +66,29 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/loginForm")
                         .loginProcessingUrl("/login")
-                        .successHandler(customSuccessHandler())
+                        .successHandler(customSuccessHandler())  // Custom success handler to redirect properly
+                        .failureUrl("/loginForm?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutUrl("/admin/logout")
                         .logoutSuccessUrl("/loginForm")
                         .permitAll()
-                )
-                /*.sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Use stateless sessions
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-                )*/;
+                );
+
         return http.build();
     }
 
     @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
         return (request, response, authentication) -> {
-            // Get the user's role
+            // Ensure the user is redirected to a safe page, not the one they tried accessing
+            request.getSession().removeAttribute("SPRING_SECURITY_SAVED_REQUEST");
+
+            // Get user role
             String role = authentication.getAuthorities().iterator().next().getAuthority();
 
-            // Redirect based on the role
+            // Redirect based on role
             if ("ADMIN".equals(role)) {
                 response.sendRedirect("/admin/home");
             } else if ("USER".equals(role)) {

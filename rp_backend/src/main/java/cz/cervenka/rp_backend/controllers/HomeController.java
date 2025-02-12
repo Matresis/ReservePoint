@@ -14,10 +14,10 @@ public class HomeController {
         return "loginForm";
     }
 
-    @GetMapping("/make-reservation")
+    /*@GetMapping("/make-reservation")
     public String showReservationForm() {
         return "reserveForm";
-    }
+    }*/
 
     @PostMapping("/logout")
     public String logout() {
@@ -26,7 +26,7 @@ public class HomeController {
 
     @PostMapping("/admin/logout")
     public String logoutAdmin() {
-        return "loginForm";
+        return "redirect:/loginForm";
     }
 
     @GetMapping("/home")

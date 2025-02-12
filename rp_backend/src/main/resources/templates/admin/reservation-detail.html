@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../style.css">
+    <title>Reservation Details</title>
+</head>
+<body>
+<div class="container">
+    <h1>Reservation Details</h1>
+
+    <p><strong>Name:</strong> <span th:text="${reservation.customer.user.name}"></span></p>
+    <p><strong>Surname:</strong> <span th:text="${reservation.customer.user.surname}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${reservation.customer.user.email}"></span></p>
+    <p><strong>Phone:</strong> <span th:text="${reservation.customer.phone}"></span></p>
+    <p><strong>Service Type:</strong> <span th:text="${reservation.service.name}"></span></p>
+    <p><strong>Created At:</strong> <span th:text="${reservation.createdAt}"></span></p>
+    <p><strong>Status:</strong> <span th:text="${reservation.status}"></span></p>
+
+    <!-- Editable Section -->
+    <form th:action="@{/admin/reservations/update}" method="post">
+        <input type="hidden" name="id" th:value="${reservation.id}">
+
+        <label for="orderedTime">Ordered Time:</label>
+        <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${reservation.orderedTime}">
+
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="PENDING" th:selected="${reservation.status == 'PENDING'}">Pending</option>
+            <option value="CONFIRMED" th:selected="${reservation.status == 'CONFIRMED'}">Confirmed</option>
+            <option value="CANCELED" th:selected="${reservation.status == 'CANCELED'}">Canceled</option>
+        </select>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <!-- Remove Reservation -->
+    <form th:action="@{/admin/reservations/delete}" method="post">
+        <input type="hidden" name="id" th:value="${reservation.id}">
+        <button type="submit" class="delete-button">Delete Reservation</button>
+    </form>
+
+    <!-- Future Calendar Feature -->
+    <button onclick="alert('Calendar feature coming soon!')">Add to Calendar</button>
+
+    <a href="/admin/reservations" class="button">Back to Reservations</a>
+</div>
+</body>
+</html>

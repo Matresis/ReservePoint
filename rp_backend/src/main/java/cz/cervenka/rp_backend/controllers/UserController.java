@@ -41,7 +41,7 @@ public class UserController {
             return "error"; // Email already exists
         }
 
-        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
 
         if (userRepository.count() == 0) {

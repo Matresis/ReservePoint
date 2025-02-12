@@ -38,15 +38,16 @@
         </tr>
         <th:block th:each="reservation : ${reservations}">
             <tr>
-                <td th:text="${reservation.name}"></td>
-                <td th:text="${reservation.surname}"></td>
-                <td th:text="${reservation.email}"></td>
-                <td th:text="${reservation.phone}"></td>
-                <td th:text="${reservation.serviceType}"></td>
-                <td th:text="${reservation.created_at}"></td>
+                <td th:text="${reservation.customer.user.name}"></td>
+                <td th:text="${reservation.customer.user.surname}"></td>
+                <td th:text="${reservation.customer.user.email}"></td>
+                <td th:text="${reservation.customer.phone}"></td>
+                <td th:text="${reservation.service.name}"></td>
+                <td th:text="${reservation.createdAt}"></td>
             </tr>
         </th:block>
     </table>
+
     <div class="return-container">
         <form action="/home" method="get">
             <button type="submit">Home</button>

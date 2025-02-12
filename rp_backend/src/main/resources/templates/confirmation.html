@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Reservation Confirmation</title>
+    <title>Reservation Confirmed</title>
 </head>
 <body>
 <div class="container">
-    <h1>Reservation Confirmed!</h1>
-    <p>Thank you for your reservation.</p>
-    <a href="/home">Go to Home</a>
+    <h1>Reservation Confirmed</h1>
+    <p>Thank you, <span th:text="${customer.user.name}"></span>!</p>
+    <p>Your reservation for <span th:text="${reservation.service.name}"></span> has been received.</p>
+    <p>Reservation Date: <span th:text="${reservation.reservationDate}"></span></p>
+    <p>Status: <span th:text="${reservation.status}"></span></p>
+
+    <div class="return-container">
+        <form action="/home" method="get">
+            <button type="submit">Return to Home</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

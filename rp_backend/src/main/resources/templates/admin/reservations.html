@@ -12,12 +12,16 @@
     <button onclick="toggleFilterForm()">Filter</button>
 
     <form id="filter-form" action="/admin/reservations" method="get" class="filter-form" style="display: none;">
+        <label for="name">Name:</label>
         <input type="text" id="name" name="name" placeholder="Name">
 
+        <label for="surname">Surname:</label>
         <input type="text" id="surname" name="surname" placeholder="Surname">
 
+        <label for="date">Created:</label>
         <input type="date" id="date" name="date">
 
+        <label for="serviceType">Service:</label>
         <input type="text" id="serviceType" name="serviceType" placeholder="Service">
 
         <button type="submit">Apply Filters</button>
@@ -31,18 +35,24 @@
             <th>Phone</th>
             <th>Service Type</th>
             <th>Created At</th>
+            <th>Actions</th>
         </tr>
         <th:block th:each="reservation : ${reservations}">
             <tr>
-                <td th:text="${reservation.name}"></td>
-                <td th:text="${reservation.surname}"></td>
-                <td th:text="${reservation.email}"></td>
-                <td th:text="${reservation.phone}"></td>
-                <td th:text="${reservation.serviceType}"></td>
-                <td th:text="${reservation.created_at}"></td>
+                <td th:text="${reservation.customer.user.name}"></td>
+                <td th:text="${reservation.customer.user.surname}"></td>
+                <td th:text="${reservation.customer.user.email}"></td>
+                <td th:text="${reservation.customer.phone}"></td>
+                <td th:text="${reservation.service.name}"></td>
+                <td th:text="${reservation.createdAt}"></td>
+                <td>
+                    <a th:href="@{/admin/reservations/{id}(id=${reservation.id})}" class="button">View Details</a>
+                </td>
             </tr>
         </th:block>
     </table>
+
+
     <div class="return-container">
         <form action="/admin/home" method="get">
             <button type="submit">Home</button>
@@ -50,5 +60,5 @@
     </div>
 </div>
 </body>
-<script src="../script.js"></script>
+<script src="script.js"></script>
 </html>
