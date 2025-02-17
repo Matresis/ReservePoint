@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
     <title>Reservation Details</title>
 </head>
 <body>
@@ -21,7 +21,7 @@
     <form th:action="@{/admin/reservations/update}" method="post">
         <input type="hidden" name="id" th:value="${reservation.id}">
 
-        <label for="orderedTime">Ordered Time:</label>
+        <label id="orderedTimeLabel" for="orderedTime">Ordered Time:</label>
         <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${reservation.orderedTime}">
 
         <label for="status">Status:</label>
@@ -41,7 +41,10 @@
     </form>
 
     <!-- Future Calendar Feature -->
-    <button onclick="alert('Calendar feature coming soon!')">Add to Calendar</button>
+    <form th:action="@{/admin/reservations/calendar}" method="post">
+        <input type="hidden" name="id" th:value="${reservation.id}">
+        <button onclick="alert('Calendar feature coming soon!')">Add to Calendar</button>
+    </form>
 
     <a href="/admin/reservations" class="button">Back to Reservations</a>
 </div>

@@ -182,6 +182,18 @@ body {
     text-align: center;
 }
 
+.container form {
+    margin: 15px 0 15px 0;
+}
+
+#orderedTime, #status {
+    margin-top: 5px;
+}
+
+#orderedTimeLabel {
+    margin-top: 20px;
+}
+
 h1 {
     text-align: center;
     color: #ffffff; /* White text for headings */
