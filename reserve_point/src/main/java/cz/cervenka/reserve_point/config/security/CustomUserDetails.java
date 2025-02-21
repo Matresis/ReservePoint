@@ -1,4 +1,4 @@
-package cz.cervenka.reserve_point.services;
+package cz.cervenka.reserve_point.config.security;
 
 import cz.cervenka.reserve_point.database.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;

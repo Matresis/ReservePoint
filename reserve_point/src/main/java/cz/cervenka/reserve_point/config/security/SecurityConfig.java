@@ -1,6 +1,5 @@
-package cz.cervenka.reserve_point.config;
+package cz.cervenka.reserve_point.config.security;
 
-import cz.cervenka.reserve_point.filters.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +9,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import cz.cervenka.reserve_point.services.CustomUserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
@@ -51,13 +49,13 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/style.css").permitAll()
                         .requestMatchers("/register", "/registerForm", "/loginForm", "/login", "/token").permitAll()
                         .requestMatchers("/home", "/make-reservation", "/reservations", "/reserveForm").hasAuthority("USER")
-                        .requestMatchers("/admin/reservations", "/admin/home", "/admin/calendar").hasAuthority("ADMIN")
+                        .requestMatchers("/admin/reservations", "/admin", "/admin/calendar").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/loginForm")
                         .loginProcessingUrl("/login")
-                        .successHandler(customSuccessHandler())  // Custom success handler to redirect properly
+                        .successHandler(customSuccessHandler())
                         .failureUrl("/loginForm?error=true")
                         .permitAll()
                 )
@@ -81,7 +79,7 @@ public class SecurityConfig {
 
             // Redirect based on role
             if ("ADMIN".equals(role)) {
-                response.sendRedirect("/admin/home");
+                response.sendRedirect("/admin");
             } else if ("USER".equals(role)) {
                 response.sendRedirect("/home");
             } else {

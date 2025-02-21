@@ -1,4 +1,4 @@
-package cz.cervenka.reserve_point.services;
+package cz.cervenka.reserve_point.config.security;
 
 import cz.cervenka.reserve_point.database.entities.UserEntity;
 import cz.cervenka.reserve_point.database.repositories.UserRepository;
@@ -23,5 +23,4 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new CustomUserDetails(user);
     }
-
 }

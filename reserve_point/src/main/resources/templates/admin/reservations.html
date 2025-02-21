@@ -9,7 +9,7 @@
 <div class="reservations-container">
     <h1>List of Reservations</h1>
 
-    <button onclick="toggleFilterForm()">Filter</button>
+    <button id="filter-button" onclick="toggleFilterForm()">Filter</button>
 
     <form id="filter-form" action="/admin/reservations" method="get" class="filter-form" style="display: none;">
         <label for="name">Name:</label>
@@ -44,7 +44,7 @@
                 <td th:text="${reservation.customer.user.email}"></td>
                 <td th:text="${reservation.customer.phone}"></td>
                 <td th:text="${reservation.service.name}"></td>
-                <td th:text="${reservation.createdAt}"></td>
+                <td th:text="${reservation.formattedCreatedAt}"></td>
                 <td>
                     <a th:href="@{/admin/reservations/{id}(id=${reservation.id})}" class="button">View Details</a>
                 </td>
@@ -54,11 +54,11 @@
 
 
     <div class="return-container">
-        <form action="/admin/home" method="get">
+        <form action="/admin" method="get">
             <button type="submit">Home</button>
         </form>
     </div>
 </div>
 </body>
-<script src="script.js"></script>
+<script th:src="@{/script.js}"></script>
 </html>

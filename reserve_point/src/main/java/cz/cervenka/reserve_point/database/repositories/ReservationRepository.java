@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface ReservationRepository extends JpaRepository<ReservationEntity, Integer> {
+public interface ReservationRepository extends JpaRepository<ReservationEntity, Long> {
 
     @Query("SELECT r FROM ReservationEntity r " +
             "JOIN r.customer c " +

@@ -1,0 +1,19 @@
+package cz.cervenka.reserve_point.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping("/admin")
+public class AdminController {
+
+    @GetMapping
+    public String getAdminHome() {
+        return "admin/home";
+    }
+
+    @PostMapping("/admin/logout")
+    public String logoutAdmin() {
+        return "redirect:/loginForm";
+    }
+}

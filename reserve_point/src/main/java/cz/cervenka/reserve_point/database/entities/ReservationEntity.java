@@ -13,7 +13,7 @@ public class ReservationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
@@ -22,9 +22,6 @@ public class ReservationEntity {
     @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
     private ServiceEntity service;
-
-    @Column(nullable = false)
-    private java.time.LocalDate reservationDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -39,4 +36,12 @@ public class ReservationEntity {
 
     @Column()
     private LocalDateTime orderedTime;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String notes;
+
+    @Setter
+    @Getter
+    @Transient
+    private String formattedCreatedAt;
 }

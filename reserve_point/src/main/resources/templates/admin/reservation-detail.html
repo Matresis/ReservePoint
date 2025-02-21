@@ -14,39 +14,50 @@
     <p><strong>Email:</strong> <span th:text="${reservation.customer.user.email}"></span></p>
     <p><strong>Phone:</strong> <span th:text="${reservation.customer.phone}"></span></p>
     <p><strong>Service Type:</strong> <span th:text="${reservation.service.name}"></span></p>
-    <p><strong>Created At:</strong> <span th:text="${reservation.createdAt}"></span></p>
+    <p><strong>Created At:</strong> <span th:text="${formattedCreatedAt}"></span></p>
     <p><strong>Status:</strong> <span th:text="${reservation.status}"></span></p>
+    <p><strong>Reserved Date:</strong> <span th:text="${formattedOrderDate}"></span></p>
+    <p><strong>Note:</strong> <span th:text="${reservation.notes}"></span></p>
+
+    <!-- Toggle Button -->
+    <button id="editButton" onclick="toggleEditSection()">Edit Reservation</button>
 
     <!-- Editable Section -->
-    <form th:action="@{/admin/reservations/update}" method="post">
-        <input type="hidden" name="id" th:value="${reservation.id}">
+    <div id="editSection" style="display: none;">
+        <form th:action="@{/admin/reservations/update}" method="post">
+            <input type="hidden" name="id" th:value="${reservation.id}">
 
-        <label id="orderedTimeLabel" for="orderedTime">Ordered Time:</label>
-        <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${reservation.orderedTime}">
+            <label for="orderedTime">Ordered Time:</label>
+            <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${reservation.orderedTime}">
 
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-            <option value="PENDING" th:selected="${reservation.status == 'PENDING'}">Pending</option>
-            <option value="CONFIRMED" th:selected="${reservation.status == 'CONFIRMED'}">Confirmed</option>
-            <option value="CANCELED" th:selected="${reservation.status == 'CANCELED'}">Canceled</option>
-        </select>
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="PENDING" th:selected="${reservation.status == 'PENDING'}">Pending</option>
+                <option value="CONFIRMED" th:selected="${reservation.status == 'CONFIRMED'}">Confirmed</option>
+                <option value="CANCELED" th:selected="${reservation.status == 'CANCELED'}">Canceled</option>
+            </select>
 
-        <button type="submit">Save Changes</button>
-    </form>
+            <label for="notes">Notes:</label>
+            <textarea id="notes" name="notes" rows="4" th:text="${reservation.notes}"></textarea>
+
+            <button id="edit-button" type="submit">Save Changes</button>
+        </form>
+    </div>
 
     <!-- Remove Reservation -->
     <form th:action="@{/admin/reservations/delete}" method="post">
         <input type="hidden" name="id" th:value="${reservation.id}">
-        <button type="submit" class="delete-button">Delete Reservation</button>
+        <button type="submit" id="delete-button" onclick="return confirm('Are you sure?')">Delete Reservation</button>
     </form>
 
     <!-- Future Calendar Feature -->
     <form th:action="@{/admin/reservations/calendar}" method="post">
         <input type="hidden" name="id" th:value="${reservation.id}">
-        <button onclick="alert('Calendar feature coming soon!')">Add to Calendar</button>
+        <button type="button" onclick="alert('Calendar feature coming soon!')">Add to Calendar</button>
     </form>
 
     <a href="/admin/reservations" class="button">Back to Reservations</a>
 </div>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

@@ -186,7 +186,7 @@ body {
     margin: 15px 0 15px 0;
 }
 
-#orderedTime, #status {
+#orderedTime, #status #notes {
     margin-top: 5px;
 }
 
@@ -199,7 +199,7 @@ h1 {
     color: #ffffff; /* White text for headings */
 }
 
-input, select {
+input, select, textarea {
     width: 95%;
     padding: 10px;
     margin-bottom: 15px;
@@ -207,6 +207,34 @@ input, select {
     color: #ffffff; /* White input text */
     border: 1px solid #444444; /* Subtle border */
     border-radius: 4px;
+}
+
+#delete-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ee3434;
+    color: #121212;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#delete-button:hover {
+    background-color: #da2b2b;
+}
+
+#edit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#edit-button:hover {
+    background-color: #0056b3;
 }
 
 button {
@@ -270,7 +298,7 @@ th, td {
     width: 50%;
     padding: 10px;
     background-color: #5cb85c; /* Dark button */
-    color: #ffffff; /* Light text */
+    color: #121212; /* Light text */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -294,7 +322,21 @@ th, td {
     margin-top: 20px;
 }
 
-.reservations-container button {
+/*.reservations-container button {
+    width: 50%;
+    margin-bottom: 20px;
+    background-color: #007BFF; !* Keep blue for filter button *!
+    color: #ffffff; !* Contrast text *!
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.reservations-container button:hover {
+    background-color: #0056b3; !* Darker blue *!
+}*/
+
+#filter-button {
     width: 50%;
     margin-bottom: 20px;
     background-color: #007BFF; /* Keep blue for filter button */
@@ -304,7 +346,7 @@ th, td {
     cursor: pointer;
 }
 
-.reservations-container button:hover {
+#filter-button:hover {
     background-color: #0056b3; /* Darker blue */
 }
 
