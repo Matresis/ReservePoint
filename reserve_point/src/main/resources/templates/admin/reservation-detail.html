@@ -51,9 +51,9 @@
     </form>
 
     <!-- Future Calendar Feature -->
-    <form th:action="@{/admin/reservations/calendar}" method="post">
+    <form th:action="@{/admin/reservations/calendar}" method="get">
         <input type="hidden" name="id" th:value="${reservation.id}">
-        <button type="button" onclick="alert('Calendar feature coming soon!')">Add to Calendar</button>
+        <button type="submit">Add to Calendar</button>
     </form>
 
     <a href="/admin/reservations" class="button">Back to Reservations</a>

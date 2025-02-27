@@ -64,9 +64,12 @@ public class AdminReservationController {
 
     @PostMapping("/delete")
     public String deleteReservation(@RequestParam Long id) {
-        if (!reservationService.deleteReservation(id)) {
-            return "redirect:/admin/reservations";
-        }
+        reservationService.deleteReservation(id);
         return "redirect:/admin/reservations";
+    }
+
+    @PostMapping("/admin/reservations/calendar")
+    public String addReservationToCalendar(@RequestParam("id") Long reservationId) {
+        return "redirect:/admin/reservations/calendar";
     }
 }

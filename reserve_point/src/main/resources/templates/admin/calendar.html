@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
+    <title>Reservation Calendar</title>
+</head>
+<body>
+<div class="container">
+    <h1>Reservation Calendar</h1>
+
+    <div id="calendar"></div>
+
+    <a href="/admin/reservations" class="button">Back to Reservations</a>
+</div>
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        let calendarEl = document.getElementById('calendar');
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: '/api/calendar/events',
+            selectable: true,
+            eventClick: function(info) {
+                alert('Reservation: ' + info.event.title);
+            }
+        });
+        calendar.render();
+    });
+</script>
+</body>
+</html>
