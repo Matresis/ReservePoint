@@ -1,8 +1,3 @@
-function toggleFilterForm() {
-    const form = document.getElementById("filter-form");
-    form.style.display = form.style.display === "none" ? "block" : "none";
-}
-
 function toggleEditSection() {
     const editSection = document.getElementById("editSection");
     const editButton = document.getElementById("editButton");
