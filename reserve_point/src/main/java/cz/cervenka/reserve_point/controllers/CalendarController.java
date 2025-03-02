@@ -3,6 +3,7 @@ package cz.cervenka.reserve_point.controllers;
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -43,20 +44,25 @@ public class CalendarController {
                 }).collect(Collectors.toList());
     }
 
-    // Add a specific reservation to the calendar (by setting its orderedTime if missing)
     @PostMapping("/add-event")
-    public String addReservationToCalendar(@RequestParam("id") Long reservationId) {
+    public String addReservationToCalendar(@RequestParam("id") Long reservationId, Model model) {
         Optional<ReservationEntity> reservationOpt = reservationRepository.findById(reservationId);
 
         if (reservationOpt.isPresent()) {
             ReservationEntity reservation = reservationOpt.get();
 
-            // If the reservation does not have an ordered time, set it to now
+            // If orderedTime is missing, return an error message
             if (reservation.getOrderedTime() == null) {
-                reservation.setOrderedTime(LocalDateTime.now());
-                reservationRepository.save(reservation);
+                model.addAttribute("errorMessage", "Order time must be entered before adding to the calendar.");
+                model.addAttribute("reservation", reservation);
+                return "admin/reservation-detail"; // Return the same page with error
             }
+
+            // Otherwise, allow saving (if additional logic is needed)
+            reservationRepository.save(reservation);
         }
+
         return "redirect:/admin/reservations/calendar";
     }
+
 }

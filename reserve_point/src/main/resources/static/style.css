@@ -121,27 +121,6 @@ th, td {
     margin: 10px 0 10px 0;
 }
 
-.return-container {
-    max-width: 50%;
-    margin: auto;
-    text-align: center;
-    padding: 20px;
-}
-
-.return-container button {
-    width: 50%;
-    padding: 10px;
-    background-color: #5cb85c; /* Dark button */
-    color: #121212; /* Light text */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.return-container button:hover {
-    background-color: #4cae4c; /* Slightly lighter button */
-}
-
 .reservations-container {
     max-width: 1000px;
     margin: auto;
@@ -154,21 +133,12 @@ th, td {
 
 .reservations-container table {
     margin-top: 20px;
-}
-
-/*.reservations-container button {
-    width: 50%;
     margin-bottom: 20px;
-    background-color: #007BFF; !* Keep blue for filter button *!
-    color: #ffffff; !* Contrast text *!
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
-.reservations-container button:hover {
-    background-color: #0056b3; !* Darker blue *!
-}*/
+.confirmation {
+    margin-bottom: 20px;
+}
 
 #filter-button {
     width: 50%;
@@ -222,6 +192,54 @@ th, td {
     background-color: #0056b3;
 }
 
+#return-button {
+    margin-top: 20px;
+}
+
+.return-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid black;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+.popup-content p {
+    color: black;
+}
+
+.popup-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.popup-content button:first-child {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.popup-content button:last-child {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+
 /* Calendar Container */
 #calendar {
     max-width: 1200px;
@@ -263,24 +281,39 @@ th, td {
     font-weight: bold;
 }
 
-
-.fc-timegrid-slot {
-    background: #181818 !important;
-    border-color: #333 !important;
+.fc-timegrid-body {
+    display: flex;
+    flex-direction: column;
 }
 
-.fc-timegrid-cols {
-    height: auto !important; /* Allow it to shrink */
-    min-height: calc(100% - 50px); /* Adjust based on layout */
+.fc-timegrid-slots {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.fc-timegrid-slot {
+    flex: 1;
+}
+
+.fc-timegrid-slots table {
+    height: 100%;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.fc-timegrid-slots tr, col {
+    height: 40px; !important;
 }
 
 .fc-daygrid-day {
-    background: #181818 !important;
-    border-color: #333 !important;
+    background: #181818;
+    border-color: #333;
 }
 
 .fc-day-today {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .fc-today-button {

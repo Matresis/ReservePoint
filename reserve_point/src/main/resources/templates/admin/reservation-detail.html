@@ -19,10 +19,8 @@
     <p><strong>Reserved Date:</strong> <span th:text="${formattedOrderDate}"></span></p>
     <p><strong>Note:</strong> <span th:text="${reservation.notes}"></span></p>
 
-    <!-- Toggle Button -->
     <button id="editButton" onclick="toggleEditSection()">Edit Reservation</button>
 
-    <!-- Editable Section -->
     <div id="editSection" style="display: none;">
         <form th:action="@{/admin/reservations/update}" method="post">
             <input type="hidden" name="id" th:value="${reservation.id}">
@@ -44,20 +42,28 @@
         </form>
     </div>
 
-    <!-- Remove Reservation -->
     <form th:action="@{/admin/reservations/delete}" method="post">
         <input type="hidden" name="id" th:value="${reservation.id}">
         <button type="submit" id="delete-button" onclick="return confirm('Are you sure?')">Delete Reservation</button>
     </form>
 
-    <!-- Future Calendar Feature -->
-    <form th:action="@{/admin/reservations/calendar/add-event}" method="get">
+    <form id="addToCalendarForm" th:action="@{/admin/reservations/calendar/add-event}" method="post">
         <input type="hidden" name="id" th:value="${reservation.id}">
-        <button type="submit">Add to Calendar</button>
+        <button type="button" id="addToCalendarButton" onclick="submitForm()">Add to Calendar</button>
     </form>
 
     <a href="/admin/reservations" class="button">Back to Reservations</a>
 </div>
-<script th:src="@{/editForm.js}"></script>
+
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <p>Reservation was added to the calendar.</p>
+        <p>Do you want to go to the calendar?</p>
+        <button onclick="goToCalendar()">Yes, go to Calendar</button>
+        <button onclick="closePopup()">No, stay here</button>
+    </div>
+</div>
+
+<script th:src="@{/reservation.js}"></script>
 </body>
 </html>

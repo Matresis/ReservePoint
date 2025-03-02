@@ -12,7 +12,7 @@ public class AdminController {
         return "admin/home";
     }
 
-    @PostMapping("/admin/logout")
+    @PostMapping("/logout")
     public String logoutAdmin() {
         return "redirect:/loginForm";
     }

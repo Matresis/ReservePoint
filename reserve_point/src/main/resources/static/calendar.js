@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'timeGridWeek', // Weekly view
+        height: 'auto', //
+        weekends: false, // Disable weekends
         locale: 'en', // Set language
         headerToolbar: {
             left: 'prev,next',
@@ -29,4 +31,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     calendar.render();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const backButton = document.getElementById("return-button");
+
+    // Check if user came from reservation details page
+    if (sessionStorage.getItem("fromReservationPage") === "true") {
+        backButton.href = "/admin/reservations"; // Change back button link
+        backButton.content = "Back to Reservations";
+        sessionStorage.removeItem("fromReservationPage"); // Clear the flag
+    } else {
+        backButton.href = "/admin";
+    }
 });

@@ -69,7 +69,7 @@ public class AdminReservationController {
     }
 
     @PostMapping("/calendar")
-    public String showCalendar(@RequestParam("id") Long reservationId) {
+    public String showCalendar() {
         return "redirect:/admin/reservations/calendar";
     }
 }
