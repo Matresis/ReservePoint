@@ -50,11 +50,10 @@ public class AdminReservationService {
         return reservationRepository.save(reservation);
     }
 
-    public boolean deleteReservation(Long id) {
+    public void deleteReservation(Long id) {
         if (!reservationRepository.existsById(id)) {
-            return false;
+            return;
         }
         reservationRepository.deleteById(id);
-        return true;
     }
 }
