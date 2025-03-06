@@ -27,7 +27,9 @@ public class AdminReservationService {
         reservations.forEach(reservation ->
                 reservation.setFormattedCreatedAt(reservation.getCreatedAt().format(formatter))
         );
-
+        reservations.forEach(reservation ->
+                reservation.setFormattedOrderTime(reservation.getOrderedTime().format(formatter))
+        );
         return reservations;
     }
 

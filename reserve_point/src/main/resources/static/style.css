@@ -20,7 +20,7 @@ body {
     margin: 15px 0 15px 0;
 }
 
-#orderedTime, #status #notes {
+#orderedTime, #status, #notes {
     margin-top: 5px;
 }
 
@@ -207,19 +207,20 @@ th, td {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
+    background: #1e1e1e;
     padding: 20px;
     border: 1px solid black;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
 
 .popup-content {
+    height: 100%;
     text-align: center;
 }
 
 .popup-content p {
-    color: black;
+    color: #ffffff;
 }
 
 .popup-content button {
@@ -237,6 +238,79 @@ th, td {
 .popup-content button:last-child {
     background-color: #f44336; /* Red */
     color: white;
+}
+
+
+.popup-details {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1e1e1e;
+    padding: 20px;
+    border: 1px solid black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    min-height: 700px;
+    width: 550px;
+    justify-content: center;
+    /*overflow: auto;*/
+}
+
+.popup-content-details {
+    height: 100%;
+    text-align: center;
+    position: relative; /* Ensure child elements stay within */
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+}
+
+.popup-content-details p {
+    color: #b0b0b0;
+    font-size: 1.17em;
+    margin: 0.8em 0;
+}
+
+.popup-content-details button {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 10px auto;
+}
+
+
+.popup-content-details button:first-child {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.popup-content-details button:last-child {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+#popup-editSection {
+    display: block;
+    flex-direction: column;
+    align-items: center; /* Ensures buttons are centered */
+    width: 100%;
+}
+
+#deleteOptions {
+    display: block;
+    flex-direction: column;
+    align-items: center; /* Ensures buttons are centered */
+    width: 100%;
+}
+
+#deleteOptions button {
+    width: 80%;
 }
 
 
