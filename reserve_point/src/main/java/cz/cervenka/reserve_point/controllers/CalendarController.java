@@ -55,14 +55,12 @@ public class CalendarController {
         if (reservationOpt.isPresent()) {
             ReservationEntity reservation = reservationOpt.get();
 
-            // If orderedTime is missing, return an error message
             if (reservation.getOrderedTime() == null) {
                 model.addAttribute("errorMessage", "Order time must be entered before adding to the calendar.");
                 model.addAttribute("reservation", reservation);
                 return "admin/reservation-detail"; // Return the same page with error
             }
 
-            // Otherwise, allow saving (if additional logic is needed)
             reservationRepository.save(reservation);
         }
 

@@ -122,11 +122,3 @@
 | `password`   | `VARCHAR(255)`          | Not null                    |
 | `role`       | `ENUM('ADMIN', 'USER')` | Not null                    |
 | `surname`    | `VARCHAR(255)`          | Not null                    |
-
-## Endpoints
-- `/register`: Displays the registration form.
-- `/login`: Displays the login form.
-- `/reserveForm`: Displays the reservation creation form.
-- `/reservations`: Shows a list of all reservations.
-- `/home`: Shows dashboard/home page with links to other endpoints: `/logout`, `/reserveForm`, `/reservations`.
-
