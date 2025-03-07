@@ -18,6 +18,9 @@
 <div id="popup" class="popup-details">
     <div class="popup-content-details">
         <h2>Reservation Details</h2>
+
+        <a id="reservation-detail-link" class="button" href="#">View Details</a>
+
         <p><strong>Name:</strong> <span id="popup-name"></span></p>
         <p><strong>Surname:</strong> <span id="popup-surname"></span></p>
         <p><strong>Email:</strong> <span id="popup-email"></span></p>
@@ -33,7 +36,7 @@
 
         <!-- Edit Form (Initially Hidden) -->
         <div id="popup-editSection" style="display: none;">
-            <form id="editForm" action="/admin/reservations/update" method="post">
+            <form id="editForm">
                 <input type="hidden" name="id" id="edit-id">
 
                 <label for="edit-orderedTime">Ordered Time:</label>
@@ -49,12 +52,12 @@
                 <label for="edit-notes">Notes:</label>
                 <textarea id="edit-notes" name="notes" rows="4"></textarea>
 
-                <button id="edit-button" type="submit">Save Changes</button>
+                <button type="button" id="saveEdit">Save Changes</button>
             </form>
         </div>
 
         <!-- Delete Buttons -->
-        <button id="deleteButton" onclick="confirmDelete()">Delete Reservation</button>
+        <button id="delete-button" onclick="confirmDelete()">Delete Reservation</button>
 
         <div id="deleteOptions" style="display: none;">
             <form id="removeFromCalendarForm" action="/admin/reservations/calendar/removeFromCalendar" method="post">
@@ -62,9 +65,9 @@
                 <button type="submit" class="delete-option">Remove from Calendar</button>
             </form>
 
-            <form id="deleteReservationForm" action="/admin/reservations/delete" method="post">
+            <form id="deleteReservationForm">
                 <input type="hidden" name="id" id="delete-id">
-                <button type="submit" class="delete-option">Delete Completely</button>
+                <button type="button" id="deleteReservationButton">Delete Completely</button>
             </form>
         </div>
 

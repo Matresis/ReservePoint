@@ -2,11 +2,13 @@ package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
 import cz.cervenka.reserve_point.services.AdminReservationService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -47,7 +49,7 @@ public class AdminReservationController {
         return "admin/reservation-detail";
     }
 
-    @PostMapping("/update")
+    /*@PostMapping("/update")
     public String updateReservation(
             @RequestParam Long id,
             @RequestParam String status,
@@ -66,7 +68,37 @@ public class AdminReservationController {
     public String deleteReservation(@RequestParam Long id) {
         reservationService.deleteReservation(id);
         return "redirect:/admin/reservations";
+    }*/
+
+    @PostMapping("/update")
+    @ResponseBody
+    public ResponseEntity<?> updateReservation(
+            @RequestParam Long id,
+            @RequestParam String status,
+            @RequestParam(required = false) String orderedTime,
+            @RequestParam("notes") String notes) {
+
+        ReservationEntity updatedReservation = reservationService.updateReservation(id, status, orderedTime, notes);
+        if (updatedReservation == null) {
+            return ResponseEntity.badRequest().body("Failed to update reservation.");
+        }
+
+        return ResponseEntity.ok().body(Map.of(
+                "message", "Reservation updated successfully",
+                "id", updatedReservation.getId(),
+                "status", updatedReservation.getStatus(),
+                "orderedTime", updatedReservation.getOrderedTime(),
+                "notes", updatedReservation.getNotes()
+        ));
     }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<?> deleteReservation(@RequestParam Long id) {
+        reservationService.deleteReservation(id);
+        return ResponseEntity.ok().body(Map.of("message", "Reservation deleted successfully", "id", id));
+    }
+
 
     @PostMapping("/calendar")
     public String showCalendar() {

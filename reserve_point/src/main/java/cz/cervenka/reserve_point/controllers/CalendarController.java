@@ -43,7 +43,7 @@ public class CalendarController {
                     Map<String, Object> event = new HashMap<>();
                     event.put("title", reservation.getService().getName() + " - " + reservation.getCustomer().getUser().getName());
                     event.put("start", reservation.getOrderedTime().toString()); // Convert LocalDateTime to string
-                    event.put("id", reservation.getId());
+                    event.put("id", reservation.getId());  // 🔹 Ensure ID is included
                     return event;
                 }).collect(Collectors.toList());
     }
@@ -91,6 +91,7 @@ public class CalendarController {
                     ),
                     "phone", reservation.getCustomer().getPhone()
             ));
+            response.put("id", reservation.getId());
             response.put("service", Map.of("name", reservation.getService().getName()));
             response.put("formattedCreatedAt", reservation.getFormattedCreatedAt());
             response.put("status", reservation.getStatus());

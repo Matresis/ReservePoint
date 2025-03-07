@@ -43,7 +43,7 @@ input, select, textarea {
     border-radius: 4px;
 }
 
-#delete-button {
+#deleteButton {
     width: 100%;
     padding: 10px;
     background-color: #ee3434;
@@ -51,13 +51,14 @@ input, select, textarea {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin: 20px 0 20px 0;
 }
 
-#delete-button:hover {
+#deleteButton:hover {
     background-color: #da2b2b;
 }
 
-#edit-button {
+#saveChangesButton {
     width: 100%;
     padding: 10px;
     background-color: #007BFF;
@@ -67,7 +68,7 @@ input, select, textarea {
     cursor: pointer;
 }
 
-#edit-button:hover {
+#saveChangesButton:hover {
     background-color: #0056b3;
 }
 
@@ -241,6 +242,7 @@ th, td {
 }
 
 
+/*
 .popup-details {
     display: none;
     position: fixed;
@@ -252,16 +254,15 @@ th, td {
     border: 1px solid black;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    min-height: 700px;
+    min-height: 600px;
     width: 550px;
     justify-content: center;
-    /*overflow: auto;*/
 }
 
 .popup-content-details {
     height: 100%;
     text-align: center;
-    position: relative; /* Ensure child elements stay within */
+    position: relative; !* Ensure child elements stay within *!
     padding: 20px;
     border-radius: 5px;
     display: flex;
@@ -270,6 +271,7 @@ th, td {
     gap: 0;
     align-items: center;
 }
+
 
 .popup-content-details p {
     color: #b0b0b0;
@@ -283,7 +285,7 @@ th, td {
     max-width: 400px;
     margin: 10px auto;
 }
-
+*/
 
 .popup-content-details button:first-child {
     background-color: #4CAF50; /* Green */
@@ -312,6 +314,111 @@ th, td {
 #deleteOptions button {
     width: 80%;
 }
+
+.popup-details {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1e1e1e;
+    padding: 15px; /* Reduced padding */
+    border: 1px solid black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 90%; /* Make it responsive */
+    max-width: 550px; /* Prevents it from getting too large */
+    min-height: 400px; /* Adjusted for better fit */
+    max-height: 80vh; /* Ensures it does not exceed viewport height */
+    overflow-y: auto; /* Enables scrolling if content is too long */
+    justify-content: center;
+}
+
+/* Ensure content inside the popup scales well */
+.popup-content-details {
+    text-align: center;
+    position: relative; /* Ensure child elements stay within */
+    /*padding: 10px; /* Reduced padding */
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.popup-content-details p {
+    color: #b0b0b0;
+    font-size: 1em; /* Reduced font size for better fit */
+    margin: 0.5em 0;
+}
+
+.popup-content-details button {
+    display: block;
+    width: 100%;
+    max-width: 350px; /* Reduced width for small screens */
+    margin: 8px auto;
+}
+
+#deleteOptions button {
+    width: 80%;
+}
+
+/* MEDIA QUERIES FOR SMALLER SCREENS */
+@media screen and (max-width: 1024px) {
+    .popup-details {
+        width: 95%; /* Increase width to fit smaller screens */
+        max-width: 500px;
+        min-height: 350px;
+    }
+
+    .popup-content-details p {
+        font-size: 0.95em; /* Slightly smaller text */
+    }
+
+    .popup-content-details button {
+        max-width: 320px; /* Further reduce button width */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .popup-details {
+        width: 90%;
+        max-width: 450px;
+        min-height: 300px;
+    }
+
+    .popup-content-details p {
+        font-size: 0.9em; /* Reduce text size */
+    }
+
+    .popup-content-details button {
+        max-width: 300px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .popup-details {
+        width: 95%;
+        max-width: 400px;
+        min-height: auto;
+        max-height: 75vh;
+    }
+
+    .popup-content-details {
+        padding: 8px;
+    }
+
+    .popup-content-details p {
+        font-size: 0.85em;
+    }
+
+    .popup-content-details button {
+        max-width: 280px;
+        padding: 8px;
+    }
+}
+
+
 
 
 /* Calendar Container */
