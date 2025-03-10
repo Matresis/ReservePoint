@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     alert("Reservation updated successfully!");
                     closePopup();
-                    location.reload(); // Refresh calendar to reflect changes
+                    location.reload();
                 } else {
                     alert("Error updating reservation.");
                 }

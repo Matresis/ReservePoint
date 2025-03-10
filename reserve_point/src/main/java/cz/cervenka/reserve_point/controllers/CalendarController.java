@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +42,7 @@ public class CalendarController {
                     Map<String, Object> event = new HashMap<>();
                     event.put("title", reservation.getService().getName() + " - " + reservation.getCustomer().getUser().getName());
                     event.put("start", reservation.getOrderedTime().toString()); // Convert LocalDateTime to string
-                    event.put("id", reservation.getId());  // 🔹 Ensure ID is included
+                    event.put("id", reservation.getId());  // Ensure ID is included
                     return event;
                 }).collect(Collectors.toList());
     }
@@ -58,7 +57,7 @@ public class CalendarController {
             if (reservation.getOrderedTime() == null) {
                 model.addAttribute("errorMessage", "Order time must be entered before adding to the calendar.");
                 model.addAttribute("reservation", reservation);
-                return "admin/reservation-detail"; // Return the same page with error
+                return "admin/reservation-detail";
             }
 
             reservationRepository.save(reservation);

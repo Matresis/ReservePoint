@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/style.css}">
     <title>Reservation Details</title>
-    <script th:src="@{/reservation.js}" defer></script>
 </head>
 <body>
 <div class="container">
@@ -45,59 +44,23 @@
 
     <button type="button" id="deleteButton" onclick="deleteReservation()">Delete Reservation</button>
 
+    <form id="addToCalendarForm" th:action="@{/admin/reservations/calendar/add-event}" method="post">
+        <input type="hidden" name="id" th:value="${reservation.id}">
+        <button type="button" id="addToCalendarButton" onclick="submitForm()">Add to Calendar</button>
+    </form>
+
     <a href="/admin/reservations" class="button">Back to Reservations</a>
 </div>
 
-<script>
-    function toggleEditSection() {
-        let section = document.getElementById("editSection");
-        section.style.display = section.style.display === "none" ? "block" : "none";
-    }
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <p>Reservation was added to the calendar.</p>
+        <p>Do you want to go to the calendar?</p>
+        <button onclick="goToCalendar()">Yes, go to Calendar</button>
+        <button onclick="closePopup()">No, stay here</button>
+    </div>
+</div>
 
-    document.getElementById("saveChangesButton").addEventListener("click", function () {
-        let reservationId = document.getElementById("reservationId").value;
-        let status = document.getElementById("status").value;
-        let orderedTime = document.getElementById("orderedTime").value;
-        let notes = document.getElementById("notes").value;
-
-        fetch("/admin/reservations/update", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `id=${reservationId}&status=${status}&orderedTime=${orderedTime}&notes=${encodeURIComponent(notes)}`
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert(data.message);
-                    document.getElementById("statusText").innerText = data.status;
-                    document.getElementById("orderedTimeText").innerText = data.orderedTime;
-                    document.getElementById("notesText").innerText = data.notes;
-                    toggleEditSection();
-                }
-            })
-            .catch(error => console.error("Error updating reservation:", error));
-    });
-
-    function deleteReservation() {
-        let reservationId = document.getElementById("reservationId").value;
-
-        if (!confirm("Are you sure you want to delete this reservation?")) return;
-
-        fetch("/admin/reservations/delete", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `id=${reservationId}`
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert(data.message);
-                    window.location.href = "/admin/reservations";
-                }
-            })
-            .catch(error => console.error("Error deleting reservation:", error));
-    }
-</script>
-
+<script th:src="@{/reservation.js}" defer></script>
 </body>
 </html>

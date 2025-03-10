@@ -49,27 +49,6 @@ public class AdminReservationController {
         return "admin/reservation-detail";
     }
 
-    /*@PostMapping("/update")
-    public String updateReservation(
-            @RequestParam Long id,
-            @RequestParam String status,
-            @RequestParam(required = false) String orderedTime,
-            @RequestParam("notes") String notes) {
-
-        ReservationEntity updatedReservation = reservationService.updateReservation(id, status, orderedTime, notes);
-        if (updatedReservation == null) {
-            return "redirect:/admin/reservations";
-        }
-
-        return "redirect:/admin/reservations/" + id;
-    }
-
-    @PostMapping("/delete")
-    public String deleteReservation(@RequestParam Long id) {
-        reservationService.deleteReservation(id);
-        return "redirect:/admin/reservations";
-    }*/
-
     @PostMapping("/update")
     @ResponseBody
     public ResponseEntity<?> updateReservation(
