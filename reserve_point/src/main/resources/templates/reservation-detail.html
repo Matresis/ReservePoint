@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <title>Reservation Details</title>
+</head>
+<body>
+<div class="container">
+    <h1>Reservation Details</h1>
+
+    <p><strong>Name:</strong> <span th:text="${reservation.customer.user.name}"></span></p>
+    <p><strong>Surname:</strong> <span th:text="${reservation.customer.user.surname}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${reservation.customer.user.email}"></span></p>
+    <p><strong>Phone:</strong> <span th:text="${reservation.customer.phone}"></span></p>
+    <p><strong>Service Type:</strong> <span th:text="${reservation.service.name}"></span></p>
+    <p><strong>Created At:</strong> <span th:text="${formattedCreatedAt}"></span></p>
+    <p><strong>Status:</strong> <span id="statusText" th:text="${reservation.status}"></span></p>
+    <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderDate}"></span></p>
+    <p><strong>Note:</strong> <span id="notesText" th:text="${reservation.notes}"></span></p>
+
+
+    <a href="/reservations" class="button">Back to Reservations</a>
+</div>
+<script th:src="@{/reservation.js}" defer></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{style.css}">
     <title>Reservations</title>
 </head>
 <body>
@@ -44,6 +44,9 @@
                 <td th:text="${reservation.customer.phone}"></td>
                 <td th:text="${reservation.service.name}"></td>
                 <td th:text="${reservation.formattedCreatedAt}"></td>
+                <td>
+                    <a th:href="@{/reservations/{id}(id=${reservation.id})}" class="button">View Details</a>
+                </td>
             </tr>
         </th:block>
     </table>
@@ -51,5 +54,5 @@
     <a href="/home" id="return-button" class="button">Back to Home</a>
 </div>
 </body>
-<script src="script.js"></script>
+<script th:src="@{script.js}"></script>
 </html>

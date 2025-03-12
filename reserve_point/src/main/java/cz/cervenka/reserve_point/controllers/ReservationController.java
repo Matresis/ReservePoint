@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/reservations")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -19,38 +20,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping("/reserveForm")
-    public String showReservationForm(Model model, Authentication authentication) {
-        Optional<CustomerEntity> customerOpt = reservationService.getAuthenticatedCustomer(authentication);
-
-        if (customerOpt.isEmpty()) {
-            model.addAttribute("customer", new CustomerEntity());
-        } else {
-            model.addAttribute("customer", customerOpt.get());
-        }
-
-        model.addAttribute("reservation", new ReservationEntity());
-        return "reserveForm";
-    }
-
-    @PostMapping("/make-reservation")
-    public String handleReservationSubmission(
-            @ModelAttribute("customer") CustomerEntity customer,
-            @RequestParam("serviceId") Long serviceId,
-            @RequestParam(value = "notes", required = false) String notes,
-            Authentication authentication,
-            Model model) {
-
-        CustomerEntity finalCustomer = reservationService.saveCustomer(authentication, customer);
-        ReservationEntity reservation = reservationService.createReservation(finalCustomer, serviceId, notes);
-
-        model.addAttribute("customer", finalCustomer);
-        model.addAttribute("reservation", reservation);
-
-        return "confirmation";
-    }
-
-    @GetMapping("/reservations")
+    @GetMapping()
     public String getUserReservations(Authentication authentication, Model model) {
         Optional<CustomerEntity> customerOpt = reservationService.getAuthenticatedCustomer(authentication);
         if (customerOpt.isEmpty()) {
@@ -62,5 +32,20 @@ public class ReservationController {
         model.addAttribute("reservations", reservations);
         model.addAttribute("customer", customerOpt.get());
         return "reservations";
+    }
+
+    @GetMapping("/{id}")
+    public String viewReservation(@PathVariable Long id, Model model) {
+        Optional<ReservationEntity> reservationOpt = reservationService.getReservationById(id);
+        if (reservationOpt.isEmpty()) {
+            return "redirect:/reservations";
+        }
+
+        ReservationEntity reservation = reservationOpt.get();
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("formattedCreatedAt", reservation.getCreatedAt().format(reservationService.formatter));
+        model.addAttribute("formattedOrderDate", reservation.getOrderedTime().format(reservationService.formatter));
+
+        return "reservation-detail";
     }
 }

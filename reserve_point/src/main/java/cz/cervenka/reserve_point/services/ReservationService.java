@@ -4,6 +4,7 @@ import cz.cervenka.reserve_point.database.entities.*;
 import cz.cervenka.reserve_point.database.repositories.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,17 +18,19 @@ public class ReservationService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
     private final ServiceRepository serviceRepository;
+    private final EmailService emailService;
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
+    public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
 
     public ReservationService(ReservationRepository reservationRepository,
                               CustomerRepository customerRepository,
                               UserRepository userRepository,
-                              ServiceRepository serviceRepository) {
+                              ServiceRepository serviceRepository, EmailService emailService) {
         this.reservationRepository = reservationRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
         this.serviceRepository = serviceRepository;
+        this.emailService = emailService;
     }
 
     public Optional<CustomerEntity> getAuthenticatedCustomer(Authentication authentication) {
@@ -74,5 +77,30 @@ public class ReservationService {
                 reservation.setFormattedOrderTime(reservation.getOrderedTime().format(formatter))
         );
         return reservations;
+    }
+
+    public Optional<ReservationEntity> getReservationById(Long id) {
+        return reservationRepository.findById(id);
+    }
+
+    @Transactional
+    public ReservationEntity createReservation(ReservationEntity reservation) {
+        ReservationEntity savedReservation = reservationRepository.save(reservation);
+
+        // Email content
+        String userEmailContent = "<p>Dear " + reservation.getCustomer().getUser().getName() + ",</p>"
+                + "<p>Your reservation for <strong>" + reservation.getService().getName() + "</strong> has been received.</p>"
+                + "<p>We will notify you once it's approved.</p>";
+
+        String adminEmailContent = "<p>New reservation request from <strong>"
+                + reservation.getCustomer().getUser().getName() + " " + reservation.getCustomer().getUser().getSurname() + "</strong></p>"
+                + "<p>Service Type: <strong>" + reservation.getService().getName() + "</strong></p>"
+                + "<p><a href='http://yourwebsite.com/admin/reservations/" + savedReservation.getId() + "'>Review Reservation</a></p>";
+
+        // Send Emails
+        emailService.sendEmail(reservation.getCustomer().getUser().getEmail(), "Reservation Confirmation", userEmailContent);
+        emailService.sendEmail("admin@yourwebsite.com", "New Reservation Request", adminEmailContent);
+
+        return savedReservation;
     }
 }
