@@ -2,6 +2,10 @@ package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.CustomerEntity;
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
+import cz.cervenka.reserve_point.database.entities.UserEntity;
+import cz.cervenka.reserve_point.database.repositories.CustomerRepository;
+import cz.cervenka.reserve_point.database.repositories.ServiceRepository;
+import cz.cervenka.reserve_point.database.repositories.UserRepository;
 import cz.cervenka.reserve_point.services.ReservationService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,9 +19,13 @@ import java.util.Optional;
 public class HomeController {
 
     private final ReservationService reservationService;
+    private final UserRepository userRepository;
+    private final ServiceRepository serviceRepository;
 
-    public HomeController(ReservationService reservationService) {
+    public HomeController(ReservationService reservationService, UserRepository userRepository, ServiceRepository serviceRepository) {
         this.reservationService = reservationService;
+        this.userRepository = userRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     @GetMapping
@@ -40,12 +48,15 @@ public class HomeController {
         Optional<CustomerEntity> customerOpt = reservationService.getAuthenticatedCustomer(authentication);
 
         if (customerOpt.isEmpty()) {
-            model.addAttribute("customer", new CustomerEntity());
+            CustomerEntity newCustomer = new CustomerEntity();
+            newCustomer.setUser(userRepository.findByEmail(authentication.getName()).orElseThrow());
+            model.addAttribute("customer", newCustomer);
         } else {
             model.addAttribute("customer", customerOpt.get());
         }
 
         model.addAttribute("reservation", new ReservationEntity());
+        model.addAttribute("services", serviceRepository.findAll());
         return "reserveForm";
     }
 
@@ -58,7 +69,7 @@ public class HomeController {
             Model model) {
 
         CustomerEntity finalCustomer = reservationService.saveCustomer(authentication, customer);
-        ReservationEntity reservation = reservationService.createReservation(finalCustomer, serviceId, notes);
+        ReservationEntity reservation = reservationService.createReservationAndSendEmail(finalCustomer, serviceId, notes);
 
         model.addAttribute("customer", finalCustomer);
         model.addAttribute("reservation", reservation);

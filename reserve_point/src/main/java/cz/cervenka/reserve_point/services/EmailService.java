@@ -17,14 +17,18 @@ public class EmailService {
 
     public void sendEmail(String to, String subject, String body) {
         try {
+            System.setProperty("mail.smtp.localhost", "localhost");
+
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
+            helper.setFrom("reservepointtp@gmail.com");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true);
 
             mailSender.send(message);
+            System.out.println("Email sent successfully!");
         } catch (MessagingException e) {
             throw new RuntimeException("Failed to send email", e);
         }

@@ -34,7 +34,7 @@ public class ReservationEntity {
         PENDING, CONFIRMED, CANCELED
     }
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime orderedTime;
 
     @Column(nullable = true, columnDefinition = "TEXT")

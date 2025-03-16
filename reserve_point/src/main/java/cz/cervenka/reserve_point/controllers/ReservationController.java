@@ -24,7 +24,7 @@ public class ReservationController {
     public String getUserReservations(Authentication authentication, Model model) {
         Optional<CustomerEntity> customerOpt = reservationService.getAuthenticatedCustomer(authentication);
         if (customerOpt.isEmpty()) {
-            return "redirect:/";
+            return "redirect:/home";
         }
 
         List<ReservationEntity> reservations = reservationService.getUserReservations(customerOpt.get());

@@ -25,7 +25,8 @@ public class ReservationService {
     public ReservationService(ReservationRepository reservationRepository,
                               CustomerRepository customerRepository,
                               UserRepository userRepository,
-                              ServiceRepository serviceRepository, EmailService emailService) {
+                              ServiceRepository serviceRepository,
+                              EmailService emailService) {
         this.reservationRepository = reservationRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
@@ -35,26 +36,39 @@ public class ReservationService {
 
     public Optional<CustomerEntity> getAuthenticatedCustomer(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
+            System.out.println("User is not authenticated.");
             return Optional.empty();
         }
 
-        Optional<UserEntity> userOpt = userRepository.findByEmail(authentication.getName());
-        return userOpt.flatMap(customerRepository::findByUser);
-    }
+        String email = authentication.getName();
+        System.out.println("Authenticated email: " + email);
 
-    public CustomerEntity saveCustomer(Authentication authentication, CustomerEntity customer) {
-        Optional<UserEntity> userOpt = userRepository.findByEmail(authentication.getName());
+        Optional<UserEntity> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
-            throw new IllegalStateException("User not found.");
+            System.out.println("No user found with email: " + email);
+            return Optional.empty();
         }
 
-        return customerRepository.findByUser(userOpt.get()).orElseGet(() -> {
-            customer.setUser(userOpt.get());
-            return customerRepository.save(customer);
-        });
+        Optional<CustomerEntity> customerOpt = customerRepository.findByUser(userOpt.get());
+        if (customerOpt.isEmpty()) {
+            System.out.println("No customer entity found for user: " + email);
+        }
+        return customerOpt;
     }
 
-    public ReservationEntity createReservation(CustomerEntity customer, Long serviceId, String notes) {
+
+    public CustomerEntity saveCustomer(Authentication authentication, CustomerEntity customer) {
+        return userRepository.findByEmail(authentication.getName())
+                .flatMap(customerRepository::findByUser)
+                .orElseGet(() -> {
+                    customer.setUser(userRepository.findByEmail(authentication.getName()).orElseThrow());
+                    return customerRepository.save(customer);
+                });
+    }
+
+
+    @Transactional
+    public ReservationEntity createReservationAndSendEmail(CustomerEntity customer, Long serviceId, String notes) {
         ServiceEntity service = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new IllegalArgumentException("Service not found."));
 
@@ -65,7 +79,24 @@ public class ReservationService {
         reservation.setStatus(ReservationEntity.Status.PENDING);
         reservation.setNotes(notes);
 
-        return reservationRepository.save(reservation);
+        // Save reservation first
+        ReservationEntity savedReservation = reservationRepository.save(reservation);
+
+        // Prepare email content
+        String userEmailContent = "<p>Dear " + customer.getUser().getName() + ",</p>"
+                + "<p>Your reservation for <strong>" + service.getName() + "</strong> has been received.</p>"
+                + "<p>We will notify you once it's approved.</p>";
+
+        String adminEmailContent = "<p>New reservation request from <strong>"
+                + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong></p>"
+                + "<p>Service Type: <strong>" + service.getName() + "</strong></p>"
+                + "<p><a href='http://localhost:8080/admin/reservations/" + savedReservation.getId() + "'>Review Reservation</a></p>";
+
+        // Send Emails
+        emailService.sendEmail(customer.getUser().getEmail(), "Reservation Confirmation", userEmailContent);
+        emailService.sendEmail("reservepointtp@gmail.com", "New Reservation Request", adminEmailContent);
+
+        return savedReservation;
     }
 
     public List<ReservationEntity> getUserReservations(CustomerEntity customer) {
@@ -81,26 +112,5 @@ public class ReservationService {
 
     public Optional<ReservationEntity> getReservationById(Long id) {
         return reservationRepository.findById(id);
-    }
-
-    @Transactional
-    public ReservationEntity createReservation(ReservationEntity reservation) {
-        ReservationEntity savedReservation = reservationRepository.save(reservation);
-
-        // Email content
-        String userEmailContent = "<p>Dear " + reservation.getCustomer().getUser().getName() + ",</p>"
-                + "<p>Your reservation for <strong>" + reservation.getService().getName() + "</strong> has been received.</p>"
-                + "<p>We will notify you once it's approved.</p>";
-
-        String adminEmailContent = "<p>New reservation request from <strong>"
-                + reservation.getCustomer().getUser().getName() + " " + reservation.getCustomer().getUser().getSurname() + "</strong></p>"
-                + "<p>Service Type: <strong>" + reservation.getService().getName() + "</strong></p>"
-                + "<p><a href='http://yourwebsite.com/admin/reservations/" + savedReservation.getId() + "'>Review Reservation</a></p>";
-
-        // Send Emails
-        emailService.sendEmail(reservation.getCustomer().getUser().getEmail(), "Reservation Confirmation", userEmailContent);
-        emailService.sendEmail("admin@yourwebsite.com", "New Reservation Request", adminEmailContent);
-
-        return savedReservation;
     }
 }
