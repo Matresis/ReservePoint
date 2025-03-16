@@ -50,10 +50,16 @@ public class AdminReservationController {
         ReservationEntity reservation = reservationOpt.get();
         model.addAttribute("reservation", reservation);
         model.addAttribute("formattedCreatedAt", reservation.getCreatedAt().format(reservationService.formatter));
-        model.addAttribute("formattedOrderDate", reservation.getOrderedTime().format(reservationService.formatter));
+
+        // Handle null case for orderedTime
+        String formattedOrderDate = (reservation.getOrderedTime() != null)
+                ? reservation.getOrderedTime().format(reservationService.formatter)
+                : null;
+        model.addAttribute("formattedOrderDate", formattedOrderDate);
 
         return "admin/reservation-detail";
     }
+
 
     @PostMapping("/update")
     @ResponseBody

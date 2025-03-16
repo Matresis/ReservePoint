@@ -73,6 +73,7 @@ public class HomeController {
 
         model.addAttribute("customer", finalCustomer);
         model.addAttribute("reservation", reservation);
+        model.addAttribute("formattedCreatedAt", reservation.getCreatedAt().format(reservationService.formatter));
 
         return "confirmation";
     }
