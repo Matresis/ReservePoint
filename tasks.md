@@ -48,29 +48,31 @@
 
 
 - pro schválení rezervace:
-    - Nastavení **OrderTime**
-    - Nastavení **STATUS** na `APPROVED`
-    - Zaslání emailu zákazníkovi o schválení rezervace společně s návrhem **OrderTime**
+    - Nastavení **OrderTime** ✅
+    - Nastavení **STATUS** na `APPROVED` ✅
+    - Zaslání emailu zákazníkovi o schválení rezervace společně s návrhem **OrderTime** ✅
 
 
 - pro potvrzení rezervace:
     - Nastavení finálního **OrderTime**
     - Přidání rezervace do kalendáře
     - Nastavení **STATUS** automaticky na `CONFIRMED`
-    - Zaslání emailu zákazníkovi o potvrzení a rekapitulací rezervace
+    - Zaslání emailu zákazníkovi o potvrzení a rekapitulací rezervace ✅
 
 
 - pro zamítnutí rezervace
     - Nastavení **STATUS** na `CANCELED`
     - Vyplnění důvodu v **Reason**
     - Automatické smazání rezervaci z databáze
-    - Zaslání emailu zákazníkovi o zamítnutí rezervace
+    - Zaslání emailu zákazníkovi o zamítnutí rezervace ✅
 
 
 - zrušení rezervace po potvrzení
     - Vyplnění důvodu v **Reason**
     - Vymazání rezervace
     - Zaslání emailu zákazníkovi o zrušení rezervace
+
+# Pohlídání aby bylo možné nastavovat hodnoty rezervace podle stavu rezervace
 
 # Stylování
 # Celkové zabezpečení
