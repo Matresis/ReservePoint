@@ -85,7 +85,8 @@ public class ReservationService {
         // Prepare email content
         String userEmailContent = "<p>Dear " + customer.getUser().getName() + ",</p>"
                 + "<p>Your reservation for <strong>" + service.getName() + "</strong> has been received.</p>"
-                + "<p>We will notify you once it's approved.</p>";
+                + "<p>We will notify you once it's approved.</p>"
+                + "<p><a href='http://localhost:8080/reservations>Review Reservation</a></p>";
 
         String adminEmailContent = "<p>New reservation request from <strong>"
                 + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong></p>"

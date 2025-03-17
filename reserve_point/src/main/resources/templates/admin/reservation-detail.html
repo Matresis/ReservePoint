@@ -31,6 +31,7 @@
             <label for="status">Status:</label>
             <select id="status" name="status">
                 <option value="PENDING" th:selected="${reservation.status == 'PENDING'}">Pending</option>
+                <option value="APPROVED" th:selected="${reservation.status == 'APPROVED'}">Approved</option>
                 <option value="CONFIRMED" th:selected="${reservation.status == 'CONFIRMED'}">Confirmed</option>
                 <option value="CANCELED" th:selected="${reservation.status == 'CANCELED'}">Canceled</option>
             </select>
