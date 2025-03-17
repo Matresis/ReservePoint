@@ -68,7 +68,7 @@ public class ReservationService {
 
 
     @Transactional
-    public ReservationEntity createReservationAndSendEmail(CustomerEntity customer, Long serviceId, String notes) {
+    public ReservationEntity createReservation(CustomerEntity customer, Long serviceId, String notes) {
         ServiceEntity service = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new IllegalArgumentException("Service not found."));
 
@@ -79,11 +79,15 @@ public class ReservationService {
         reservation.setStatus(ReservationEntity.Status.PENDING);
         reservation.setNotes(notes);
 
-        // Save reservation first
         ReservationEntity savedReservation = reservationRepository.save(reservation);
 
-        // Prepare email content
-        String userEmailContent = "<p>Dear " + customer.getUser().getName() + ",</p>"
+        sendReservationCreationEmail(savedReservation, customer, service);
+
+        return savedReservation;
+    }
+
+    public void sendReservationCreationEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
+        String customerEmailContent = "<p>Dear " + customer.getUser().getName() + ",</p>"
                 + "<p>Your reservation for <strong>" + service.getName() + "</strong> has been received.</p>"
                 + "<p>We will notify you once it's approved.</p>"
                 + "<p><a href='http://localhost:8080/reservations>Review Reservation</a></p>";
@@ -91,13 +95,10 @@ public class ReservationService {
         String adminEmailContent = "<p>New reservation request from <strong>"
                 + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong></p>"
                 + "<p>Service Type: <strong>" + service.getName() + "</strong></p>"
-                + "<p><a href='http://localhost:8080/admin/reservations/" + savedReservation.getId() + "'>Review Reservation</a></p>";
+                + "<p><a href='http://localhost:8080/admin/reservations/" + reservation.getId() + "'>Review Reservation</a></p>";
 
-        // Send Emails
-        emailService.sendEmail(customer.getUser().getEmail(), "Reservation Confirmation", userEmailContent);
+        emailService.sendEmail(customer.getUser().getEmail(), "Reservation Confirmation", customerEmailContent);
         emailService.sendEmail("reservepointtp@gmail.com", "New Reservation Request", adminEmailContent);
-
-        return savedReservation;
     }
 
     public List<ReservationEntity> getUserReservations(CustomerEntity customer) {

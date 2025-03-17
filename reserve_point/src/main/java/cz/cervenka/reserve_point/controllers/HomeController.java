@@ -2,8 +2,6 @@ package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.CustomerEntity;
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
-import cz.cervenka.reserve_point.database.entities.UserEntity;
-import cz.cervenka.reserve_point.database.repositories.CustomerRepository;
 import cz.cervenka.reserve_point.database.repositories.ServiceRepository;
 import cz.cervenka.reserve_point.database.repositories.UserRepository;
 import cz.cervenka.reserve_point.services.ReservationService;
@@ -69,7 +67,7 @@ public class HomeController {
             Model model) {
 
         CustomerEntity finalCustomer = reservationService.saveCustomer(authentication, customer);
-        ReservationEntity reservation = reservationService.createReservationAndSendEmail(finalCustomer, serviceId, notes);
+        ReservationEntity reservation = reservationService.createReservation(finalCustomer, serviceId, notes);
 
         model.addAttribute("customer", finalCustomer);
         model.addAttribute("reservation", reservation);
