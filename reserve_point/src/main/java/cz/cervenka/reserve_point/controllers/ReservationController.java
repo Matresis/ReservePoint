@@ -1,6 +1,7 @@
 package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.*;
+import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
 import cz.cervenka.reserve_point.services.ReservationService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,11 @@ import java.util.Optional;
 public class ReservationController {
 
     private final ReservationService reservationService;
+    private final ReservationRepository reservationRepository;
 
-    public ReservationController(ReservationService reservationService) {
+    public ReservationController(ReservationService reservationService, ReservationRepository reservationRepository) {
         this.reservationService = reservationService;
+        this.reservationRepository = reservationRepository;
     }
 
     @GetMapping()
@@ -36,7 +39,7 @@ public class ReservationController {
 
     @GetMapping("/{id}")
     public String viewReservation(@PathVariable Long id, Model model) {
-        Optional<ReservationEntity> reservationOpt = reservationService.getReservationById(id);
+        Optional<ReservationEntity> reservationOpt = reservationRepository.findById(id);
         if (reservationOpt.isEmpty()) {
             return "redirect:/reservations";
         }

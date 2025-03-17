@@ -29,7 +29,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public boolean isUserExists(String email) {
+    public boolean isUserExists(String email)  {
         return userRepository.findByEmail(email).isPresent();
     }
 
@@ -58,7 +58,6 @@ public class AuthService {
 
             String token = jwtUtil.generateToken(authentication.getName());
             return Map.of("token", token, "username", authentication.getName());
-
         } catch (Exception e) {
             throw new AuthenticationServiceException("Invalid username or password", e);
         }

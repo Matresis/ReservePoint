@@ -26,23 +26,21 @@ public class CalendarController {
         this.reservationRepository = reservationRepository;
     }
 
-    // Display the calendar page
     @GetMapping
     public String showCalendarPage() {
         return "admin/calendar";
     }
 
-    // Fetch reservations as events for the weekly calendar
     @GetMapping("/events")
     @ResponseBody
     public List<Map<String, Object>> getCalendarEvents() {
         return reservationRepository.findAll().stream()
-                .filter(reservation -> reservation.getOrderedTime() != null) // Ensure it has a valid date
+                .filter(reservation -> reservation.getOrderedTime() != null)
                 .map(reservation -> {
                     Map<String, Object> event = new HashMap<>();
                     event.put("title", reservation.getService().getName() + " - " + reservation.getCustomer().getUser().getName());
-                    event.put("start", reservation.getOrderedTime().toString()); // Convert LocalDateTime to string
-                    event.put("id", reservation.getId());  // Ensure ID is included
+                    event.put("start", reservation.getOrderedTime().toString());
+                    event.put("id", reservation.getId());
                     return event;
                 }).collect(Collectors.toList());
     }
@@ -109,7 +107,7 @@ public class CalendarController {
 
         if (reservationOpt.isPresent()) {
             ReservationEntity reservation = reservationOpt.get();
-            reservation.setOrderedTime(null);  // Remove from calendar but keep record
+            reservation.setOrderedTime(null);
             reservationRepository.save(reservation);
             return ResponseEntity.ok("Reservation removed from calendar.");
         }

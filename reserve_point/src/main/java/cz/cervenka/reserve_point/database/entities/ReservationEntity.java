@@ -31,7 +31,7 @@ public class ReservationEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public enum Status {
-        PENDING, APPROVED,CONFIRMED, CANCELED
+        PENDING, APPROVED, CONFIRMED, CANCELED
     }
 
     @Column(nullable = true)

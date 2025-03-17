@@ -58,5 +58,4 @@ public class EmailConfigService {
                 + "</body>"
                 + "</html>";
     }
-
 }

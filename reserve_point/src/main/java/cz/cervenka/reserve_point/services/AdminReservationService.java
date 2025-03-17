@@ -33,10 +33,6 @@ public class AdminReservationService {
         return reservations;
     }
 
-    public Optional<ReservationEntity> getReservationById(Long id) {
-        return reservationRepository.findById(id);
-    }
-
     public ReservationEntity updateReservation(Long id, String status, String orderedTime, String notes) {
         Optional<ReservationEntity> reservationOpt = reservationRepository.findById(id);
         if (reservationOpt.isEmpty()) return null;

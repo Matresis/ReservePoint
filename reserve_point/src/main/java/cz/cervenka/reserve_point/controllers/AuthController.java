@@ -38,17 +38,4 @@ public class AuthController {
     public String showLoginForm() {
         return "loginForm";
     }
-
-    /*@PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
-        try {
-            Map<String, String> response = authService.authenticateUser(
-                    loginRequest.get("email"),
-                    loginRequest.get("password")
-            );
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body(Map.of("error", "Invalid username or password"));
-        }
-    }*/
 }

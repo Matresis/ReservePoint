@@ -18,12 +18,10 @@ import java.util.Optional;
 public class AdminReservationController {
 
     private final AdminReservationService reservationService;
-    private final EmailConfigService emailConfigService;
     private final ReservationRepository reservationRepository;
 
-    public AdminReservationController(AdminReservationService reservationService, EmailConfigService emailConfigService, ReservationRepository reservationRepository) {
+    public AdminReservationController(AdminReservationService reservationService, ReservationRepository reservationRepository) {
         this.reservationService = reservationService;
-        this.emailConfigService = emailConfigService;
         this.reservationRepository = reservationRepository;
     }
 
@@ -42,7 +40,7 @@ public class AdminReservationController {
 
     @GetMapping("/{id}")
     public String viewReservation(@PathVariable Long id, Model model) {
-        Optional<ReservationEntity> reservationOpt = reservationService.getReservationById(id);
+        Optional<ReservationEntity> reservationOpt = reservationRepository.findById(id);
         if (reservationOpt.isEmpty()) {
             return "redirect:/admin/reservations";
         }
@@ -51,7 +49,6 @@ public class AdminReservationController {
         model.addAttribute("reservation", reservation);
         model.addAttribute("formattedCreatedAt", reservation.getCreatedAt().format(reservationService.formatter));
 
-        // Handle null case for orderedTime
         String formattedOrderDate = (reservation.getOrderedTime() != null)
                 ? reservation.getOrderedTime().format(reservationService.formatter)
                 : null;
@@ -59,7 +56,6 @@ public class AdminReservationController {
 
         return "admin/reservation-detail";
     }
-
 
     @PostMapping("/update")
     @ResponseBody
@@ -90,48 +86,8 @@ public class AdminReservationController {
         return ResponseEntity.ok().body(Map.of("message", "Reservation deleted successfully", "id", id));
     }
 
-
     @PostMapping("/calendar")
     public String showCalendar() {
         return "redirect:/admin/reservations/calendar";
-    }
-
-
-    @PostMapping("/approve")
-    public String approveReservation(@RequestParam Long id) {
-        Optional<ReservationEntity> reservationOpt = reservationService.getReservationById(id);
-
-        if (reservationOpt.isPresent()) {
-            ReservationEntity reservation = reservationOpt.get();
-            reservation.setStatus(ReservationEntity.Status.valueOf("CONFIRMED"));
-            reservationRepository.save(reservation);
-
-            // Send approval email
-            String emailContent = "<p>Dear " + reservation.getCustomer().getUser().getName() + ",</p>"
-                    + "<p>Your reservation for <strong>" + reservation.getService().getName() + "</strong> has been approved!</p>";
-            emailConfigService.sendEmail(reservation.getCustomer().getUser().getEmail(), "Reservation Approved", emailContent);
-        }
-
-        return "redirect:/admin/reservations";
-    }
-
-    @PostMapping("/reject")
-    public String rejectReservation(@RequestParam Long id, @RequestParam String rejectionReason) {
-        Optional<ReservationEntity> reservationOpt = reservationService.getReservationById(id);
-
-        if (reservationOpt.isPresent()) {
-            ReservationEntity reservation = reservationOpt.get();
-            reservation.setStatus(ReservationEntity.Status.valueOf("CANCELED"));
-            reservation.setNotes(rejectionReason);
-            reservationRepository.save(reservation);
-
-            // Send rejection email
-            String emailContent = "<p>Dear " + reservation.getCustomer().getUser().getName() + ",</p>"
-                    + "<p>Unfortunately, your reservation for <strong>" + reservation.getService().getName() + "</strong> was rejected.</p>"
-                    + "<p>Reason: " + rejectionReason + "</p>";
-            emailConfigService.sendEmail(reservation.getCustomer().getUser().getEmail(), "Reservation Rejected", emailContent);
-        }
-
-        return "redirect:/admin/reservations";
     }
 }

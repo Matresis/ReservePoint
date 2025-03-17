@@ -56,7 +56,6 @@ public class ReservationService {
         return customerOpt;
     }
 
-
     public CustomerEntity saveCustomer(Authentication authentication, CustomerEntity customer) {
         return userRepository.findByEmail(authentication.getName())
                 .flatMap(customerRepository::findByUser)
@@ -65,7 +64,6 @@ public class ReservationService {
                     return customerRepository.save(customer);
                 });
     }
-
 
     @Transactional
     public ReservationEntity createReservation(CustomerEntity customer, Long serviceId, String notes) {
@@ -95,9 +93,5 @@ public class ReservationService {
                 reservation.setFormattedOrderTime(reservation.getOrderedTime().format(formatter))
         );
         return reservations;
-    }
-
-    public Optional<ReservationEntity> getReservationById(Long id) {
-        return reservationRepository.findById(id);
     }
 }
