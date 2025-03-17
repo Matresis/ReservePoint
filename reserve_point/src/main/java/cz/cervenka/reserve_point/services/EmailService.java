@@ -1,36 +1,32 @@
 package cz.cervenka.reserve_point.services;
 
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import cz.cervenka.reserve_point.config.EmailConfigService;
+import cz.cervenka.reserve_point.database.entities.CustomerEntity;
+import cz.cervenka.reserve_point.database.entities.ReservationEntity;
+import cz.cervenka.reserve_point.database.entities.ServiceEntity;
 import org.springframework.stereotype.Service;
-
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
-    private final JavaMailSender mailSender;
 
-    public EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+    private final EmailConfigService emailConfigService;
+
+    public EmailService(EmailConfigService emailConfigService) {
+        this.emailConfigService = emailConfigService;
     }
 
-    public void sendEmail(String to, String subject, String body) {
-        try {
-            System.setProperty("mail.smtp.localhost", "localhost");
+    public void sendReservationCreationEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
+        String customerEmailContent = "<p>Dear " + customer.getUser().getName() + ",</p>"
+                + "<p>Your reservation for <strong>" + service.getName() + "</strong> has been received.</p>"
+                + "<p>We will notify you once it's approved.</p>"
+                + "<p><a href='http://localhost:8080/reservations>Review Reservation</a></p>";
 
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        String adminEmailContent = "<p>New reservation request from <strong>"
+                + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong></p>"
+                + "<p>Service Type: <strong>" + service.getName() + "</strong></p>"
+                + "<p><a href='http://localhost:8080/admin/reservations/" + reservation.getId() + "'>Review Reservation</a></p>";
 
-            helper.setFrom("reservepointtp@gmail.com");
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(body, true);
-
-            mailSender.send(message);
-            System.out.println("Email sent successfully!");
-        } catch (MessagingException e) {
-            throw new RuntimeException("Failed to send email", e);
-        }
+        emailConfigService.sendEmail(customer.getUser().getEmail(), "Reservation Confirmation", customerEmailContent);
+        emailConfigService.sendEmail("reservepointtp@gmail.com", "New Reservation Request", adminEmailContent);
     }
 }

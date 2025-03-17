@@ -3,7 +3,7 @@ package cz.cervenka.reserve_point.controllers;
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
 import cz.cervenka.reserve_point.services.AdminReservationService;
-import cz.cervenka.reserve_point.services.EmailService;
+import cz.cervenka.reserve_point.config.EmailConfigService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +18,12 @@ import java.util.Optional;
 public class AdminReservationController {
 
     private final AdminReservationService reservationService;
-    private final EmailService emailService;
+    private final EmailConfigService emailConfigService;
     private final ReservationRepository reservationRepository;
 
-    public AdminReservationController(AdminReservationService reservationService, EmailService emailService, ReservationRepository reservationRepository) {
+    public AdminReservationController(AdminReservationService reservationService, EmailConfigService emailConfigService, ReservationRepository reservationRepository) {
         this.reservationService = reservationService;
-        this.emailService = emailService;
+        this.emailConfigService = emailConfigService;
         this.reservationRepository = reservationRepository;
     }
 
@@ -109,7 +109,7 @@ public class AdminReservationController {
             // Send approval email
             String emailContent = "<p>Dear " + reservation.getCustomer().getUser().getName() + ",</p>"
                     + "<p>Your reservation for <strong>" + reservation.getService().getName() + "</strong> has been approved!</p>";
-            emailService.sendEmail(reservation.getCustomer().getUser().getEmail(), "Reservation Approved", emailContent);
+            emailConfigService.sendEmail(reservation.getCustomer().getUser().getEmail(), "Reservation Approved", emailContent);
         }
 
         return "redirect:/admin/reservations";
@@ -129,7 +129,7 @@ public class AdminReservationController {
             String emailContent = "<p>Dear " + reservation.getCustomer().getUser().getName() + ",</p>"
                     + "<p>Unfortunately, your reservation for <strong>" + reservation.getService().getName() + "</strong> was rejected.</p>"
                     + "<p>Reason: " + rejectionReason + "</p>";
-            emailService.sendEmail(reservation.getCustomer().getUser().getEmail(), "Reservation Rejected", emailContent);
+            emailConfigService.sendEmail(reservation.getCustomer().getUser().getEmail(), "Reservation Rejected", emailContent);
         }
 
         return "redirect:/admin/reservations";
