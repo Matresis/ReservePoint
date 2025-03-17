@@ -20,7 +20,7 @@ public class ReservationService {
     private final ServiceRepository serviceRepository;
     private final EmailService emailService;
 
-    public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
+    public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public ReservationService(ReservationRepository reservationRepository,
                               CustomerRepository customerRepository,
@@ -86,12 +86,17 @@ public class ReservationService {
 
     public List<ReservationEntity> getUserReservations(CustomerEntity customer) {
         List<ReservationEntity> reservations = reservationRepository.findByCustomer(customer);
-        reservations.forEach(reservation ->
-                reservation.setFormattedCreatedAt(reservation.getCreatedAt().format(formatter))
-        );
-        reservations.forEach(reservation ->
-                reservation.setFormattedOrderTime(reservation.getOrderedTime().format(formatter))
-        );
+
+        reservations.forEach(reservation -> {
+            reservation.setFormattedCreatedAt(reservation.getCreatedAt().format(formatter));
+
+            if (reservation.getOrderedTime() != null) {
+                reservation.setFormattedOrderTime(reservation.getOrderedTime().format(formatter));
+            } else {
+                reservation.setFormattedOrderTime("N/A");
+            }
+        });
+
         return reservations;
     }
 }

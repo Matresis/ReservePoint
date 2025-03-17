@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
     private final ReservationRepository reservationRepository;
+    public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public ReservationController(ReservationService reservationService, ReservationRepository reservationRepository) {
         this.reservationService = reservationService;
@@ -45,10 +47,17 @@ public class ReservationController {
         }
 
         ReservationEntity reservation = reservationOpt.get();
-        model.addAttribute("reservation", reservation);
-        model.addAttribute("formattedCreatedAt", reservation.getCreatedAt().format(reservationService.formatter));
-        model.addAttribute("formattedOrderDate", reservation.getOrderedTime().format(reservationService.formatter));
 
+        reservation.setFormattedCreatedAt(
+                reservation.getCreatedAt() != null ? reservation.getCreatedAt().format(formatter) : "N/A"
+        );
+        reservation.setFormattedOrderTime(
+                reservation.getOrderedTime() != null ? reservation.getOrderedTime().format(formatter) : "N/A"
+        );
+
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("formattedCreatedAt", reservation.getFormattedCreatedAt());
+        model.addAttribute("formattedOrderTime", reservation.getFormattedOrderTime());
         return "reservation-detail";
     }
 }

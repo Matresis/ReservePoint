@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Controller
@@ -19,6 +20,7 @@ public class HomeController {
     private final ReservationService reservationService;
     private final UserRepository userRepository;
     private final ServiceRepository serviceRepository;
+    public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public HomeController(ReservationService reservationService, UserRepository userRepository, ServiceRepository serviceRepository) {
         this.reservationService = reservationService;
@@ -69,9 +71,13 @@ public class HomeController {
         CustomerEntity finalCustomer = reservationService.saveCustomer(authentication, customer);
         ReservationEntity reservation = reservationService.createReservation(finalCustomer, serviceId, notes);
 
+        reservation.setFormattedCreatedAt(
+                reservation.getCreatedAt() != null ? reservation.getCreatedAt().format(formatter) : "N/A"
+        );
+
         model.addAttribute("customer", finalCustomer);
         model.addAttribute("reservation", reservation);
-        model.addAttribute("formattedCreatedAt", reservation.getCreatedAt().format(reservationService.formatter));
+        model.addAttribute("formattedCreatedAt", reservation.getFormattedCreatedAt());
 
         return "confirmation";
     }

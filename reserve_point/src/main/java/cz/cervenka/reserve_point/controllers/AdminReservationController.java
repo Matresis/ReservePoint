@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class AdminReservationController {
 
     private final AdminReservationService reservationService;
     private final ReservationRepository reservationRepository;
+    public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public AdminReservationController(AdminReservationService reservationService, ReservationRepository reservationRepository) {
         this.reservationService = reservationService;
@@ -46,44 +48,41 @@ public class AdminReservationController {
         }
 
         ReservationEntity reservation = reservationOpt.get();
-        model.addAttribute("reservation", reservation);
-        model.addAttribute("formattedCreatedAt", reservation.getCreatedAt().format(reservationService.formatter));
 
-        String formattedOrderDate = (reservation.getOrderedTime() != null)
-                ? reservation.getOrderedTime().format(reservationService.formatter)
-                : null;
-        model.addAttribute("formattedOrderDate", formattedOrderDate);
+        reservation.setFormattedCreatedAt(
+                reservation.getCreatedAt() != null ? reservation.getCreatedAt().format(formatter) : "N/A"
+        );
+        reservation.setFormattedOrderTime(
+                reservation.getOrderedTime() != null ? reservation.getOrderedTime().format(formatter) : "N/A"
+        );
+
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("formattedCreatedAt", reservation.getFormattedCreatedAt());
+        model.addAttribute("formattedOrderTime", reservation.getFormattedOrderTime());
 
         return "admin/reservation-detail";
     }
 
+
     @PostMapping("/update")
-    @ResponseBody
-    public ResponseEntity<?> updateReservation(
+    public String updateReservation(
             @RequestParam Long id,
             @RequestParam String status,
             @RequestParam(required = false) String orderedTime,
-            @RequestParam("notes") String notes) {
+            @RequestParam(required = false) String notes) {
 
         ReservationEntity updatedReservation = reservationService.updateReservation(id, status, orderedTime, notes);
         if (updatedReservation == null) {
-            return ResponseEntity.badRequest().body("Failed to update reservation.");
+            return "redirect:/admin/reservations";
         }
 
-        return ResponseEntity.ok().body(Map.of(
-                "message", "Reservation updated successfully",
-                "id", updatedReservation.getId(),
-                "status", updatedReservation.getStatus(),
-                "orderedTime", updatedReservation.getOrderedTime(),
-                "notes", updatedReservation.getNotes()
-        ));
+        return "redirect:/admin/reservations/" + id;
     }
 
     @PostMapping("/delete")
-    @ResponseBody
-    public ResponseEntity<?> deleteReservation(@RequestParam Long id) {
-        reservationService.deleteReservation(id);
-        return ResponseEntity.ok().body(Map.of("message", "Reservation deleted successfully", "id", id));
+    public String deleteReservation(@RequestParam Long id, @RequestParam(required = false) String notes) {
+        reservationService.deleteReservation(id, notes);
+        return "redirect:/admin/reservations";
     }
 
     @PostMapping("/calendar")

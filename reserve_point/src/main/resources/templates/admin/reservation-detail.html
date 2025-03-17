@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Reservation Details</title>
 </head>
 <body>
@@ -16,17 +16,17 @@
     <p><strong>Service Type:</strong> <span th:text="${reservation.service.name}"></span></p>
     <p><strong>Created At:</strong> <span th:text="${formattedCreatedAt}"></span></p>
     <p><strong>Status:</strong> <span id="statusText" th:text="${reservation.status}"></span></p>
-    <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderDate}"></span></p>
+    <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderTime}"></span></p>
     <p><strong>Note:</strong> <span id="notesText" th:text="${reservation.notes}"></span></p>
 
     <button id="editButton" onclick="toggleEditSection()">Edit Reservation</button>
 
     <div id="editSection" style="display: none;">
-        <form id="updateForm">
-            <input type="hidden" name="id" id="reservationId" th:value="${reservation.id}">
+        <form th:action="@{/admin/reservations/update}" method="post">
+            <input type="hidden" name="id" th:value="${reservation.id}">
 
             <label for="orderedTime">Ordered Time:</label>
-            <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${reservation.orderedTime}">
+            <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${formattedOrderTime}">
 
             <label for="status">Status:</label>
             <select id="status" name="status">
@@ -39,11 +39,16 @@
             <label for="notes">Notes:</label>
             <textarea id="notes" name="notes" rows="4" th:text="${reservation.notes}"></textarea>
 
-            <button type="button" id="saveChangesButton">Save Changes</button>
+            <button type="submit">Save Changes</button>
         </form>
     </div>
 
-    <button type="button" id="deleteButton" onclick="deleteReservation()">Delete Reservation</button>
+    <form th:action="@{/admin/reservations/delete}" method="post">
+        <input type="hidden" name="id" th:value="${reservation.id}">
+        <label for="deleteNotes">Cancellation Reason:</label>
+        <textarea id="deleteNotes" name="notes" rows="2"></textarea>
+        <button type="submit" id="deleteButton" onclick="return confirm('Are you sure?')">Delete Reservation</button>
+    </form>
 
     <form id="addToCalendarForm" th:action="@{/admin/reservations/calendar/add-event}" method="post">
         <input type="hidden" name="id" th:value="${reservation.id}">
@@ -62,6 +67,6 @@
     </div>
 </div>
 
-<script th:src="@{/reservation.js}" defer></script>
+<script th:src="@{/js/reservation.js}" defer></script>
 </body>
 </html>

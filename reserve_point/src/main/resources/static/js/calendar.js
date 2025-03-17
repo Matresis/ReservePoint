@@ -60,19 +60,6 @@ function toggleEditSection() {
     }
 }
 
-function confirmDelete() {
-    const deleteOptions = document.getElementById("deleteOptions");
-    const deleteButton = document.getElementById("delete-button");
-
-    if (deleteOptions.style.display === "none") {
-        deleteOptions.style.display = "block";
-        deleteButton.textContent = "Cancel";
-    } else {
-        deleteOptions.style.display = "none";
-        deleteButton.textContent = "Delete Reservation";
-    }
-}
-
 // Function to populate and show the pop-up
 function showReservationPopup(reservation) {
     if (!reservation || !reservation.id) {
@@ -93,11 +80,7 @@ function showReservationPopup(reservation) {
     // Populate edit form fields
     document.getElementById("edit-id").value = reservation.id;
     document.getElementById("edit-orderedTime").value = reservation.formattedOrderTime;
-    document.getElementById("edit-status").value = reservation.status;
     document.getElementById("edit-notes").value = reservation.notes || "";
-
-    // Populate delete forms
-    document.getElementById("delete-id").value = reservation.id;
 
     const detailLink = document.getElementById("reservation-detail-link");
     if (reservation.id) {
@@ -131,7 +114,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("saveEdit").addEventListener("click", function () {
         const reservationId = document.getElementById("edit-id").value;
         const orderedTime = document.getElementById("edit-orderedTime").value;
-        const status = document.getElementById("edit-status").value;
         const notes = document.getElementById("edit-notes").value;
 
         fetch("/admin/reservations/update", {
@@ -139,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: `id=${reservationId}&status=${status}&orderedTime=${orderedTime}&notes=${encodeURIComponent(notes)}`
+            body: `id=${reservationId}&orderedTime=${orderedTime}&notes=${encodeURIComponent(notes)}`
         })
             .then(response => {
                 if (response.ok) {
@@ -152,30 +134,4 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error("Error:", error));
     });
-});
-
-document.getElementById("deleteReservationButton").addEventListener("click", function () {
-    const reservationId = document.getElementById("delete-id").value;
-
-    if (!confirm("Are you sure you want to delete this reservation?")) {
-        return;
-    }
-
-    fetch("/admin/reservations/delete", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `id=${reservationId}`
-    })
-        .then(response => {
-            if (response.ok) {
-                alert("Reservation deleted successfully!");
-                closePopup();
-                location.reload(); // Refresh calendar to reflect deletion
-            } else {
-                alert("Error deleting reservation.");
-            }
-        })
-        .catch(error => console.error("Error:", error));
 });

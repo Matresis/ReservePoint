@@ -2,6 +2,9 @@ package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
+import cz.cervenka.reserve_point.services.AdminReservationService;
+import cz.cervenka.reserve_point.services.ReservationService;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,10 +23,12 @@ import java.util.stream.Collectors;
 public class CalendarController {
 
     private final ReservationRepository reservationRepository;
+    private final AdminReservationService reservationService;
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-    public CalendarController(ReservationRepository reservationRepository) {
+    public CalendarController(ReservationRepository reservationRepository, AdminReservationService reservationService) {
         this.reservationRepository = reservationRepository;
+        this.reservationService = reservationService;
     }
 
     @GetMapping
@@ -101,7 +106,21 @@ public class CalendarController {
         }
     }
 
-    @PostMapping("/removeFromCalendar")
+    @PostMapping("/update")
+    public String updateReservation(
+            @RequestParam Long id,
+            @RequestParam(required = false) String orderedTime,
+            @RequestParam("notes") String notes) {
+
+        ReservationEntity updatedReservation = reservationService.updateReservation(id, orderedTime, notes);
+        if (updatedReservation == null) {
+            return "redirect:/admin/reservations/calendar";
+        }
+
+        return "redirect:/admin/reservations/calendar" + id;
+    }
+
+    @PostMapping("/remove-from-calendar")
     public ResponseEntity<String> removeFromCalendar(@RequestParam Long id) {
         Optional<ReservationEntity> reservationOpt = reservationRepository.findById(id);
 

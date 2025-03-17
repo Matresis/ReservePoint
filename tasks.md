@@ -11,9 +11,13 @@
 ## Admin
 - zobrazení seznamu rezervací ✅
 - filtrování rezervací ✅
-- #### kliknutí na rezervaci:*✅
+
+
+- **kliknutí na rezervaci**: ✅
     - zobrazení určité rezervace ✅
-- #### manipulace: ✅
+
+
+- **manipulace**: ✅
     - úprava ✅
     - odstranění ✅
     - nastavit čas ✅
@@ -21,12 +25,16 @@
     - přidat do kalendáře ✅
     - zobrazení kalendáře ✅
     - poslat email ✅
+
+
 ## User
 - rezervování ✅
 - po přihlášení možnost zobrazení rezervace pouze přihlášeného usera ✅
 - filtrování rezervací ✅
 - zobrazení určité rezervace ✅
-- #### po úspěšné rezervaci ✅
+
+
+- **po úspěšné rezervaci** ✅
     - poslání emailu potvrzujícího rezervaci na zadanou adresu uživatele ✅
     - poslání emailu na adresu admina ✅
 
@@ -54,13 +62,13 @@
 
 - pro zamítnutí rezervace
     - Nastavení **STATUS** na `CANCELED`
-    - Vyplnění důvodu v **Notes**
+    - Vyplnění důvodu v **Reason**
     - Automatické smazání rezervaci z databáze
     - Zaslání emailu zákazníkovi o zamítnutí rezervace
 
 
 - zrušení rezervace po potvrzení
-    - Vyplnění důvodu v **Notes**
+    - Vyplnění důvodu v **Reason**
     - Vymazání rezervace
     - Zaslání emailu zákazníkovi o zrušení rezervace
 

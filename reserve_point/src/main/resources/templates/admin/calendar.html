@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Weekly Reservation Calendar</title>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 </head>
@@ -36,18 +36,11 @@
 
         <!-- Edit Form (Initially Hidden) -->
         <div id="popup-editSection" style="display: none;">
-            <form id="editForm">
+            <form id="editForm" action="/admin/reservations/calendar/update" method="post">
                 <input type="hidden" name="id" id="edit-id">
 
                 <label for="edit-orderedTime">Ordered Time:</label>
                 <input type="datetime-local" id="edit-orderedTime" name="orderedTime">
-
-                <label for="edit-status">Status:</label>
-                <select id="edit-status" name="status">
-                    <option value="PENDING">Pending</option>
-                    <option value="CONFIRMED">Confirmed</option>
-                    <option value="CANCELED">Canceled</option>
-                </select>
 
                 <label for="edit-notes">Notes:</label>
                 <textarea id="edit-notes" name="notes" rows="4"></textarea>
@@ -56,25 +49,15 @@
             </form>
         </div>
 
-        <!-- Delete Buttons -->
-        <button id="delete-button" onclick="confirmDelete()">Delete Reservation</button>
-
-        <div id="deleteOptions" style="display: none;">
-            <form id="removeFromCalendarForm" action="/admin/reservations/calendar/removeFromCalendar" method="post">
-                <input type="hidden" name="id" id="cal-delete-id">
-                <button type="submit" class="delete-option">Remove from Calendar</button>
-            </form>
-
-            <form id="deleteReservationForm">
-                <input type="hidden" name="id" id="delete-id">
-                <button type="button" id="deleteReservationButton">Delete Completely</button>
-            </form>
-        </div>
+        <form id="removeFromCalendarForm" action="/admin/reservations/calendar/remove-from-calendar" method="post">
+            <input type="hidden" name="id" id="cal-delete-id">
+            <button type="submit" class="delete-option">Remove from Calendar</button>
+        </form>
 
         <button onclick="closePopup()">Close</button>
     </div>
 </div>
 
-<script th:src="@{/calendar.js}"></script>
+<script th:src="@{/js/calendar.js}"></script>
 </body>
 </html>
