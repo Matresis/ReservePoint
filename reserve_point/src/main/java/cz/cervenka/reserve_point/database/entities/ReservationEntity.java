@@ -40,6 +40,9 @@ public class ReservationEntity {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String notes;
 
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String rejectionReason;
+
     @Setter
     @Getter
     @Transient
