@@ -53,7 +53,7 @@ public class AdminReservationService {
             emailService.sendReservationConfirmationEmail(reservation, customer, service);
         }
         else if (reservation.getStatus() == ReservationEntity.Status.CANCELED) {
-            emailService.sendReservationRejectionEmail(reservation, customer, service);
+            emailService.sendReservationRejectionEmail(reservation, customer, service, notes);
             reservationRepository.deleteById(id);
         }
 
@@ -87,14 +87,6 @@ public class AdminReservationService {
 
         reservation.setNotes(notes);
         return reservationRepository.save(reservation);
-    }
-
-    @Transactional
-    public void deleteReservation(Long id) {
-        if (!reservationRepository.existsById(id)) {
-            return;
-        }
-        reservationRepository.deleteById(id);
     }
 
     public List<ReservationEntity> getFilteredReservations(String name, String surname, String date, String serviceType) {
