@@ -1,6 +1,8 @@
 package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
+import cz.cervenka.reserve_point.database.entities.ReservationModificationRequestEntity;
+import cz.cervenka.reserve_point.database.repositories.ReservationModificationRequestRepository;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
 import cz.cervenka.reserve_point.services.AdminReservationService;
 import cz.cervenka.reserve_point.config.EmailConfigService;
@@ -20,11 +22,13 @@ public class AdminReservationController {
 
     private final AdminReservationService reservationService;
     private final ReservationRepository reservationRepository;
+    private final ReservationModificationRequestRepository modificationRequestRepository;
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-    public AdminReservationController(AdminReservationService reservationService, ReservationRepository reservationRepository) {
+    public AdminReservationController(AdminReservationService reservationService, ReservationRepository reservationRepository, ReservationModificationRequestRepository modificationRequestRepository) {
         this.reservationService = reservationService;
         this.reservationRepository = reservationRepository;
+        this.modificationRequestRepository = modificationRequestRepository;
     }
 
     @GetMapping
@@ -88,5 +92,24 @@ public class AdminReservationController {
     @PostMapping("/calendar")
     public String showCalendar() {
         return "redirect:/admin/reservations/calendar";
+    }
+
+    @GetMapping
+    public String viewModificationRequests(Model model) {
+        List<ReservationModificationRequestEntity> modificationRequests = modificationRequestRepository.findAll();
+        model.addAttribute("modificationRequests", modificationRequests);
+        return "admin/admin-reservation-requests";
+    }
+
+    @PostMapping("/{id}/approve-modification")
+    public String approveModification(@PathVariable Long id) {
+        reservationService.approveModificationRequest(id);
+        return "redirect:/admin/reservations";
+    }
+
+    @PostMapping("/{id}/approve-cancellation")
+    public String approveCancellation(@PathVariable Long id) {
+        reservationService.approveCancellation(id);
+        return "redirect:/admin/reservations";
     }
 }

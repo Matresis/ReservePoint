@@ -2,6 +2,7 @@ package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.*;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
+import cz.cervenka.reserve_point.database.repositories.ServiceRepository;
 import cz.cervenka.reserve_point.services.ReservationService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -18,11 +19,13 @@ public class ReservationController {
 
     private final ReservationService reservationService;
     private final ReservationRepository reservationRepository;
+    private final ServiceRepository serviceRepository;
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-    public ReservationController(ReservationService reservationService, ReservationRepository reservationRepository) {
+    public ReservationController(ReservationService reservationService, ReservationRepository reservationRepository, ServiceRepository serviceRepository) {
         this.reservationService = reservationService;
         this.reservationRepository = reservationRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     @GetMapping()
@@ -58,6 +61,22 @@ public class ReservationController {
         model.addAttribute("reservation", reservation);
         model.addAttribute("formattedCreatedAt", reservation.getFormattedCreatedAt());
         model.addAttribute("formattedOrderTime", reservation.getFormattedOrderTime());
+        model.addAttribute("services", serviceRepository.findAll());
         return "reservation-detail";
+    }
+
+    @PostMapping("/{id}/request-modification")
+    public String requestModification(@PathVariable Long id,
+                                      @RequestParam String newNotes,
+                                      @RequestParam String newService,
+                                      @RequestParam String newOrderTime) {
+        reservationService.requestReservationModification(id, newNotes, newService, newOrderTime);
+        return "redirect:/reservations/" + id;
+    }
+
+    @PostMapping("/{id}/request-cancellation")
+    public String requestCancellation(@PathVariable Long id) {
+        reservationService.requestReservationCancellation(id);
+        return "redirect:/reservations/" + id;
     }
 }

@@ -2,8 +2,10 @@ package cz.cervenka.reserve_point.services;
 
 import cz.cervenka.reserve_point.database.entities.CustomerEntity;
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
+import cz.cervenka.reserve_point.database.entities.ReservationModificationRequestEntity;
 import cz.cervenka.reserve_point.database.entities.ServiceEntity;
 import cz.cervenka.reserve_point.database.repositories.CustomerRepository;
+import cz.cervenka.reserve_point.database.repositories.ReservationModificationRequestRepository;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
 import cz.cervenka.reserve_point.database.repositories.ServiceRepository;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,14 @@ import java.util.Optional;
 public class AdminReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final ReservationModificationRequestRepository modificationRequestRepository;
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     private final EmailService emailService;
 
-    public AdminReservationService(ReservationRepository reservationRepository, EmailService emailService) {
+    public AdminReservationService(ReservationRepository reservationRepository, ReservationModificationRequestRepository modificationRequestRepository, EmailService emailService) {
         this.reservationRepository = reservationRepository;
+        this.modificationRequestRepository = modificationRequestRepository;
         this.emailService = emailService;
     }
 
@@ -104,5 +108,26 @@ public class AdminReservationService {
         });
 
         return reservations;
+    }
+
+    @Transactional
+    public void approveModificationRequest(Long requestId) {
+        ReservationModificationRequestEntity request = modificationRequestRepository.findById(requestId)
+                .orElseThrow(() -> new IllegalArgumentException("Modification request not found."));
+
+        ReservationEntity reservation = request.getReservation();
+        reservation.setNotes(request.getRequestedNotes());
+        reservationRepository.save(reservation);
+
+        request.setStatus(ReservationModificationRequestEntity.Status.APPROVED);
+        modificationRequestRepository.save(request);
+    }
+
+    @Transactional
+    public void approveCancellation(Long reservationId) {
+        ReservationEntity reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
+
+        reservationRepository.delete(reservation);
     }
 }

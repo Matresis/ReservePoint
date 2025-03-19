@@ -102,4 +102,32 @@ public class EmailService {
 
         emailConfigService.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
     }
+
+    @Transactional
+    public void sendReservationModificationWishEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
+        String subject = "Reservation Modification Request: " + service.getName();
+        String adminEmailContent = emailConfigService.generateStyledEmail(
+                "New Reservation Modification Request",
+                "A request for reservation modification has been made by <strong>" + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong>.",
+                "Service: <strong>" + service.getName() + "</strong>",
+                "Review Request",
+                "http://localhost:8080/admin/reservations/" + reservation.getId()
+        );
+
+        emailConfigService.sendEmail("reservepointtp@gmail.com", subject, adminEmailContent);
+    }
+
+    @Transactional
+    public void sendReservationCancellationWishEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
+        String subject = "Reservation Cancellation Request: " + service.getName();
+        String adminEmailContent = emailConfigService.generateStyledEmail(
+                "New Reservation Cancellation Request",
+                "A request for reservation cancellation has been made by <strong>" + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong>.",
+                "Service: <strong>" + service.getName() + "</strong>",
+                "Review Request",
+                "http://localhost:8080/admin/reservations/" + reservation.getId()
+        );
+
+        emailConfigService.sendEmail("reservepointtp@gmail.com", subject, adminEmailContent);
+    }
 }

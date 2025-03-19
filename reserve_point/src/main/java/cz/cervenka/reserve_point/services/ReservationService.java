@@ -18,6 +18,7 @@ public class ReservationService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
     private final ServiceRepository serviceRepository;
+    private final ReservationModificationRequestRepository modificationRequestRepository;
     private final EmailService emailService;
 
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
@@ -25,12 +26,13 @@ public class ReservationService {
     public ReservationService(ReservationRepository reservationRepository,
                               CustomerRepository customerRepository,
                               UserRepository userRepository,
-                              ServiceRepository serviceRepository,
+                              ServiceRepository serviceRepository, ReservationModificationRequestRepository modificationRequestRepository,
                               EmailService emailService) {
         this.reservationRepository = reservationRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
         this.serviceRepository = serviceRepository;
+        this.modificationRequestRepository = modificationRequestRepository;
         this.emailService = emailService;
     }
 
@@ -98,5 +100,28 @@ public class ReservationService {
         });
 
         return reservations;
+    }
+
+    @Transactional
+    public void requestReservationModification(Long reservationId, String newNotes, String newService, String newOrderTime) {
+        ReservationEntity reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
+
+        ReservationModificationRequestEntity modificationRequest = new ReservationModificationRequestEntity();
+        modificationRequest.setReservation(reservation);
+        modificationRequest.setRequestedNotes(newNotes);
+        modificationRequest.setRequestedService(newService);
+        modificationRequest.setRequestedOrderTime(newOrderTime);
+        modificationRequestRepository.save(modificationRequest);
+
+        emailService.sendReservationModificationWishEmail(reservation, reservation.getCustomer(), reservation.getService());
+    }
+
+    @Transactional
+    public void requestReservationCancellation(Long reservationId) {
+        ReservationEntity reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
+
+        emailService.sendReservationCancellationWishEmail(reservation, reservation.getCustomer(), reservation.getService());
     }
 }

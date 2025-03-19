@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation Requests</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Reservation</th>
+        <th>Requested Changes</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="request : ${modificationRequests}">
+        <td th:text="${request.reservation.id}"></td>
+        <td>
+            Notes: <span th:text="${request.requestedNotes}"></span><br>
+            Service: <span th:text="${request.requestedService}"></span><br>
+            Order Time: <span th:text="${request.requestedOrderTime}"></span>
+        </td>
+        <td>
+            <form method="post" th:action="@{/admin/reservations/{id}/approve-modification(id=${request.id})}">
+                <button type="submit">Approve</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
