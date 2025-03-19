@@ -72,6 +72,19 @@
     - Vymazání rezervace
     - Zaslání emailu zákazníkovi o zrušení rezervace
 
+# Requesty
+
+- vytvoření requestu zákazníkem
+  1) **změna** v údajích rezervace (**note**, **orderTime**, **service**)
+  2) **zrušení** rezervace
+  - zaslání emailu oznamující podaný request zákazníkem 
+
+- manipulace requestu adminem
+  1) **potvrzení změny** v údajích
+  2) **zamítnutí**
+  3) **potvrzení** a následné **zrušení** rezervace
+  - zaslání emailu zákazníkovi o provedené akci
+
 # Pohlídání aby bylo možné nastavovat hodnoty rezervace podle stavu rezervace
 
 # Stylování
