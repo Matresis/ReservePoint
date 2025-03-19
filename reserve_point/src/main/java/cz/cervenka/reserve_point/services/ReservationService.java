@@ -103,7 +103,7 @@ public class ReservationService {
     }
 
     @Transactional
-    public void requestReservationModification(Long reservationId, String newNotes, String newService, String newOrderTime) {
+    public void requestReservationModification(Long reservationId, String newNotes, ServiceEntity newService, LocalDateTime newOrderTime) {
         ReservationEntity reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
 
@@ -118,10 +118,14 @@ public class ReservationService {
     }
 
     @Transactional
-    public void requestReservationCancellation(Long reservationId) {
+    public void requestReservationCancellation(Long reservationId, String reason) {
         ReservationEntity reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
 
-        emailService.sendReservationCancellationWishEmail(reservation, reservation.getCustomer(), reservation.getService());
+        ReservationCancellationRequestEntity cancellationRequest = new ReservationCancellationRequestEntity();
+        cancellationRequest.setReservation(reservation);
+        cancellationRequest.setReason(reason);
+
+        emailService.sendReservationCancellationWishEmail(reservation, reservation.getCustomer(), reservation.getService(), reason);
     }
 }

@@ -11,6 +11,19 @@ function toggleEditSection() {
     }
 }
 
+function toggleDeleteSection() {
+    const deleteSection = document.getElementById("deleteSection");
+    const deleteButton = document.getElementById("deleteButton");
+
+    if (deleteSection.style.display === "none") {
+        deleteSection.style.display = "block";
+        deleteButton.textContent = "Cancel Edit";
+    } else {
+        deleteSection.style.display = "none";
+        deleteButton.textContent = "Edit Reservation";
+    }
+}
+
 function submitForm() {
     const form = document.getElementById("addToCalendarForm");
 

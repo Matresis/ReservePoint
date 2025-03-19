@@ -108,6 +108,11 @@ th, td {
     color: #e0e0e0; /* Light text */
 }
 
+.highlight {
+    font-weight: bold;
+    color: red;
+}
+
 .home-container {
     max-width: 500px;
     margin: auto;

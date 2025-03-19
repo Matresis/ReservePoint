@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Entity
 @Getter
 @Setter
@@ -17,13 +20,25 @@ public class ReservationModificationRequestEntity {
     private ReservationEntity reservation;
 
     private String requestedNotes;
-    private String requestedService;
-    private String requestedOrderTime;
+
+    @ManyToOne
+    @JoinColumn(name = "service_id", nullable = false)
+    private ServiceEntity requestedService;
+
+    private LocalDateTime requestedOrderTime;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDING;
 
     public enum Status {
         PENDING, APPROVED, REJECTED
+    }
+
+    @Transient
+    private String formattedRequestedOrderTime;
+
+    public void formatRequestedOrderTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        this.formattedRequestedOrderTime = (requestedOrderTime != null) ? requestedOrderTime.format(formatter) : "N/A";
     }
 }

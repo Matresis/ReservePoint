@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -68,15 +69,15 @@ public class ReservationController {
     @PostMapping("/{id}/request-modification")
     public String requestModification(@PathVariable Long id,
                                       @RequestParam String newNotes,
-                                      @RequestParam String newService,
-                                      @RequestParam String newOrderTime) {
+                                      @RequestParam ServiceEntity newService,
+                                      @RequestParam LocalDateTime newOrderTime) {
         reservationService.requestReservationModification(id, newNotes, newService, newOrderTime);
         return "redirect:/reservations/" + id;
     }
 
     @PostMapping("/{id}/request-cancellation")
-    public String requestCancellation(@PathVariable Long id) {
-        reservationService.requestReservationCancellation(id);
+    public String requestCancellation(@PathVariable Long id, @RequestParam String reason) {
+        reservationService.requestReservationCancellation(id, reason);
         return "redirect:/reservations/" + id;
     }
 }

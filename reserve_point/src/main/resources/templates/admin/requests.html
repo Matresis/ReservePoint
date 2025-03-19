@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation Modification Requests</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="reservations-container">
+
+    <!-- Modification Requests Table -->
+    <h2 class="section-title">Reservation Modification Requests</h2>
+    <table>
+        <tr>
+            <th>Customer</th>
+            <th>Original Details</th>
+            <th>Requested Changes</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="request : ${modificationRequests}">
+            <td>
+                <span th:text="${request.reservation.customer.user.name + ' ' + request.reservation.customer.user.surname}"></span><br>
+                Email: <span th:text="${request.reservation.customer.user.email}"></span><br>
+                Created at: <span th:text="${request.reservation.formattedCreatedAt}"></span>
+            </td>
+            <td>
+                Notes: <span th:text="${request.reservation.notes}"></span><br>
+                Service: <span th:text="${request.reservation.service.name}"></span><br>
+                Order Time: <span th:text="${request.reservation.formattedOrderTime}"></span>
+            </td>
+            <td>
+                Notes: <span th:class="${request.requestedNotes != request.reservation.notes} ? 'highlight' : ''" th:text="${request.requestedNotes}"></span><br>
+                Service: <span th:class="${request.requestedService != request.reservation.service.name} ? 'highlight' : ''" th:text="${request.requestedService.name}"></span><br>
+                Order Time: <span th:class="${request.requestedOrderTime != request.reservation.orderedTime} ? 'highlight' : ''" th:text="${request.formattedRequestedOrderTime}"></span>
+            </td>
+            <td>
+                <form method="post" th:action="@{/admin/requests/{id}/approve-modification(id=${request.id})}">
+                    <button type="submit">Approve</button>
+                </form>
+                <form method="post" th:action="@{/admin/requests/{id}/reject-modification(id=${request.id})}">
+                    <button type="submit">Reject</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Cancellation Requests Table -->
+    <h2 class="section-title">Reservation Cancellation Requests</h2>
+    <table>
+        <tr>
+            <th>Customer</th>
+            <th>Reservation Details</th>
+            <th>Reason for Cancellation</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="request : ${cancellationRequests}">
+            <td>
+                <span th:text="${request.reservation.customer.user.name + ' ' + request.reservation.customer.user.surname}"></span><br>
+                <small>Email: <span th:text="${request.reservation.customer.user.email}"></span></small><br>
+                <small>Created at: <span th:text="${request.reservation.formattedCreatedAt}"></span></small>
+            </td>
+            <td>
+                Service: <span th:text="${request.reservation.service.name}"></span><br>
+                Order Time: <span th:text="${request.reservation.formattedOrderTime}"></span>
+            </td>
+            <td>
+                <!--<span th:text="${request.reason}"></span>-->
+                <span th:text="${request.reason}"></span><br>
+            </td>
+            <td>
+                <form method="post" th:action="@{/admin/requests/{id}/approve-cancellation(id=${request.id})}">
+                    <button type="submit">Approve</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <a href="/admin" id="return-button" class="button">Back to Home</a>
+</div>
+</body>
+</html>

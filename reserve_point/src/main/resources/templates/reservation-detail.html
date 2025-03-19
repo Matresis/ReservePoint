@@ -19,28 +19,37 @@
     <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderTime}"></span></p>
     <p><strong>Note:</strong> <span id="notesText" th:text="${reservation.notes}"></span></p>
 
-    <form method="post" action="/reservations/${reservation.id}/request-modification">
-        <label for="newNotes">Notes</label>
-        <input type="text" id="newNotes" name="newNotes" placeholder="New Notes" required>
+    <button id="editButton" onclick="toggleEditSection()">Edit Reservation</button>
 
-        <label for="newService">Service</label>
-        <select id="newService" name="newService" required>
-            <option value="">Choose a service</option>
-            <th:block th:each="service : ${services}">
-                <option th:value="${service.id}" th:text="${service.name}"></option>
-            </th:block>
-        </select>
+    <div id="editSection" style="display: none;">
+        <form method="post" th:action="@{/reservations/{id}/request-modification(id=${reservation.id})}">
+            <label for="newNotes">Notes</label>
+            <input type="text" id="newNotes" name="newNotes" placeholder="New Notes" required>
 
-        <label for="newOrderTime">OrderTime</label>
-        <input type="text" id="newOrderTime" name="newOrderTime" placeholder="New Order Time" required>
+            <label for="newService">Service</label>
+            <select id="newService" name="newService" required>
+                <option value="">Choose a service</option>
+                <th:block th:each="service : ${services}">
+                    <option th:value="${service.id}" th:text="${service.name}"></option>
+                </th:block>
+            </select>
 
-        <button type="submit">Request Modification</button>
-    </form>
+            <label for="newOrderTime">OrderTime</label>
+            <input type="datetime-local" id="newOrderTime" name="newOrderTime" th:value="${formattedOrderTime}">
 
-    <form method="post" action="/reservations/${reservation.id}/request-cancellation">
-        <button type="submit">Request Cancellation</button>
-    </form>
+            <button type="submit">Request Modification</button>
+        </form>
+    </div>
 
+    <button id="deleteButton" onclick="toggleDeleteSection()">Cancel Reservation</button>
+
+    <div id="deleteSection" style="display: none;">
+        <form method="post" th:action="@{/reservations/{id}/request-cancellation(id=${reservation.id})}">
+            <label for="reason">Reason</label>
+            <input type="text" id="reason" name="reason" placeholder="Reason" required>
+            <button type="submit" onclick="return confirm('Are you sure?')">Request Cancellation</button>
+        </form>
+    </div>
 
     <a href="/reservations" class="button">Back to Reservations</a>
 </div>

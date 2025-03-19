@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Setter
 @Getter
@@ -49,4 +50,14 @@ public class ReservationEntity {
     @Getter
     @Transient
     private String formattedOrderTime;
+
+    public void formatOrderTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        this.formattedOrderTime = (orderedTime != null) ? orderedTime.format(formatter) : "N/A";
+    }
+
+    public void formatCreatedAt() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        this.formattedCreatedAt = (createdAt != null) ? createdAt.format(formatter) : "N/A";
+    }
 }
