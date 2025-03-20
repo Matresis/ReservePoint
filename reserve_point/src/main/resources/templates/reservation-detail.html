@@ -21,8 +21,9 @@
 
     <p th:if="${errorModificationMessage}" class="error-message" th:text="${errorModificationMessage}"></p>
 
-    <!-- Confirmation Request Button (only shown if status is APPROVED) -->
-    <div th:if="${reservation.status == 'APPROVED'}">
+    <!-- Confirmation Request Button (only shown if status is APPROVED)
+    th:if="${reservation.status == 'APPROVED'}" -->
+    <div>
         <form method="post" th:action="@{/reservations/{id}/request-confirmation(id=${reservation.id})}">
             <button type="submit">Confirm Reservation</button>
         </form>

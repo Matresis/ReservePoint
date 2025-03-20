@@ -9,6 +9,39 @@
 
 <div class="reservations-container">
 
+    <h2 class="section-title">Reservation Confirmation Requests</h2>
+    <table>
+        <tr>
+            <th>Customer</th>
+            <th>Reservation Details</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="request : ${confirmationRequests}">
+            <td>
+                <span th:text="${request.reservation.customer.user.name + ' ' + request.reservation.customer.user.surname}"></span><br>
+                Email: <span th:text="${request.reservation.customer.user.email}"></span><br>
+                Created at: <span th:text="${request.reservation.formattedCreatedAt}"></span>
+            </td>
+            <td>
+                Service: <span th:text="${request.reservation.service.name}"></span><br>
+                Order Time: <span th:text="${request.reservation.formattedOrderTime}"></span>
+            </td>
+            <td>
+                <form method="post" th:action="@{/admin/requests/{id}/approve-confirmation(id=${request.id})}">
+                    <button type="submit">Approve</button>
+                </form>
+                <button id="editButton" onclick="toggleEditSection()">Provide reason</button>
+                <div id="editSection" style="display: none;">
+                    <form method="post" th:action="@{/admin/requests/{id}/reject-confirmation(id=${request.id})}">
+                        <label for="reason">Reason</label>
+                        <input type="text" id="reason" name="reason" placeholder="Reason" required>
+                        <button type="submit">Reject</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+
     <!-- Modification Requests Table -->
     <h2 class="section-title">Reservation Modification Requests</h2>
     <table>
@@ -38,9 +71,14 @@
                 <form method="post" th:action="@{/admin/requests/{id}/approve-modification(id=${request.id})}">
                     <button type="submit">Approve</button>
                 </form>
-                <form method="post" th:action="@{/admin/requests/{id}/reject-modification(id=${request.id})}">
-                    <button type="submit">Reject</button>
-                </form>
+                <button id="editButton1" onclick="toggleModifySection()">Provide reason</button>
+                <div id="editSection1" style="display: none;">
+                    <form method="post" th:action="@{/admin/requests/{id}/reject-modification(id=${request.id})}">
+                        <label for="reason1">Reason</label>
+                        <input type="text" id="reason1" name="reason" placeholder="Reason" required>
+                        <button type="submit">Reject</button>
+                    </form>
+                </div>
             </td>
         </tr>
     </table>
@@ -78,5 +116,6 @@
 
     <a href="/admin" id="return-button" class="button">Back to Home</a>
 </div>
+<script th:src="@{/js/reservation.js}"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package cz.cervenka.reserve_point.services;
 
 import cz.cervenka.reserve_point.database.entities.*;
 import cz.cervenka.reserve_point.database.repositories.ReservationCancellationRequestRepository;
+import cz.cervenka.reserve_point.database.repositories.ReservationConfirmationRequestRepository;
 import cz.cervenka.reserve_point.database.repositories.ReservationModificationRequestRepository;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,21 +16,28 @@ public class AdminRequestService {
     private final ReservationRepository reservationRepository;
     private final ReservationModificationRequestRepository modificationRequestRepository;
     private final ReservationCancellationRequestRepository cancellationRequestRepository;
+    private final ReservationConfirmationRequestRepository confirmationRequestRepository;
     private final EmailService emailService;
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-    public AdminRequestService(ReservationRepository reservationRepository, ReservationModificationRequestRepository modificationRequestRepository, ReservationCancellationRequestRepository cancellationRequestRepository, EmailService emailService) {
+    public AdminRequestService(ReservationRepository reservationRepository,
+                               ReservationModificationRequestRepository modificationRequestRepository,
+                               ReservationCancellationRequestRepository cancellationRequestRepository,
+                               ReservationConfirmationRequestRepository confirmationRequestRepository,
+                               EmailService emailService) {
         this.reservationRepository = reservationRepository;
         this.modificationRequestRepository = modificationRequestRepository;
         this.cancellationRequestRepository = cancellationRequestRepository;
+        this.confirmationRequestRepository = confirmationRequestRepository;
         this.emailService = emailService;
     }
 
     @Transactional
     public void approveConfirmationRequest(Long id) {
-        ReservationEntity reservation = reservationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+        ReservationConfirmationRequestEntity request = confirmationRequestRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Request not found"));
 
+        ReservationEntity reservation = request.getReservation();
         reservation.setStatus(ReservationEntity.Status.CONFIRMED);
         reservationRepository.save(reservation);
 
@@ -37,6 +45,7 @@ public class AdminRequestService {
         ServiceEntity service = reservation.getService();
 
         emailService.sendReservationConfirmationEmail(reservation, customer, service);
+        confirmationRequestRepository.delete(request);
     }
 
     @Transactional
@@ -59,7 +68,24 @@ public class AdminRequestService {
     }
 
     @Transactional
-    public void rejectModificationRequest(Long id) {
+    public void rejectConfirmationRequest(Long id, String reason) {
+        ReservationConfirmationRequestEntity request = confirmationRequestRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Request not found"));
+
+        ReservationEntity reservation = request.getReservation();
+        CustomerEntity customer = reservation.getCustomer();
+        ServiceEntity service = reservation.getService();
+
+        reservation.setStatus(ReservationEntity.Status.APPROVED);
+        reservationRepository.save(reservation);
+
+        emailService.sendReservationCancellationEmail(reservation, customer, service, reason);
+
+        confirmationRequestRepository.delete(request);
+    }
+
+    @Transactional
+    public void rejectModificationRequest(Long id, String reason) {
         ReservationModificationRequestEntity request = modificationRequestRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Request not found"));
 
@@ -67,9 +93,9 @@ public class AdminRequestService {
         CustomerEntity customer = reservation.getCustomer();
         ServiceEntity service = reservation.getService();
 
-        emailService.sendReservationModificationRejectionEmail(reservation, customer, service);
+        emailService.sendReservationModificationRejectionEmail(reservation, customer, service, reason);
 
-        modificationRequestRepository.deleteById(id);
+        modificationRequestRepository.delete(request);
     }
 
     @Transactional

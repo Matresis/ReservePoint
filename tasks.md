@@ -120,10 +120,18 @@
     - vyplní formulář pro modifikace
     - pošlě request pro modifikaci
 
+  - **pokud nevyhovuje**
+    - vyplní formulář pro zrušení
+    - pošle request pro zrušení
+
 - **Admin**
   - **admin potvrdí request pro potvrzení** (**STATUS:** `CONFIRMED`)
     - rezervace se přidá do kalendáře
     - zákazníkovi přijde email o potvrzení
+
+  - **admin zamítne request pro potvrzení** (**STATUS:** `APPROVED`)
+    - rezervace zůstane bez změn
+    - zákazníkovi přijde email o zamítnutí potvrzení s důvodem
 
   - **admin potvrdí request pro modifikaci** (**STATUS:** `APPROVED`)
     - změna údajů podle requestu
@@ -132,3 +140,7 @@
   - **admin zamítne request pro modifikaci** (**STATUS:** `APPROVED`)
     - údaje se nezmění
     - zákazníkovi přijde email o zamítnutí změn
+
+  - **admin potvrdí request pro zrušení** (**STATUS:** `CANCELED`)
+    - rezervace se vymaže z databáze
+    - zákazníkovi přijde email o smazání rezervace na jeho request a důvodem

@@ -11,12 +11,8 @@ import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
 import cz.cervenka.reserve_point.services.AdminRequestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -27,12 +23,18 @@ public class AdminRequestController {
     private final ReservationModificationRequestRepository modificationRequestRepository;
     private final ReservationCancellationRequestRepository cancellationRequestRepository;
     private final ReservationConfirmationRequestRepository confirmationRequestRepository;
+    private final ReservationRepository reservationRepository;
 
-    public AdminRequestController(AdminRequestService requestService, ReservationModificationRequestRepository modificationRequestRepository, ReservationCancellationRequestRepository cancellationRequestRepository, ReservationConfirmationRequestRepository confirmationRequestRepository) {
+    public AdminRequestController(AdminRequestService requestService,
+                                  ReservationModificationRequestRepository modificationRequestRepository,
+                                  ReservationCancellationRequestRepository cancellationRequestRepository,
+                                  ReservationConfirmationRequestRepository confirmationRequestRepository,
+                                  ReservationRepository reservationRepository) {
         this.requestService = requestService;
         this.modificationRequestRepository = modificationRequestRepository;
         this.cancellationRequestRepository = cancellationRequestRepository;
         this.confirmationRequestRepository = confirmationRequestRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     @GetMapping
@@ -42,6 +44,11 @@ public class AdminRequestController {
         List<ReservationConfirmationRequestEntity> confirmationRequests = confirmationRequestRepository.findAll();
 
         modificationRequests.forEach(ReservationModificationRequestEntity::formatRequestedOrderTime);
+
+        List<ReservationEntity> reservations = reservationRepository.findAll();
+
+        reservations.forEach(ReservationEntity::formatCreatedAt);
+        reservations.forEach(ReservationEntity::formatOrderTime);
 
         model.addAttribute("modificationRequests", modificationRequests);
         model.addAttribute("cancellationRequests", cancellationRequests);
@@ -56,6 +63,11 @@ public class AdminRequestController {
         return "redirect:/admin/requests";
     }
 
+    @PostMapping("/{id}/reject-confirmation")
+    public String rejectConfirmation(@PathVariable Long id, @RequestParam String reason) {
+        requestService.rejectConfirmationRequest(id, reason);
+        return "redirect:/admin/requests";
+    }
 
     @PostMapping("/{id}/approve-modification")
     public String approveModification(@PathVariable Long id) {
@@ -64,8 +76,8 @@ public class AdminRequestController {
     }
 
     @PostMapping("/{id}/reject-modification")
-    public String rejectModification(@PathVariable Long id) {
-        requestService.rejectModificationRequest(id);
+    public String rejectModification(@PathVariable Long id, @RequestParam String reason) {
+        requestService.rejectModificationRequest(id, reason);
         return "redirect:/admin/requests";
     }
 

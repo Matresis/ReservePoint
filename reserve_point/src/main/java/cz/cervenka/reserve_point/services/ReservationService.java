@@ -19,21 +19,24 @@ public class ReservationService {
     private final UserRepository userRepository;
     private final ServiceRepository serviceRepository;
     private final ReservationModificationRequestRepository modificationRequestRepository;
+    private final ReservationConfirmationRequestRepository confirmationRequestRepository;
     private final EmailService emailService;
 
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-
     public ReservationService(ReservationRepository reservationRepository,
                               CustomerRepository customerRepository,
                               UserRepository userRepository,
-                              ServiceRepository serviceRepository, ReservationModificationRequestRepository modificationRequestRepository,
-                              EmailService emailService) {
+                              ServiceRepository serviceRepository,
+                              ReservationModificationRequestRepository modificationRequestRepository,
+                              EmailService emailService,
+                              ReservationConfirmationRequestRepository confirmationRequestRepository) {
         this.reservationRepository = reservationRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
         this.serviceRepository = serviceRepository;
         this.modificationRequestRepository = modificationRequestRepository;
         this.emailService = emailService;
+        this.confirmationRequestRepository = confirmationRequestRepository;
     }
 
     public Optional<CustomerEntity> getAuthenticatedCustomer(Authentication authentication) {
@@ -103,12 +106,18 @@ public class ReservationService {
     }
 
     @Transactional
-    public void requestReservationConfirmation(ReservationEntity reservation) {
-        reservation.setStatus(ReservationEntity.Status.PENDING_CONFIRMATION);
-        reservationRepository.save(reservation);
+    public void requestReservationConfirmation(Long reservationId) {
+        /*reservation.setStatus(ReservationEntity.Status.PENDING_CONFIRMATION);
+        reservationRepository.save(reservation);*/
+        ReservationEntity reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
 
         CustomerEntity customer = reservation.getCustomer();
         ServiceEntity service = reservation.getService();
+
+        ReservationConfirmationRequestEntity reservationConfirmationRequest = new ReservationConfirmationRequestEntity();
+        reservationConfirmationRequest.setReservation(reservation);
+        confirmationRequestRepository.save(reservationConfirmationRequest);
 
         emailService.sendReservationConfirmationRequestEmail(reservation, customer, service);
     }

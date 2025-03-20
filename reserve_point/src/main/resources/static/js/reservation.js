@@ -11,6 +11,19 @@ function toggleEditSection() {
     }
 }
 
+function toggleModifySection() {
+    const editSection = document.getElementById("editSection1");
+    const editButton = document.getElementById("editButton1");
+
+    if (editSection.style.display === "none") {
+        editSection.style.display = "block";
+        editButton.textContent = "Cancel Edit";
+    } else {
+        editSection.style.display = "none";
+        editButton.textContent = "Edit Reservation";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const statusText = document.getElementById("statusText").innerText.trim();
     const editButton = document.getElementById("editButton");

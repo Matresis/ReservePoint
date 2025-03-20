@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
             center: 'title',
             right: 'timeGridWeek,timeGridDay'
         },
-        events: '/admin/reservations/calendar/events', // Fetch events from backend
+        events: '/admin/calendar/events', // Fetch events from backend
         slotMinTime: "08:00:00", // Workday start time
         slotMaxTime: "18:00:00",  // Workday end time
         nowIndicator: true, // Show current time indicator
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Fetch reservation details
-            fetch(`/admin/reservations/calendar/${info.event.id}`)
+            fetch(`/admin/calendar/${info.event.id}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Fetched reservation:", data);  // Debugging log

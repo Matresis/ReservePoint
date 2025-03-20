@@ -67,14 +67,13 @@ public class ReservationController {
     }
 
     @PostMapping("/{id}/request-confirmation")
-    public String requestConfirmation(@PathVariable Long id, Model model) {
+    public String requestConfirmation(@PathVariable Long id) {
         Optional<ReservationEntity> reservationOpt = reservationRepository.findById(id);
         if (reservationOpt.isEmpty()) {
             return "redirect:/reservations";
         }
 
-        ReservationEntity reservation = reservationOpt.get();
-        reservationService.requestReservationConfirmation(reservation);
+        reservationService.requestReservationConfirmation(id);
 
         return "redirect:/reservations/" + id;
     }
@@ -99,7 +98,7 @@ public class ReservationController {
 
     @PostMapping("/{id}/request-cancellation")
     public String requestCancellation(@PathVariable Long id,
-                                      @RequestParam(required = false) String reason,
+                                      @RequestParam String reason,
                                       Model model) {
         if (reason == null || reason.isBlank()) {
             model.addAttribute("errorCancellationMessage", "Reason cannot be empty.");
@@ -109,5 +108,4 @@ public class ReservationController {
         reservationService.requestReservationCancellation(id, reason);
         return "redirect:/reservations/" + id;
     }
-
 }
