@@ -25,12 +25,25 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute UserEntity user) {
+    public String registerUser(@ModelAttribute UserEntity user,
+                               @RequestParam String name,
+                               @RequestParam String surname,
+                               @RequestParam String password,
+                               @RequestParam String email,
+                               Model model) {
         try {
+            if (name == null || name.isBlank()
+                    || surname == null || surname.isBlank()
+                    || password == null || password.isBlank()
+                    || email == null || email.isBlank()) {
+                model.addAttribute("errorMessage", "Fields cannot be left empty.");
+            }
+
             authService.registerUser(user);
             return "redirect:/loginForm";
         } catch (IllegalArgumentException e) {
-            return "error";
+            model.addAttribute("errorMessage", "Fields cannot be left empty.");
+            return "registerForm";
         }
     }
 

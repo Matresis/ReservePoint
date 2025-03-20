@@ -103,9 +103,27 @@ public class EmailService {
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
     }
 
+
+    // TODO: modify the request viewing for specific reservation (when going from the email => highlight the request specific from that email)
+
     @Transactional
-    public void sendReservationModificationWishEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
+    public void sendReservationModificationRequestEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
         String subject = "Reservation Modification Request: " + service.getName();
+
+        String customerEmailContent = emailConfig.generateStyledEmail(
+                "Dear " + customer.getUser().getName() + ",",
+                "<p>Your request to modify your reservation for <strong>" + service.getName() + "</strong> has been sent.</p>",
+                "<p>Requested modifications:</p><br>"
+                        + "<ul>"
+                        + "<li><strong>Service:</strong> " + reservation.getService().getName() + "</li>"
+                        + "<li><strong>Date & Time:</strong> " + reservation.getOrderedTime().format(DATE_FORMATTER) + "</li>"
+                        + "<li><strong>Notes:</strong> " + reservation.getNotes() + "</li>"
+                        + "</ul><br>"
+                        + "You will be informed of the result once your request is processed.",
+                "View Reservation",
+                "http://localhost:8080/reservations"
+        );
+
         String adminEmailContent = emailConfig.generateStyledEmail(
                 "New Reservation Modification Request",
                 "A request for reservation modification has been made by <strong>" + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong>.",
@@ -114,14 +132,23 @@ public class EmailService {
                 "http://localhost:8080/admin/requests/" + reservation.getId()
         );
 
+        emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
         emailConfig.sendEmail("reservepointtp@gmail.com", subject, adminEmailContent);
     }
 
-    // TODO: modify the request viewing for specific reservation (when going from the email => highlight the request specific from that email)
-
     @Transactional
-    public void sendReservationCancellationWishEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service, String reason) {
+    public void sendReservationCancellationRequestEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service, String reason) {
         String subject = "Reservation Cancellation Request: " + service.getName();
+
+        String customerEmailContent = emailConfig.generateStyledEmail(
+                "Dear " + customer.getUser().getName() + ",",
+                "<p>Your request to cancel your reservation scheduled on: <strong> " + reservation.getOrderedTime().format(DATE_FORMATTER) + "for <strong>" + service.getName() + "</strong> has been sent.</p>",
+                "Reason for cancellation: <strong>" + reason + "</strong><br>"
+                        + "You will be informed of the result once your request is processed.",
+                "View Reservation",
+                "http://localhost:8080/reservations"
+        );
+
         String adminEmailContent = emailConfig.generateStyledEmail(
                 "New Reservation Cancellation Request",
                 "A request for reservation cancellation has been made by <strong>" + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong>.",
@@ -131,6 +158,7 @@ public class EmailService {
                 "http://localhost:8080/admin/requests/" + reservation.getId()
         );
 
+        emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
         emailConfig.sendEmail("reservepointtp@gmail.com", subject, adminEmailContent);
     }
 

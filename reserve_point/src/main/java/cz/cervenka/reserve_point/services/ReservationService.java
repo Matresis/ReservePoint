@@ -114,7 +114,7 @@ public class ReservationService {
         modificationRequest.setRequestedOrderTime(newOrderTime);
         modificationRequestRepository.save(modificationRequest);
 
-        emailService.sendReservationModificationWishEmail(reservation, reservation.getCustomer(), reservation.getService());
+        emailService.sendReservationModificationRequestEmail(reservation, reservation.getCustomer(), reservation.getService());
     }
 
     @Transactional
@@ -126,6 +126,6 @@ public class ReservationService {
         cancellationRequest.setReservation(reservation);
         cancellationRequest.setReason(reason);
 
-        emailService.sendReservationCancellationWishEmail(reservation, reservation.getCustomer(), reservation.getService(), reason);
+        emailService.sendReservationCancellationRequestEmail(reservation, reservation.getCustomer(), reservation.getService(), reason);
     }
 }

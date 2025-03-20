@@ -29,12 +29,12 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public boolean isUserExists(String email)  {
+    public boolean userExists(String email)  {
         return userRepository.findByEmail(email).isPresent();
     }
 
     public void registerUser(UserEntity user) {
-        if (isUserExists(user.getEmail())) {
+        if (userExists(user.getEmail())) {
             throw new IllegalArgumentException("User with this email already exists.");
         }
 

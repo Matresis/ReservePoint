@@ -19,12 +19,14 @@
     <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderTime}"></span></p>
     <p><strong>Note:</strong> <span id="notesText" th:text="${reservation.notes}"></span></p>
 
+    <p th:if="${errorModificationMessage}" class="error-message" th:text="${errorModificationMessage}"></p>
+
     <button id="editButton" onclick="toggleEditSection()">Edit Reservation</button>
 
     <div id="editSection" style="display: none;">
         <form method="post" th:action="@{/reservations/{id}/request-modification(id=${reservation.id})}">
             <label for="newNotes">Notes</label>
-            <input type="text" id="newNotes" name="newNotes" placeholder="New Notes" required>
+            <input type="text" id="newNotes" name="newNotes" placeholder="New Notes">
 
             <label for="newService">Service</label>
             <select id="newService" name="newService" required>
@@ -34,14 +36,16 @@
                 </th:block>
             </select>
 
-            <label for="newOrderTime">OrderTime</label>
-            <input type="datetime-local" id="newOrderTime" name="newOrderTime" th:value="${formattedOrderTime}">
+            <label for="newOrderTime">Order Time</label>
+            <input type="datetime-local" id="newOrderTime" name="newOrderTime" required>
 
             <button type="submit">Request Modification</button>
         </form>
     </div>
 
     <button id="deleteButton" onclick="toggleDeleteSection()">Cancel Reservation</button>
+
+    <p th:if="${errorCancellationMessage}" class="error-message" th:text="${errorCancellationMessage}"></p>
 
     <div id="deleteSection" style="display: none;">
         <form method="post" th:action="@{/reservations/{id}/request-cancellation(id=${reservation.id})}">

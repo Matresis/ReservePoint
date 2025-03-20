@@ -38,6 +38,7 @@
         <textarea id="notes" name="notes" rows="4" placeholder="Enter any special requests or details..."></textarea>
 
         <button type="submit">Reserve</button>
+        <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
     </form>
 
     <a href="/home" id="return-button" class="button">Back to Home</a>

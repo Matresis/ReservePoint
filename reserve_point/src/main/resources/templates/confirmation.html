@@ -14,6 +14,7 @@
         <p>Your reservation for <span th:text="${reservation.service.name}"></span> has been received.</p>
         <p>Reservation Created at: <span th:text="${reservation.formattedCreatedAt}"></span></p>
         <p>Status: <span th:text="${reservation.status}"></span></p>
+        <p>Confirmation of reservation has been sent to your email: <span th:text="${reservation.customer.user.email}"></span></p>
     </div>
 
     <a href="/home" id="return-button" class="button">Back to Home</a>

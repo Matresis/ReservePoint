@@ -63,10 +63,22 @@ public class HomeController {
     @PostMapping("/make-reservation")
     public String handleReservationSubmission(
             @ModelAttribute("customer") CustomerEntity customer,
-            @RequestParam("serviceId") Long serviceId,
+            @RequestParam(value = "phone", required = false) String phone,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "serviceId", required = false) Long serviceId,
             @RequestParam(value = "notes", required = false) String notes,
             Authentication authentication,
             Model model) {
+
+        if (phone == null || phone.isBlank() ||
+                address == null || address.isBlank() ||
+                serviceId == null) {
+
+            model.addAttribute("errorMessage", "All required fields must be filled out.");
+            model.addAttribute("services", serviceRepository.findAll());
+            model.addAttribute("customer", customer);
+            return "reserveForm";
+        }
 
         CustomerEntity finalCustomer = reservationService.saveCustomer(authentication, customer);
         ReservationEntity reservation = reservationService.createReservation(finalCustomer, serviceId, notes);
