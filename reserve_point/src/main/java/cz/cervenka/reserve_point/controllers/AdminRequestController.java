@@ -1,9 +1,11 @@
 package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.ReservationCancellationRequestEntity;
+import cz.cervenka.reserve_point.database.entities.ReservationConfirmationRequestEntity;
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
 import cz.cervenka.reserve_point.database.entities.ReservationModificationRequestEntity;
 import cz.cervenka.reserve_point.database.repositories.ReservationCancellationRequestRepository;
+import cz.cervenka.reserve_point.database.repositories.ReservationConfirmationRequestRepository;
 import cz.cervenka.reserve_point.database.repositories.ReservationModificationRequestRepository;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
 import cz.cervenka.reserve_point.services.AdminRequestService;
@@ -24,32 +26,36 @@ public class AdminRequestController {
     private final AdminRequestService requestService;
     private final ReservationModificationRequestRepository modificationRequestRepository;
     private final ReservationCancellationRequestRepository cancellationRequestRepository;
-    private final ReservationRepository reservationRepository;
+    private final ReservationConfirmationRequestRepository confirmationRequestRepository;
 
-    public AdminRequestController(AdminRequestService requestService, ReservationModificationRequestRepository modificationRequestRepository, ReservationCancellationRequestRepository cancellationRequestRepository, ReservationRepository reservationRepository) {
+    public AdminRequestController(AdminRequestService requestService, ReservationModificationRequestRepository modificationRequestRepository, ReservationCancellationRequestRepository cancellationRequestRepository, ReservationConfirmationRequestRepository confirmationRequestRepository) {
         this.requestService = requestService;
         this.modificationRequestRepository = modificationRequestRepository;
         this.cancellationRequestRepository = cancellationRequestRepository;
-        this.reservationRepository = reservationRepository;
+        this.confirmationRequestRepository = confirmationRequestRepository;
     }
 
     @GetMapping
     public String viewRequests(Model model) {
         List<ReservationModificationRequestEntity> modificationRequests = modificationRequestRepository.findAll();
         List<ReservationCancellationRequestEntity> cancellationRequests = cancellationRequestRepository.findAll();
+        List<ReservationConfirmationRequestEntity> confirmationRequests = confirmationRequestRepository.findAll();
 
         modificationRequests.forEach(ReservationModificationRequestEntity::formatRequestedOrderTime);
 
-        List<ReservationEntity> reservations = reservationRepository.findAll();
-
-        reservations.forEach(ReservationEntity::formatCreatedAt);
-        reservations.forEach(ReservationEntity::formatOrderTime);
-
         model.addAttribute("modificationRequests", modificationRequests);
         model.addAttribute("cancellationRequests", cancellationRequests);
+        model.addAttribute("confirmationRequests", confirmationRequests);
 
         return "admin/requests";
     }
+
+    @PostMapping("/{id}/approve-confirmation")
+    public String approveConfirmation(@PathVariable Long id) {
+        requestService.approveConfirmationRequest(id);
+        return "redirect:/admin/requests";
+    }
+
 
     @PostMapping("/{id}/approve-modification")
     public String approveModification(@PathVariable Long id) {

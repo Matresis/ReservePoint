@@ -61,7 +61,6 @@ public class AdminReservationController {
         return "admin/reservation-detail";
     }
 
-
     @PostMapping("/update")
     public String updateReservation(
             @RequestParam Long id,

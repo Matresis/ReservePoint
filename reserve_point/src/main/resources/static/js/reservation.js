@@ -11,6 +11,15 @@ function toggleEditSection() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const statusText = document.getElementById("statusText").innerText.trim();
+    const editButton = document.getElementById("editButton");
+
+    if (statusText !== "CONFIRMED") {
+        editButton.disabled = true;
+    }
+});
+
 function toggleDeleteSection() {
     const deleteSection = document.getElementById("deleteSection");
     const deleteButton = document.getElementById("deleteButton");

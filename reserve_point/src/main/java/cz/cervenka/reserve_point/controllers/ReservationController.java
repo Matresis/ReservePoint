@@ -66,6 +66,19 @@ public class ReservationController {
         return "reservation-detail";
     }
 
+    @PostMapping("/{id}/request-confirmation")
+    public String requestConfirmation(@PathVariable Long id, Model model) {
+        Optional<ReservationEntity> reservationOpt = reservationRepository.findById(id);
+        if (reservationOpt.isEmpty()) {
+            return "redirect:/reservations";
+        }
+
+        ReservationEntity reservation = reservationOpt.get();
+        reservationService.requestReservationConfirmation(reservation);
+
+        return "redirect:/reservations/" + id;
+    }
+
     @PostMapping("/{id}/request-modification")
     public String requestModification(@PathVariable Long id,
                                       @RequestParam(required = false) String newNotes,

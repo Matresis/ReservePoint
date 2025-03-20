@@ -52,7 +52,6 @@ public class AdminReservationService {
             emailService.sendReservationRejectionEmail(reservation, customer, service, notes);
             reservationRepository.deleteById(id);
         }
-
         return reservation;
     }
 

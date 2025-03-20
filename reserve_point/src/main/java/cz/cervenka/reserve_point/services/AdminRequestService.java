@@ -26,11 +26,24 @@ public class AdminRequestService {
     }
 
     @Transactional
+    public void approveConfirmationRequest(Long id) {
+        ReservationEntity reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+
+        reservation.setStatus(ReservationEntity.Status.CONFIRMED);
+        reservationRepository.save(reservation);
+
+        CustomerEntity customer = reservation.getCustomer();
+        ServiceEntity service = reservation.getService();
+
+        emailService.sendReservationConfirmationEmail(reservation, customer, service);
+    }
+
+    @Transactional
     public void approveModificationRequest(Long id) {
         ReservationModificationRequestEntity request = modificationRequestRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Request not found"));
 
-        // Apply changes to the reservation
         ReservationEntity reservation = request.getReservation();
         reservation.setNotes(request.getRequestedNotes());
         reservation.setService(request.getRequestedService());
@@ -50,7 +63,6 @@ public class AdminRequestService {
         ReservationModificationRequestEntity request = modificationRequestRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Request not found"));
 
-        // Send email about rejection
         ReservationEntity reservation = request.getReservation();
         CustomerEntity customer = reservation.getCustomer();
         ServiceEntity service = reservation.getService();

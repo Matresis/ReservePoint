@@ -21,7 +21,16 @@
 
     <p th:if="${errorModificationMessage}" class="error-message" th:text="${errorModificationMessage}"></p>
 
-    <button id="editButton" onclick="toggleEditSection()">Edit Reservation</button>
+    <!-- Confirmation Request Button (only shown if status is APPROVED) -->
+    <div th:if="${reservation.status == 'APPROVED'}">
+        <form method="post" th:action="@{/reservations/{id}/request-confirmation(id=${reservation.id})}">
+            <button type="submit">Confirm Reservation</button>
+        </form>
+    </div>
+
+    <button id="editButton" onclick="toggleEditSection()"
+            th:disabled="${reservation.status != 'CONFIRMED'}">Edit Reservation
+    </button>
 
     <div id="editSection" style="display: none;">
         <form method="post" th:action="@{/reservations/{id}/request-modification(id=${reservation.id})}">

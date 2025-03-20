@@ -14,6 +14,7 @@ public class EmailService {
 
     private final EmailConfig emailConfig;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MMM.yyyy, HH:mm");
+    private static String adminEmail = "reservepointtp@gmail.com";
 
     public EmailService(EmailConfig emailConfig) {
         this.emailConfig = emailConfig;
@@ -39,7 +40,7 @@ public class EmailService {
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
-        emailConfig.sendEmail("reservepointtp@gmail.com", "New Reservation Request", adminEmailContent);
+        emailConfig.sendEmail(adminEmail, "New Reservation Request", adminEmailContent);
     }
 
     @Transactional
@@ -48,10 +49,11 @@ public class EmailService {
         String customerEmailContent = emailConfig.generateStyledEmail(
                 "Dear " + customer.getUser().getName() + ",",
                 "<p>We are pleased to inform you that your reservation for <strong>" + service.getName() + "</strong> has been approved.</p>",
-                "<p>We scheduled your reservation on: <strong>" + reservation.getOrderedTime() + "</strong></p><br>"
-                        + "<p>If you have any questions or the scheduled time does not comply, please contact us.</p>",
+                "<p>We scheduled your reservation on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong></p><br>"
+                        + "<p>If you have any questions or the scheduled time does not comply, please contact us.</p>"
+                        + "<p>If the scheduled time complies, please visit our website and confirm your reservation.</p>",
                 "View Reservation",
-                "http://localhost:8080/reservations"
+                "http://localhost:8080/reservations" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -66,8 +68,8 @@ public class EmailService {
                 "<p>Your appointment is set for: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong></p><br>"
                         + "<p>If you have any questions or need to make changes, please contact us.</p><br>"
                         + "<p>We look forward to serving you!</p>",
-                "View Reservation Details",
-                "http://localhost:8080/reservations"
+                "View Reservation",
+                "http://localhost:8080/reservations" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -104,7 +106,32 @@ public class EmailService {
     }
 
 
+
+
     // TODO: modify the request viewing for specific reservation (when going from the email => highlight the request specific from that email)
+
+    public void sendReservationConfirmationRequestEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
+        String subject = "Reservation Confirmation Request: " + service.getName();
+        String customerEmailContent = emailConfig.generateStyledEmail(
+                "Dear " + customer.getUser().getName() + ",",
+                "<p>Your request to confirm your reservation scheduled on: <strong> " + reservation.getOrderedTime().format(DATE_FORMATTER) + "for <strong>" + service.getName() + "</strong> has been sent.</p>",
+                "You will be informed of the result once your request is processed.",
+                "View Reservation",
+                "http://localhost:8080/reservations" + reservation.getId()
+        );
+
+        String adminEmailContent = emailConfig.generateStyledEmail(
+                "New Reservation Confirmation Request",
+                "A request for reservation confirmation has been made by <strong>" + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong>.",
+                "Service: <strong>" + service.getName() + "</strong><br>"
+                        + "Scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong>",
+                "View Reservation",
+                "http://localhost:8080/admin/reservation" + reservation.getId()
+        );
+
+        emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
+        emailConfig.sendEmail(adminEmail, subject, adminEmailContent);
+    }
 
     @Transactional
     public void sendReservationModificationRequestEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
@@ -121,19 +148,20 @@ public class EmailService {
                         + "</ul><br>"
                         + "You will be informed of the result once your request is processed.",
                 "View Reservation",
-                "http://localhost:8080/reservations"
+                "http://localhost:8080/reservations" + reservation.getId()
         );
 
         String adminEmailContent = emailConfig.generateStyledEmail(
                 "New Reservation Modification Request",
                 "A request for reservation modification has been made by <strong>" + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong>.",
-                "Service: <strong>" + service.getName() + "</strong>",
+                "Service: <strong>" + service.getName() + "</strong><br>"
+                        + "Scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong>",
                 "Review Request",
                 "http://localhost:8080/admin/requests/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
-        emailConfig.sendEmail("reservepointtp@gmail.com", subject, adminEmailContent);
+        emailConfig.sendEmail(adminEmail, subject, adminEmailContent);
     }
 
     @Transactional
@@ -146,20 +174,21 @@ public class EmailService {
                 "Reason for cancellation: <strong>" + reason + "</strong><br>"
                         + "You will be informed of the result once your request is processed.",
                 "View Reservation",
-                "http://localhost:8080/reservations"
+                "http://localhost:8080/reservations" + reservation.getId()
         );
 
         String adminEmailContent = emailConfig.generateStyledEmail(
                 "New Reservation Cancellation Request",
                 "A request for reservation cancellation has been made by <strong>" + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong>.",
                 "Service: <strong>" + service.getName() + "</strong><br>"
+                        + "Scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong>"
                         + "Reason: <strong>" + reason + "</strong>",
                 "Review Request",
                 "http://localhost:8080/admin/requests/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
-        emailConfig.sendEmail("reservepointtp@gmail.com", subject, adminEmailContent);
+        emailConfig.sendEmail(adminEmail, subject, adminEmailContent);
     }
 
     @Transactional
@@ -175,7 +204,7 @@ public class EmailService {
                         + "<li><strong>Notes:</strong> " + reservation.getNotes() + "</li>"
                         + "</ul>",
                 "View Reservation",
-                "http://localhost:8080/reservations"
+                "http://localhost:8080/reservations" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -195,7 +224,7 @@ public class EmailService {
                         + "</ul><br>"
                         + "<p>If you have any questions, please contact us.</p>",
                 "View Reservation",
-                "http://localhost:8080/reservations"
+                "http://localhost:8080/reservations" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);

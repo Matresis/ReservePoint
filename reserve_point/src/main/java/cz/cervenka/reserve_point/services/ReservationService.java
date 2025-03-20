@@ -103,6 +103,17 @@ public class ReservationService {
     }
 
     @Transactional
+    public void requestReservationConfirmation(ReservationEntity reservation) {
+        reservation.setStatus(ReservationEntity.Status.PENDING_CONFIRMATION);
+        reservationRepository.save(reservation);
+
+        CustomerEntity customer = reservation.getCustomer();
+        ServiceEntity service = reservation.getService();
+
+        emailService.sendReservationConfirmationRequestEmail(reservation, customer, service);
+    }
+
+    @Transactional
     public void requestReservationModification(Long reservationId, String newNotes, ServiceEntity newService, LocalDateTime newOrderTime) {
         ReservationEntity reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
