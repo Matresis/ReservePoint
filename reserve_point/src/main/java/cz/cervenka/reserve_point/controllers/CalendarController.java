@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/admin/reservations/calendar")
+@RequestMapping("/admin/calendar")
 public class CalendarController {
 
     private final ReservationRepository reservationRepository;
@@ -66,7 +66,7 @@ public class CalendarController {
             reservationRepository.save(reservation);
         }
 
-        return "redirect:/admin/reservations/calendar";
+        return "redirect:/admin/calendar";
     }
 
     @GetMapping("/{id}")
@@ -114,10 +114,10 @@ public class CalendarController {
 
         ReservationEntity updatedReservation = reservationService.updateReservation(id, orderedTime, notes);
         if (updatedReservation == null) {
-            return "redirect:/admin/reservations/calendar";
+            return "redirect:/admin/calendar";
         }
 
-        return "redirect:/admin/reservations/calendar" + id;
+        return "redirect:/admin/calendar" + id;
     }
 
     @PostMapping("/remove-from-calendar")

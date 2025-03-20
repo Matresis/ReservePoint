@@ -85,6 +85,6 @@ public class AdminReservationController {
 
     @PostMapping("/calendar")
     public String showCalendar() {
-        return "redirect:/admin/reservations/calendar";
+        return "redirect:/admin/calendar";
     }
 }

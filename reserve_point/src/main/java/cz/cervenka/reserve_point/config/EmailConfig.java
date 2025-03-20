@@ -8,10 +8,10 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
-public class EmailConfigService {
+public class EmailConfig {
     private final JavaMailSender mailSender;
 
-    public EmailConfigService(JavaMailSender mailSender) {
+    public EmailConfig(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 

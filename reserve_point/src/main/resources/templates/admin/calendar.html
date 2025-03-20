@@ -31,12 +31,10 @@
         <p><strong>Reserved Date:</strong> <span id="popup-date"></span></p>
         <p><strong>Note:</strong> <span id="popup-notes"></span></p>
 
-        <!-- Edit Button -->
         <button id="editButton" onclick="toggleEditSection()">Edit Reservation</button>
 
-        <!-- Edit Form (Initially Hidden) -->
         <div id="popup-editSection" style="display: none;">
-            <form id="editForm" action="/admin/reservations/calendar/update" method="post">
+            <form id="editForm" action="/admin/calendar/update" method="post">
                 <input type="hidden" name="id" id="edit-id">
 
                 <label for="edit-orderedTime">Ordered Time:</label>
@@ -49,7 +47,7 @@
             </form>
         </div>
 
-        <form id="removeFromCalendarForm" action="/admin/reservations/calendar/remove-from-calendar" method="post">
+        <form id="removeFromCalendarForm" action="/admin/calendar/remove-from-calendar" method="post">
             <input type="hidden" name="id" id="cal-delete-id">
             <button type="submit" class="delete-option">Remove from Calendar</button>
         </form>

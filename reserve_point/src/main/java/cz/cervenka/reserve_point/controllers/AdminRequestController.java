@@ -24,7 +24,6 @@ public class AdminRequestController {
     private final AdminRequestService requestService;
     private final ReservationModificationRequestRepository modificationRequestRepository;
     private final ReservationCancellationRequestRepository cancellationRequestRepository;
-    public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     private final ReservationRepository reservationRepository;
 
     public AdminRequestController(AdminRequestService requestService, ReservationModificationRequestRepository modificationRequestRepository, ReservationCancellationRequestRepository cancellationRequestRepository, ReservationRepository reservationRepository) {
@@ -55,18 +54,18 @@ public class AdminRequestController {
     @PostMapping("/{id}/approve-modification")
     public String approveModification(@PathVariable Long id) {
         requestService.approveModificationRequest(id);
-        return "redirect:/admin/reservations";
+        return "redirect:/admin/requests";
     }
 
     @PostMapping("/{id}/reject-modification")
     public String rejectModification(@PathVariable Long id) {
         requestService.rejectModificationRequest(id);
-        return "redirect:/admin/reservations";
+        return "redirect:/admin/requests";
     }
 
     @PostMapping("/{id}/approve-cancellation")
     public String approveCancellation(@PathVariable Long id) {
         requestService.approveCancellation(id);
-        return "redirect:/admin/reservations";
+        return "redirect:/admin/requests";
     }
 }

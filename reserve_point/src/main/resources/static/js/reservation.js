@@ -49,5 +49,5 @@ function closePopup() {
 
 function goToCalendar() {
     sessionStorage.setItem("fromReservationPage", "true");
-    window.location.href = "/admin/reservations/calendar";
+    window.location.href = "/admin/calendar";
 }

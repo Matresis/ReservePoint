@@ -50,7 +50,7 @@
         <button type="submit" id="deleteButton" onclick="return confirm('Are you sure?')">Delete Reservation</button>
     </form>
 
-    <form id="addToCalendarForm" th:action="@{/admin/reservations/calendar/add-event}" method="post">
+    <form id="addToCalendarForm" th:action="@{/admin/calendar/add-event}" method="post">
         <input type="hidden" name="id" th:value="${reservation.id}">
         <button type="button" id="addToCalendarButton" onclick="submitForm()">Add to Calendar</button>
     </form>
