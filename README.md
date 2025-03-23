@@ -52,7 +52,55 @@
 	- Edit some information of reservation and change the state of reservation (PENDING, CONFIRMED, CANCELED)
 	- Delete the reservation completely
 	- Add CONFIRMED reservation into application's **calendar**
-- 
+
+---
+
+### Email Communication System
+
+The ReservePoint system uses an automated email notification system to facilitate communication between users and administrators regarding reservation requests, approvals, modifications, and cancellations.
+
+#### 1. User Reservation Flow with Emails
+When a user makes a reservation, the system sends automated emails to both the user and the administrator:
+
+- **User Confirmation Email**:
+	- The user receives an email confirming that their reservation request has been submitted.
+	- The email includes details of the reservation and a unique reservation ID.
+
+- **Admin Notification Email**:
+	- The admin receives an email notifying them of a new reservation request.
+	- The email contains a direct link to the reservation details page, where the admin can approve or reject the request.
+
+#### 2. Admin Response and Notifications
+Once the admin reviews the reservation request, they take one of the following actions:
+
+- **Approval Process**:
+	- If the admin **approves** the reservation, the system updates the database and sends an email to the user confirming the approval.
+
+- **Rejection Process**:
+	- If the admin **rejects** the reservation, they must provide a reason.
+	- The system then sends an email to the user, informing them of the rejection and including the explanation given by the admin.
+
+#### 3. User-Initiated Requests
+Users can make additional requests related to their reservation after it has been approved.
+
+- **Request for Confirmation**:
+	- After approval, the user can request an additional confirmation from the admin.
+	- The admin receives an email notification about the request.
+	- The request appears on the admin’s request management page.
+
+- **Modification Request**:
+	- Users can request changes to their reservation (e.g., changing time or service type).
+	- The admin receives an email with details of the requested modification.
+	- The admin can approve or deny the request, and the user receives an email with the decision.
+
+- **Cancellation Request**:
+	- Users can request to cancel their reservation.
+	- The admin is notified via email and can approve or reject the cancellation.
+	- If approved, the user receives a cancellation confirmation email.
+
+#### 4. Email Content and Templates
+Each email contains relevant details and direct links to the reservation page for quick actions. The email system ensures smooth communication, reducing delays in handling reservations.
+
 
 **View calendar:**
 - Admin can view calendar of the reservation system.
