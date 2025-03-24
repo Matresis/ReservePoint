@@ -2,12 +2,9 @@ package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.UserEntity;
 import cz.cervenka.reserve_point.services.AuthService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @Controller
 public class AuthController {
@@ -21,7 +18,7 @@ public class AuthController {
     @GetMapping("/registerForm")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new UserEntity());
-        return "registerForm";
+        return "auth/registerForm";
     }
 
     @PostMapping("/register")
@@ -43,12 +40,12 @@ public class AuthController {
             return "redirect:/loginForm";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", "Fields cannot be left empty.");
-            return "registerForm";
+            return "auth/registerForm";
         }
     }
 
     @GetMapping("/loginForm")
     public String showLoginForm() {
-        return "loginForm";
+        return "auth/loginForm";
     }
 }
