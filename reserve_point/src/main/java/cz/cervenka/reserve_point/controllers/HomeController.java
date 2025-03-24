@@ -30,7 +30,7 @@ public class HomeController {
 
     @GetMapping
     public String redirectToLogin() {
-        return "loginForm";
+        return "auth/loginForm";
     }
 
     @PostMapping("/logout")
