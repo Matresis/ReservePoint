@@ -109,7 +109,7 @@ Each email contains relevant details and direct links to the reservation page fo
 ## Technologies Used
 
 | Technology                             | Purpose                                                  |
-| -------------------------------------- | -------------------------------------------------------- |
+|----------------------------------------|----------------------------------------------------------|
 | **Spring Boot**                        | Backend framework for handling requests & business logic |
 | **Spring Security**                    | Manages authentication & user access                     |
 | **Thymeleaf**                          | Server-side templating engine for rendering views        |
@@ -124,7 +124,7 @@ Each email contains relevant details and direct links to the reservation page fo
 ### 1. `customer_entity`
 
 | Column Name  | Data Type      | Constraints                                    |
-| ------------ | -------------- | ---------------------------------------------- |
+|--------------|----------------|------------------------------------------------|
 | `id`         | `INT` (PK)     | Auto-increment, Primary Key                    |
 | `address`    | `VARCHAR(255)` | Nullable                                       |
 | `created_at` | `DATETIME(6)`  | Not null                                       |
@@ -136,7 +136,7 @@ Each email contains relevant details and direct links to the reservation page fo
 ### 2. `reservation_entity`
 
 | Column Name        | Data Type                                  | Constraints                                |
-| ------------------ | ------------------------------------------ | ------------------------------------------ |
+|--------------------|--------------------------------------------|--------------------------------------------|
 | `id`               | `BIGINT` (PK)                              | Auto-increment, Primary Key                |
 | `created_at`       | `DATETIME(6)`                              | Not null                                   |
 | `reservation_date` | `DATE`                                     | Not null                                   |
@@ -151,7 +151,7 @@ Each email contains relevant details and direct links to the reservation page fo
 ### 3. `service_entity`
 
 | Column Name   | Data Type      | Constraints                 |
-| ------------- | -------------- | --------------------------- |
+|---------------|----------------|-----------------------------|
 | `id`          | `INT` (PK)     | Auto-increment, Primary Key |
 | `description` | `VARCHAR(255)` | Not null                    |
 | `name`        | `VARCHAR(255)` | Not null                    |
@@ -162,7 +162,7 @@ Each email contains relevant details and direct links to the reservation page fo
 ### 4. `user_entity`
 
 | Column Name  | Data Type               | Constraints                 |
-| ------------ | ----------------------- | --------------------------- |
+|--------------|-------------------------|-----------------------------|
 | `id`         | `INT` (PK)              | Auto-increment, Primary Key |
 | `created_at` | `DATETIME(6)`           | Not null                    |
 | `email`      | `VARCHAR(255)`          | Not null, Unique            |
