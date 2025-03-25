@@ -43,7 +43,7 @@ public class EmailService {
         emailConfig.sendEmail(adminEmail, "New Reservation Request", adminEmailContent);
     }
 
-    @Transactional
+    /*@Transactional
     public void sendReservationApprovalEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
         String subject = "Reservation Approved: " + service.getName();
         String customerEmailContent = emailConfig.generateStyledEmail(
@@ -57,7 +57,7 @@ public class EmailService {
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
-    }
+    }*/
 
     @Transactional
     public void sendReservationConfirmationEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
@@ -75,7 +75,7 @@ public class EmailService {
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
     }
 
-    @Transactional
+    /*@Transactional
     public void sendReservationRejectionEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service, String notes) {
         String subject = "Reservation Rejected: " + service.getName();
         String customerEmailContent = emailConfig.generateStyledEmail(
@@ -88,7 +88,7 @@ public class EmailService {
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
-    }
+    }*/
 
     @Transactional
     public void sendReservationCancellationEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service, String reason) {
@@ -106,8 +106,6 @@ public class EmailService {
     }
 
 
-
-
     // TODO: modify the request viewing for specific reservation (when going from the email => highlight the request specific from that email)
 
     public void sendReservationConfirmationRequestEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
@@ -115,7 +113,7 @@ public class EmailService {
         String customerEmailContent = emailConfig.generateStyledEmail(
                 "Dear " + customer.getUser().getName() + ",",
                 "<p>Your request to confirm your reservation scheduled on: <strong> " + reservation.getOrderedTime().format(DATE_FORMATTER) + "for <strong>" + service.getName() + "</strong> has been sent.</p>",
-                "You will be informed of the result once your request is processed.",
+                "You will be informed of the result once the request is processed.",
                 "View Reservation",
                 "http://localhost:8080/reservations" + reservation.getId()
         );
@@ -146,7 +144,7 @@ public class EmailService {
                         + "<li><strong>Date & Time:</strong> " + reservation.getOrderedTime().format(DATE_FORMATTER) + "</li>"
                         + "<li><strong>Notes:</strong> " + reservation.getNotes() + "</li>"
                         + "</ul><br>"
-                        + "You will be informed of the result once your request is processed.",
+                        + "You will be informed of the result once the request is processed.",
                 "View Reservation",
                 "http://localhost:8080/reservations/" + reservation.getId()
         );
@@ -172,7 +170,7 @@ public class EmailService {
                 "Dear " + customer.getUser().getName() + ",",
                 "<p>Your request to cancel your reservation scheduled on: <strong> " + reservation.getOrderedTime().format(DATE_FORMATTER) + "for <strong>" + service.getName() + "</strong> has been sent.</p>",
                 "Reason for cancellation: <strong>" + reason + "</strong><br>"
-                        + "You will be informed of the result once your request is processed.",
+                        + "You will be informed of the result once the request is processed.",
                 "View Reservation",
                 "http://localhost:8080/reservations/" + reservation.getId()
         );

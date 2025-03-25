@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const orderedTime = document.getElementById("edit-orderedTime").value;
         const notes = document.getElementById("edit-notes").value;
 
-        fetch("/admin/reservations/update", {
+        fetch("/admin/calendar/update", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"

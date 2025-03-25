@@ -17,11 +17,4 @@ public class ReservationCancellationRequestEntity {
     private ReservationEntity reservation;
 
     private String reason;
-
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.PENDING;
-
-    public enum Status {
-        PENDING, APPROVED
-    }
 }

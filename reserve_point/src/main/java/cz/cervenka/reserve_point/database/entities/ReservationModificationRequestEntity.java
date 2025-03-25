@@ -27,13 +27,6 @@ public class ReservationModificationRequestEntity {
 
     private LocalDateTime requestedOrderTime;
 
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.PENDING;
-
-    public enum Status {
-        PENDING, APPROVED, REJECTED
-    }
-
     @Transient
     private String formattedRequestedOrderTime;
 

@@ -107,8 +107,6 @@ public class ReservationService {
 
     @Transactional
     public void requestReservationConfirmation(Long reservationId) {
-        /*reservation.setStatus(ReservationEntity.Status.PENDING_CONFIRMATION);
-        reservationRepository.save(reservation);*/
         ReservationEntity reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
 

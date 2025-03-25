@@ -15,11 +15,4 @@ public class ReservationConfirmationRequestEntity {
     @ManyToOne
     @JoinColumn(name = "reservation_id", nullable = false)
     private ReservationEntity reservation;
-
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.PENDING;
-
-    public enum Status {
-        PENDING, APPROVED
-    }
 }

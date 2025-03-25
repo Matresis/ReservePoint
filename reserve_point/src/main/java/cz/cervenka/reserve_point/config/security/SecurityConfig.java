@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .loginPage("/loginForm")
                         .loginProcessingUrl("/login")
                         .successHandler(customSuccessHandler())
-                        .failureUrl("/loginForm?error=true")
+                        .failureUrl("/loginForm")
                         .permitAll()
                 )
                 .logout(logout -> logout

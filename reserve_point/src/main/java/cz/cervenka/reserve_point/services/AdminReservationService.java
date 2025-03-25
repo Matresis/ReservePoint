@@ -42,7 +42,7 @@ public class AdminReservationService {
         reservation.setNotes(notes);
         reservationRepository.save(reservation);
 
-        if (previousStatus == ReservationEntity.Status.PENDING && reservation.getStatus() == ReservationEntity.Status.APPROVED) {
+        /*if (previousStatus == ReservationEntity.Status.PENDING && reservation.getStatus() == ReservationEntity.Status.APPROVED) {
             emailService.sendReservationApprovalEmail(reservation, customer, service);
         }
         else if (reservation.getStatus() == ReservationEntity.Status.CONFIRMED) {
@@ -51,7 +51,7 @@ public class AdminReservationService {
         else if (reservation.getStatus() == ReservationEntity.Status.CANCELED) {
             emailService.sendReservationRejectionEmail(reservation, customer, service, notes);
             reservationRepository.deleteById(id);
-        }
+        }*/
         return reservation;
     }
 
