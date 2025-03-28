@@ -29,17 +29,17 @@ git clone https://github.com/Matresis/reservation-system.git
 cd reservation-system
 ```
 
-2. Ve složce `src/main/resources/` vytvořte soubor `application.properties`
+1. Ve složce `src/main/resources/` vytvořte soubor `application.properties`
 
-3. Nastavte databázové připojení v `application.properties`:
+2. Nastavte databázové připojení v `application.properties`:
 
-```ini
-spring.datasource.url=jdbc:mysql://<your-db-host>:3306/reserve_system
-spring.datasource.username=<your-username>
-spring.datasource.password=<your-password>
-```
+    ```ini
+    spring.datasource.url=jdbc:mysql://<your-db-host>:3306/reserve_system
+    spring.datasource.username=<your-username>
+    spring.datasource.password=<your-password>
+    ```
 
-4. Spusťte aplikaci pomocí Maven:
+3. Spusťte aplikaci pomocí Maven:
 
 ```bash
 mvn spring-boot:run
@@ -75,46 +75,46 @@ spring.mail.properties.mail.smtp.starttls.required=true
 
 ### 1. Uživatelé
 
-| HTTP Method | Endpoint        | Popis                           |
-|------------|----------------|--------------------------------|
-| **GET**    | `/loginForm`    | Přihlašovací formulář         |
-| **POST**   | `/register`     | Registrace uživatele          |
-| **GET**    | `/registerForm` | Zobrazení registračního formuláře |
-| **POST**   | `/logout`       | Odhlášení uživatele           |
+| HTTP Method | Endpoint        | Popis                             |
+|-------------|-----------------|-----------------------------------|
+| **GET**     | `/loginForm`    | Přihlašovací formulář             |
+| **POST**    | `/register`     | Registrace uživatele              |
+| **GET**     | `/registerForm` | Zobrazení registračního formuláře |
+| **POST**    | `/logout`       | Odhlášení uživatele               |
 
 ### 2. Rezervace
 
-| HTTP Method| Endpoint                                       | Popis                          |
-|------------|------------------------------------------------|--------------------------------|
-| **GET**    | `/home`                                        | Domovská stránka               |
-| **GET**    | `/reservations`                                | Seznam rezervací               |
-| **GET**    | `/reservations/{id}`                           | Detaily rezervace              |
-| **GET**    | `/reserveForm`                                 | Formulář na vytvoření rezervace|
-| **POST**   | `/make-reservation`                            | Vytvoření rezervace            |
-| **POST**   | `/reservations/{id}/request-cancellation`      | Žádost o zrušení rezervace     |
-| **POST**   | `/reservations/{id}/request-modification`      | Žádost o úpravu rezervace      |
-| **POST**   | `/reservations/{id}/request-confirmation`      | Žádost o potvrzení rezervace   |
+| HTTP Method | Endpoint                                  | Popis                           |
+|-------------|-------------------------------------------|---------------------------------|
+| **GET**     | `/home`                                   | Domovská stránka                |
+| **GET**     | `/reservations`                           | Seznam rezervací                |
+| **GET**     | `/reservations/{id}`                      | Detaily rezervace               |
+| **GET**     | `/reserveForm`                            | Formulář na vytvoření rezervace |
+| **POST**    | `/make-reservation`                       | Vytvoření rezervace             |
+| **POST**    | `/reservations/{id}/request-cancellation` | Žádost o zrušení rezervace      |
+| **POST**    | `/reservations/{id}/request-modification` | Žádost o úpravu rezervace       |
+| **POST**    | `/reservations/{id}/request-confirmation` | Žádost o potvrzení rezervace    |
 
 ### 3. Administrace
 
-| HTTP Method | Endpoint                                          | Popis                                    |
-|------------|--------------------------------------------------|-----------------------------------------|
-| **GET**    | `/admin`                                         | Admin panel                             |
-| **GET**    | `/admin/reservations`                            | Seznam rezervací pro admina             |
-| **POST**   | `/admin/reservations/delete`                     | Odstranění rezervace                    |
-| **POST**   | `/admin/reservations/update`                     | Aktualizace rezervace                   |
-| **GET**    | `/admin/calendar`                                | Zobrazení kalendáře                     |
-| **POST**   | `/admin/calendar/add-event`                      | Přidání události do kalendáře           |
-| **GET**    | `/admin/calendar/events`                         | Zobrazení všech událostí v kalendáři    |
-| **POST**   | `/admin/calendar/remove-from-calendar`           | Odebrání události z kalendáře           |
-| **POST**   | `/admin/calendar/update`                         | Aktualizace události v kalendáři        |
-| **GET**    | `/admin/calendar/{id}`                           | Zobrazení detailů konkrétní události    |
-| **GET**    | `/admin/requests`                                | Zobrazení seznamu žádostí               |
-| **POST**   | `/admin/requests/{id}/approve-cancellation`      | Schválení žádosti o zrušení rezervace   |
-| **POST**   | `/admin/requests/{id}/approve-confirmation`      | Schválení žádosti o potvrzení rezervace |
-| **POST**   | `/admin/requests/{id}/approve-modification`      | Schválení žádosti o úpravu rezervace    |
-| **POST**   | `/admin/requests/{id}/reject-confirmation`       | Zamítnutí žádosti o potvrzení rezervace |
-| **POST**   | `/admin/requests/{id}/reject-modification`       | Zamítnutí žádosti o úpravu rezervace    |
+| HTTP Method | Endpoint                                    | Popis                                   |
+|-------------|---------------------------------------------|-----------------------------------------|
+| **GET**     | `/admin`                                    | Admin panel                             |
+| **GET**     | `/admin/reservations`                       | Seznam rezervací pro admina             |
+| **POST**    | `/admin/reservations/delete`                | Odstranění rezervace                    |
+| **POST**    | `/admin/reservations/update`                | Aktualizace rezervace                   |
+| **GET**     | `/admin/calendar`                           | Zobrazení kalendáře                     |
+| **POST**    | `/admin/calendar/add-event`                 | Přidání události do kalendáře           |
+| **GET**     | `/admin/calendar/events`                    | Zobrazení všech událostí v kalendáři    |
+| **POST**    | `/admin/calendar/remove-from-calendar`      | Odebrání události z kalendáře           |
+| **POST**    | `/admin/calendar/update`                    | Aktualizace události v kalendáři        |
+| **GET**     | `/admin/calendar/{id}`                      | Zobrazení detailů konkrétní události    |
+| **GET**     | `/admin/requests`                           | Zobrazení seznamu žádostí               |
+| **POST**    | `/admin/requests/{id}/approve-cancellation` | Schválení žádosti o zrušení rezervace   |
+| **POST**    | `/admin/requests/{id}/approve-confirmation` | Schválení žádosti o potvrzení rezervace |
+| **POST**    | `/admin/requests/{id}/approve-modification` | Schválení žádosti o úpravu rezervace    |
+| **POST**    | `/admin/requests/{id}/reject-confirmation`  | Zamítnutí žádosti o potvrzení rezervace |
+| **POST**    | `/admin/requests/{id}/reject-modification`  | Zamítnutí žádosti o úpravu rezervace    |
 
 ---
 
@@ -226,51 +226,84 @@ Each email contains relevant details and direct links to the reservation page fo
 | **JavaScript (Optional Enhancements)** | Dynamic UI interactions, form validation                 |
 | **BCrypt**                             | Secure password hashing                                  |
 
-## Database Scheme
+## Database Schema
 
 ### 1. `customer_entity`
 
 | Column Name  | Data Type      | Constraints                                    |
 |--------------|----------------|------------------------------------------------|
-| `id`         | `INT` (PK)     | Auto-increment, Primary Key                    |
+| `id`         | `BIGINT` (PK)  | Auto-increment, Primary Key                    |
 | `address`    | `VARCHAR(255)` | Nullable                                       |
 | `created_at` | `DATETIME(6)`  | Not null                                       |
 | `phone`      | `VARCHAR(255)` | Not null                                       |
-| `user_id`    | `INT` (FK)     | Not null, Unique, References `user_entity(id)` |
+| `user_id`    | `BIGINT` (FK)  | Not null, Unique, References `user_entity(id)` |
 
 ---
 
 ### 2. `reservation_entity`
 
-| Column Name        | Data Type                                  | Constraints                                |
-|--------------------|--------------------------------------------|--------------------------------------------|
-| `id`               | `BIGINT` (PK)                              | Auto-increment, Primary Key                |
-| `created_at`       | `DATETIME(6)`                              | Not null                                   |
-| `reservation_date` | `DATE`                                     | Not null                                   |
-| `status`           | `ENUM('CANCELED', 'CONFIRMED', 'PENDING')` | Not null                                   |
-| `customer_id`      | `INT` (FK)                                 | Not null, References `customer_entity(id)` |
-| `service_id`       | `INT` (FK)                                 | Not null, References `service_entity(id)`  |
-| `ordered_time`     | `DATETIME(6)`                              | Nullable                                   |
-| `notes`            | `TEXT`                                     | Nullable                                   |
+| Column Name    | Data Type                                              | Constraints                                |
+|----------------|--------------------------------------------------------|--------------------------------------------|
+| `id`           | `BIGINT` (PK)                                          | Auto-increment, Primary Key                |
+| `created_at`   | `DATETIME(6)`                                          | Not null                                   |
+| `ordered_time` | `DATETIME(6)`                                          | Nullable                                   |
+| `notes`        | `TEXT`                                                 | Nullable                                   |
+| `status`       | `ENUM('APPROVED', 'CANCELED', 'CONFIRMED', 'PENDING')` | Not null                                   |
+| `customer_id`  | `BIGINT` (FK)                                          | Not null, References `customer_entity(id)` |
+| `service_id`   | `BIGINT` (FK)                                          | Not null, References `service_entity(id)`  |
 
 ---
 
-### 3. `service_entity`
+### 3. `reservation_cancellation_request_entity`
+
+| Column Name      | Data Type                     | Constraints                                   |
+|------------------|-------------------------------|-----------------------------------------------|
+| `id`             | `BIGINT` (PK)                 | Auto-increment, Primary Key                   |
+| `reason`         | `VARCHAR(255)`                | Nullable                                      |
+| `status`         | `ENUM('APPROVED', 'PENDING')` | Nullable                                      |
+| `reservation_id` | `BIGINT` (FK)                 | Not null, References `reservation_entity(id)` |
+
+---
+
+### 4. `reservation_confirmation_request_entity`
+
+| Column Name      | Data Type                     | Constraints                                   |
+|------------------|-------------------------------|-----------------------------------------------|
+| `id`             | `BIGINT` (PK)                 | Auto-increment, Primary Key                   |
+| `status`         | `ENUM('APPROVED', 'PENDING')` | Nullable                                      |
+| `reservation_id` | `BIGINT` (FK)                 | Not null, References `reservation_entity(id)` |
+
+---
+
+### 5. `reservation_modification_request_entity`
+
+| Column Name            | Data Type                                 | Constraints                                   |
+|------------------------|-------------------------------------------|-----------------------------------------------|
+| `id`                   | `BIGINT` (PK)                             | Auto-increment, Primary Key                   |
+| `requested_notes`      | `VARCHAR(255)`                            | Nullable                                      |
+| `requested_order_time` | `DATETIME(6)`                             | Nullable                                      |
+| `status`               | `ENUM('APPROVED', 'PENDING', 'REJECTED')` | Not null                                      |
+| `service_id`           | `BIGINT` (FK)                             | Not null, References `service_entity(id)`     |
+| `reservation_id`       | `BIGINT` (FK)                             | Not null, References `reservation_entity(id)` |
+
+---
+
+### 6. `service_entity`
 
 | Column Name   | Data Type      | Constraints                 |
 |---------------|----------------|-----------------------------|
-| `id`          | `INT` (PK)     | Auto-increment, Primary Key |
+| `id`          | `BIGINT` (PK)  | Auto-increment, Primary Key |
 | `description` | `VARCHAR(255)` | Not null                    |
 | `name`        | `VARCHAR(255)` | Not null                    |
 | `price`       | `DOUBLE`       | Not null                    |
 
 ---
 
-### 4. `user_entity`
+### 7. `user_entity`
 
 | Column Name  | Data Type               | Constraints                 |
 |--------------|-------------------------|-----------------------------|
-| `id`         | `INT` (PK)              | Auto-increment, Primary Key |
+| `id`         | `BIGINT` (PK)           | Auto-increment, Primary Key |
 | `created_at` | `DATETIME(6)`           | Not null                    |
 | `email`      | `VARCHAR(255)`          | Not null, Unique            |
 | `name`       | `VARCHAR(255)`          | Not null                    |
