@@ -1,5 +1,12 @@
 # Reservation Management System (ReservePoint)
 
+#### Author: Matěj Červenka
+#### School Project: Střední průmyslová škola elektrotechnická, Praha 2, Ječná 30
+#### Contact: 
+- matej.cervenka1106@gmail.com
+- [GitHub](https://github.com/Matresis)
+- [LinkedIn](https://www.linkedin.com/in/matejcervenka)
+
 ## Deployment Information
 
 - Deployed (Not currently active)
