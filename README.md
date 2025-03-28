@@ -11,6 +11,113 @@
 - It provides a user-friendly interface for users to register, log in, make reservations, and manage their bookings.
 - The system ensures secure authentication, real-time reservation tracking, and structured data storage with a MySQL database.
 
+---
+
+## Installation & Setup
+### Požadavky
+- **JDK 17+**
+- **MySQL 8+**
+- **Maven**
+- **Spring Boot**
+- **SMTP účet pro emailovou komunikaci**
+
+### Instalace
+1. Naklonujte tento repozitář:
+
+```bash
+git clone https://github.com/Matresis/reservation-system.git
+cd reservation-system
+```
+
+2. Ve složce `src/main/resources/` vytvořte soubor `application.properties`
+
+3. Nastavte databázové připojení v `application.properties`:
+
+```ini
+spring.datasource.url=jdbc:mysql://<your-db-host>:3306/reserve_system
+spring.datasource.username=<your-username>
+spring.datasource.password=<your-password>
+```
+
+4. Spusťte aplikaci pomocí Maven:
+
+```bash
+mvn spring-boot:run
+```
+- Aplikace poběží na http://localhost:8080/.
+
+---
+
+## Email Notification System
+- Rezervační systém používá SMTP pro automatizovanou emailovou komunikaci.
+
+### Konfigurace emailů
+V souboru `application.properties`:
+
+```ini
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=<your-email>
+spring.mail.password=<your-app-password>
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
+```
+### Odesílané emaily
+- **Potvrzení rezervace** – Po vytvoření rezervace uživatel obdrží email s detaily rezervace.
+- **Notifikace admina** – Admin dostane email o nové rezervaci.
+- **Schválení / Zamítnutí** – Admin schválí nebo zamítne rezervaci a uživatel obdrží email s informací.
+- **Požadavky na změny** – Požadavky na úpravy či zrušení rezervací jsou adminovi zasílány emailem.
+
+---
+
+## API Endpoints
+
+### 1. Uživatelé
+
+| HTTP Method | Endpoint        | Popis                           |
+|------------|----------------|--------------------------------|
+| **GET**    | `/loginForm`    | Přihlašovací formulář         |
+| **POST**   | `/register`     | Registrace uživatele          |
+| **GET**    | `/registerForm` | Zobrazení registračního formuláře |
+| **POST**   | `/logout`       | Odhlášení uživatele           |
+
+### 2. Rezervace
+
+| HTTP Method| Endpoint                                       | Popis                          |
+|------------|------------------------------------------------|--------------------------------|
+| **GET**    | `/home`                                        | Domovská stránka               |
+| **GET**    | `/reservations`                                | Seznam rezervací               |
+| **GET**    | `/reservations/{id}`                           | Detaily rezervace              |
+| **GET**    | `/reserveForm`                                 | Formulář na vytvoření rezervace|
+| **POST**   | `/make-reservation`                            | Vytvoření rezervace            |
+| **POST**   | `/reservations/{id}/request-cancellation`      | Žádost o zrušení rezervace     |
+| **POST**   | `/reservations/{id}/request-modification`      | Žádost o úpravu rezervace      |
+| **POST**   | `/reservations/{id}/request-confirmation`      | Žádost o potvrzení rezervace   |
+
+### 3. Administrace
+
+| HTTP Method | Endpoint                                          | Popis                                    |
+|------------|--------------------------------------------------|-----------------------------------------|
+| **GET**    | `/admin`                                         | Admin panel                             |
+| **GET**    | `/admin/reservations`                            | Seznam rezervací pro admina             |
+| **POST**   | `/admin/reservations/delete`                     | Odstranění rezervace                    |
+| **POST**   | `/admin/reservations/update`                     | Aktualizace rezervace                   |
+| **GET**    | `/admin/calendar`                                | Zobrazení kalendáře                     |
+| **POST**   | `/admin/calendar/add-event`                      | Přidání události do kalendáře           |
+| **GET**    | `/admin/calendar/events`                         | Zobrazení všech událostí v kalendáři    |
+| **POST**   | `/admin/calendar/remove-from-calendar`           | Odebrání události z kalendáře           |
+| **POST**   | `/admin/calendar/update`                         | Aktualizace události v kalendáři        |
+| **GET**    | `/admin/calendar/{id}`                           | Zobrazení detailů konkrétní události    |
+| **GET**    | `/admin/requests`                                | Zobrazení seznamu žádostí               |
+| **POST**   | `/admin/requests/{id}/approve-cancellation`      | Schválení žádosti o zrušení rezervace   |
+| **POST**   | `/admin/requests/{id}/approve-confirmation`      | Schválení žádosti o potvrzení rezervace |
+| **POST**   | `/admin/requests/{id}/approve-modification`      | Schválení žádosti o úpravu rezervace    |
+| **POST**   | `/admin/requests/{id}/reject-confirmation`       | Zamítnutí žádosti o potvrzení rezervace |
+| **POST**   | `/admin/requests/{id}/reject-modification`       | Zamítnutí žádosti o úpravu rezervace    |
+
+---
+
 ## Core Features
 
 ### User Authentication & Management
