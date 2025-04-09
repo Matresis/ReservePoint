@@ -38,59 +38,22 @@
     - poslání emailu potvrzujícího rezervaci na zadanou adresu uživatele ✅
     - poslání emailu na adresu admina ✅
 
-# Manipulace s rezervací
 
-- po vytvoření rezervace: ✅
-    - **STATUS:** `PENDING` ✅
-    - **OrderTime:** `null` ✅
-    - Zaslání emailu zákazníkovi o přijetí žádosti o rezervaci ✅
-    - Zaslání emailu správci o nové žádosti ✅
+## Authentication tokeny
 
+# MAIN TASKS
 
-- pro schválení rezervace:
-    - Nastavení **OrderTime** ✅
-    - Nastavení **STATUS** na `APPROVED` ✅
-    - Zaslání emailu zákazníkovi o schválení rezervace společně s návrhem **OrderTime** ✅
+## Pro APPROVE admin nastaví STATUS ručně (povinnost vyplnění OrderTime) -> zaslání emailu o schválení
+## Automatické přidání rezervace do kalendáře po schválení requestu pro potvrzení 
+## Hlídat datumy a časy v kalendáři aby nebylo možné schválit dvě rezervace na jeden čas
+## Při klikání usera na tlačítka pro request modifikací nebo potvrzení, napsat pod button důvod proč to nelze (rezervace není APPROVED / CONFIRMED)
+## Opravit zobrazení stránky z emailu
+## Stylování
 
+---
 
-- pro potvrzení rezervace:
-    - Nastavení finálního **OrderTime**
-    - Přidání rezervace do kalendáře
-    - Nastavení **STATUS** automaticky na `CONFIRMED`
-    - Zaslání emailu zákazníkovi o potvrzení a rekapitulací rezervace ✅
-
-
-- pro zamítnutí rezervace
-    - Nastavení **STATUS** na `CANCELED`
-    - Vyplnění důvodu v **Reason**
-    - Automatické smazání rezervaci z databáze
-    - Zaslání emailu zákazníkovi o zamítnutí rezervace ✅
-
-
-- zrušení rezervace po potvrzení
-    - Vyplnění důvodu v **Reason**
-    - Vymazání rezervace
-    - Zaslání emailu zákazníkovi o zrušení rezervace
-
-# Requesty
-
-- vytvoření requestu zákazníkem
-  1) **změna** v údajích rezervace (**note**, **orderTime**, **service**)
-  2) **zrušení** rezervace
-  - zaslání emailu oznamující podaný request zákazníkem 
-
-- manipulace requestu adminem
-  1) **potvrzení změny** v údajích
-  2) **zamítnutí**
-  3) **potvrzení** a následné **zrušení** rezervace
-  - zaslání emailu zákazníkovi o provedené akci
-
-# Pohlídání aby bylo možné nastavovat hodnoty rezervace podle stavu rezervace
-
-# Stylování
-# Celkové zabezpečení
-# Hlídání chyb
-# Authentication tokeny
+## Celkové zabezpečení
+## Hlídání chyb
 
 
 # Workflow

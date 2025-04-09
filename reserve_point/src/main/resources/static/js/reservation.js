@@ -24,25 +24,16 @@ function toggleModifySection() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const statusText = document.getElementById("statusText").innerText.trim();
-    const editButton = document.getElementById("editButton");
-
-    if (statusText !== "CONFIRMED") {
-        editButton.disabled = true;
-    }
-});
-
 function toggleDeleteSection() {
     const deleteSection = document.getElementById("deleteSection");
     const deleteButton = document.getElementById("deleteButton");
 
     if (deleteSection.style.display === "none") {
         deleteSection.style.display = "block";
-        deleteButton.textContent = "Cancel Edit";
+        deleteButton.textContent = "Cancel Delete";
     } else {
         deleteSection.style.display = "none";
-        deleteButton.textContent = "Edit Reservation";
+        deleteButton.textContent = "Delete Reservation";
     }
 }
 

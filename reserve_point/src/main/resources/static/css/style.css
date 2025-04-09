@@ -58,6 +58,21 @@ input, select, textarea {
     background-color: #da2b2b;
 }
 
+.deleteButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #ee3434;
+    color: #121212;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 20px 0 20px 0;
+}
+
+.deleteButton:hover {
+    background-color: #da2b2b;
+}
+
 #saveChangesButton {
     width: 100%;
     padding: 10px;

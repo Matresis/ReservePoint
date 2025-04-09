@@ -21,16 +21,15 @@
 
     <p th:if="${errorModificationMessage}" class="error-message" th:text="${errorModificationMessage}"></p>
 
-    <!-- Confirmation Request Button (only shown if status is APPROVED)
-    th:if="${reservation.status == 'APPROVED'}" -->
-    <div>
+    <!-- Confirmation Request Button (only shown if status is APPROVED) -->
+    <div id="confirmSection">
         <form method="post" th:action="@{/reservations/{id}/request-confirmation(id=${reservation.id})}">
-            <button type="submit">Confirm Reservation</button>
+            <button type="submit" th:disabled="${reservation.status.name() != 'APPROVED'}">Confirm Reservation</button>
         </form>
     </div>
 
     <button id="editButton" onclick="toggleEditSection()"
-            th:disabled="${reservation.status != 'CONFIRMED'}">Edit Reservation
+            th:disabled="${reservation.status.name != 'CONFIRMED'}">Edit Reservation
     </button>
 
     <div id="editSection" style="display: none;">
@@ -61,7 +60,7 @@
         <form method="post" th:action="@{/reservations/{id}/request-cancellation(id=${reservation.id})}">
             <label for="reason">Reason</label>
             <input type="text" id="reason" name="reason" placeholder="Reason" required>
-            <button type="submit" onclick="return confirm('Are you sure?')">Request Cancellation</button>
+            <button type="submit" class="deleteButton" onclick="return confirm('Are you sure?')">Request Cancellation</button>
         </form>
     </div>
 
