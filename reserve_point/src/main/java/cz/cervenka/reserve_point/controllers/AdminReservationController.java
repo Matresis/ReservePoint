@@ -76,6 +76,25 @@ public class AdminReservationController {
         return "redirect:/admin/reservations/" + id;
     }
 
+    @PostMapping("/approve")
+    public String approveReservation(
+            @RequestParam Long id,
+            @RequestParam(required = false) String orderedTime) {
+
+        ReservationEntity updatedReservation = reservationService.approveReservation(id, orderedTime);
+        if (updatedReservation == null) {
+            return "redirect:/admin/reservations";
+        }
+
+        return "redirect:/admin/reservations/" + id;
+    }
+
+    @PostMapping("/reject")
+    public String rejectReservation(@RequestParam Long id, @RequestParam(required = false) String notes) {
+        reservationService.rejectReservation(id, notes);
+        return "redirect:/admin/reservations";
+    }
+
     @PostMapping("/delete")
     public String deleteReservation(@RequestParam Long id, @RequestParam(required = false) String notes) {
         reservationService.deleteReservation(id, notes);

@@ -43,7 +43,7 @@ public class EmailService {
         emailConfig.sendEmail(adminEmail, "New Reservation Request", adminEmailContent);
     }
 
-    /*@Transactional
+    @Transactional
     public void sendReservationApprovalEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
         String subject = "Reservation Approved: " + service.getName();
         String customerEmailContent = emailConfig.generateStyledEmail(
@@ -57,7 +57,7 @@ public class EmailService {
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
-    }*/
+    }
 
     @Transactional
     public void sendReservationConfirmationEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
@@ -75,7 +75,7 @@ public class EmailService {
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
     }
 
-    /*@Transactional
+    @Transactional
     public void sendReservationRejectionEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service, String notes) {
         String subject = "Reservation Rejected: " + service.getName();
         String customerEmailContent = emailConfig.generateStyledEmail(
@@ -88,7 +88,7 @@ public class EmailService {
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
-    }*/
+    }
 
     @Transactional
     public void sendReservationCancellationEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service, String reason) {

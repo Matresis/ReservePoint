@@ -33,7 +33,9 @@ public class AdminReservationService {
         ServiceEntity service = reservation.getService();
 
         ReservationEntity.Status previousStatus = reservation.getStatus();
-        reservation.setStatus(ReservationEntity.Status.valueOf(status));
+        ReservationEntity.Status newStatus = ReservationEntity.Status.valueOf(status);
+
+        reservation.setStatus(newStatus);
 
         if (orderedTime != null && !orderedTime.isEmpty()) {
             reservation.setOrderedTime(LocalDateTime.parse(orderedTime));
@@ -41,18 +43,41 @@ public class AdminReservationService {
 
         reservation.setNotes(notes);
         reservationRepository.save(reservation);
-
-        /*if (previousStatus == ReservationEntity.Status.PENDING && reservation.getStatus() == ReservationEntity.Status.APPROVED) {
-            emailService.sendReservationApprovalEmail(reservation, customer, service);
-        }
-        else if (reservation.getStatus() == ReservationEntity.Status.CONFIRMED) {
-            emailService.sendReservationConfirmationEmail(reservation, customer, service);
-        }
-        else if (reservation.getStatus() == ReservationEntity.Status.CANCELED) {
-            emailService.sendReservationRejectionEmail(reservation, customer, service, notes);
-            reservationRepository.deleteById(id);
-        }*/
         return reservation;
+    }
+
+    @Transactional
+    public ReservationEntity approveReservation(Long id, String orderedTime) {
+        ReservationEntity reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
+
+        CustomerEntity customer = reservation.getCustomer();
+        ServiceEntity service = reservation.getService();
+
+        if (orderedTime != null && !orderedTime.isEmpty()) {
+            reservation.setOrderedTime(LocalDateTime.parse(orderedTime));
+        }
+
+        reservation.setStatus(ReservationEntity.Status.APPROVED);
+        reservationRepository.save(reservation);
+
+        emailService.sendReservationApprovalEmail(reservation, customer, service);
+
+        return reservation;
+    }
+
+    @Transactional
+    public void rejectReservation(Long id, String notes) {
+        ReservationEntity reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
+
+        CustomerEntity customer = reservation.getCustomer();
+        ServiceEntity service = reservation.getService();
+
+        reservation.setNotes(notes);
+
+        emailService.sendReservationRejectionEmail(reservation, customer, service, notes);
+        reservationRepository.deleteById(id);
     }
 
     @Transactional

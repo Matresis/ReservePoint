@@ -37,6 +37,20 @@ function toggleDeleteSection() {
     }
 }
 
+function toggleRejectSection() {
+    const rejectSection = document.getElementById("rejectSection");
+    const rejectButton = document.getElementById("rejectButton");
+
+    if (rejectSection.style.display === "none") {
+        rejectSection.style.display = "block";
+        rejectButton.textContent = "Cancel Reject";
+    } else {
+        rejectSection.style.display = "none";
+        rejectButton.textContent = "Reject Reservation";
+    }
+}
+
+
 function submitForm() {
     const form = document.getElementById("addToCalendarForm");
 

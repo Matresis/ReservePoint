@@ -19,9 +19,31 @@
     <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderTime}"></span></p>
     <p><strong>Note:</strong> <span id="notesText" th:text="${reservation.notes}"></span></p>
 
-    <button id="editButton" onclick="toggleEditSection()">Edit Reservation</button>
+    <button id="editButton" onclick="toggleEditSection()">Approve Reservation</button>
 
     <div id="editSection" style="display: none;">
+        <form th:action="@{/admin/reservations/approve}" method="post">
+            <input type="hidden" name="id" th:value="${reservation.id}">
+
+            <label for="orderedTime">Ordered Time:</label>
+            <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${formattedOrderTime}">
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <button id="rejectButton" class="deleteButton" onclick="toggleRejectSection()">Reject Reservation</button>
+
+    <div id="rejectSection" style="display: none;">
+        <form th:action="@{/admin/reservations/reject}" method="post">
+            <input type="hidden" name="id" th:value="${reservation.id}">
+            <label for="rejectNotes">Cancellation Reason:</label>
+            <textarea id="rejectNotes" name="notes" rows="2"></textarea>
+            <button type="submit" class="deleteButton" onclick="return confirm('Are you sure?')">Reject Reservation</button>
+        </form>
+    </div>
+
+    <!--<div id="editSection" style="display: none;">
         <form th:action="@{/admin/reservations/update}" method="post">
             <input type="hidden" name="id" th:value="${reservation.id}">
 
@@ -41,7 +63,7 @@
 
             <button type="submit">Save Changes</button>
         </form>
-    </div>
+    </div>-->
 
     <button id="deleteButton" onclick="toggleDeleteSection()">Delete Reservation</button>
     <div id="deleteSection" style="display: none;">
