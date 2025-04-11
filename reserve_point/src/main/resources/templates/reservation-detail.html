@@ -24,12 +24,13 @@
     <!-- Confirmation Request Button (only shown if status is APPROVED) -->
     <div id="confirmSection">
         <form method="post" th:action="@{/reservations/{id}/request-confirmation(id=${reservation.id})}">
-            <button type="submit" th:disabled="${reservation.status.name() != 'APPROVED'}">Confirm Reservation</button>
+            <button type="submit" th:hidden="${reservation.status.name() != 'APPROVED'}">Confirm Reservation</button>
         </form>
     </div>
 
     <button id="editButton" onclick="toggleEditSection()"
-            th:disabled="${reservation.status.name != 'CONFIRMED'}">Edit Reservation
+            th:hidden="${!(reservation.status.name == 'CONFIRMED' or reservation.status.name == 'APPROVED')}">
+        Edit Reservation
     </button>
 
     <div id="editSection" style="display: none;">

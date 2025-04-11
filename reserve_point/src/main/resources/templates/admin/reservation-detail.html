@@ -19,20 +19,24 @@
     <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderTime}"></span></p>
     <p><strong>Note:</strong> <span id="notesText" th:text="${reservation.notes}"></span></p>
 
-    <button id="editButton" onclick="toggleEditSection()">Approve Reservation</button>
+    <button id="approveButton" onclick="toggleApproveSection()" th:hidden="${reservation.status.name() != 'PENDING'}">
+        Approve Reservation
+    </button>
 
-    <div id="editSection" style="display: none;">
+    <div id="approveSection" style="display: none;">
         <form th:action="@{/admin/reservations/approve}" method="post">
             <input type="hidden" name="id" th:value="${reservation.id}">
 
             <label for="orderedTime">Ordered Time:</label>
             <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${formattedOrderTime}">
 
-            <button type="submit">Save Changes</button>
+            <button type="submit">Approve Reservation</button>
         </form>
     </div>
 
-    <button id="rejectButton" class="deleteButton" onclick="toggleRejectSection()">Reject Reservation</button>
+    <button id="rejectButton" class="deleteButton" onclick="toggleRejectSection()" th:hidden="${reservation.status.name() != 'PENDING'}">
+        Reject Reservation
+    </button>
 
     <div id="rejectSection" style="display: none;">
         <form th:action="@{/admin/reservations/reject}" method="post">
@@ -65,19 +69,23 @@
         </form>
     </div>-->
 
-    <button id="deleteButton" onclick="toggleDeleteSection()">Delete Reservation</button>
+    <button id="deleteButton" onclick="toggleDeleteSection()" th:hidden="${reservation.status.name() == 'PENDING'}">Delete Reservation</button>
     <div id="deleteSection" style="display: none;">
         <form th:action="@{/admin/reservations/delete}" method="post">
             <input type="hidden" name="id" th:value="${reservation.id}">
             <label for="deleteNotes">Cancellation Reason:</label>
             <textarea id="deleteNotes" name="notes" rows="2"></textarea>
-            <button type="submit" class="deleteButton" onclick="return confirm('Are you sure?')">Delete Reservation</button>
+            <button type="submit" class="deleteButton" onclick="return confirm('Are you sure?')">
+                Delete Reservation
+            </button>
         </form>
     </div>
 
     <form id="addToCalendarForm" th:action="@{/admin/calendar/{id}(id=${reservation.id})}" method="post">
         <input type="hidden" name="id" th:value="${reservation.id}">
-        <button type="button" id="addToCalendarButton" onclick="submitForm()">View in Calendar</button>
+        <button type="button" id="addToCalendarButton" onclick="submitForm()" th:hidden="${reservation.status.name() == 'PENDING'}">
+            View in Calendar
+        </button>
     </form>
 
     <a href="/admin/reservations" class="button">Back to Reservations</a>

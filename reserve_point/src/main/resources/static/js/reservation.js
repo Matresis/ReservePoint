@@ -50,6 +50,19 @@ function toggleRejectSection() {
     }
 }
 
+function toggleApproveSection() {
+    const approveSection = document.getElementById("approveSection");
+    const approveButton = document.getElementById("approveButton");
+
+    if (approveSection.style.display === "none") {
+        approveSection.style.display = "block";
+        approveButton.textContent = "Cancel Approval";
+    } else {
+        approveSection.style.display = "none";
+        approveButton.textContent = "Approve Reservation";
+    }
+}
+
 
 function submitForm() {
     const form = document.getElementById("addToCalendarForm");
