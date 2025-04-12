@@ -6,6 +6,18 @@
     <title>Reservations</title>
 </head>
 <body>
+
+<header>
+    <h1 class="site-title">Reservation Manager</h1>
+    <nav class="nav-bar">
+        <ul class="nav-options">
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/reservations">Reservations</a></li>
+            <li><a href="/requests">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
 <div class="reservations-container">
     <h1>List of Reservations</h1>
 
@@ -27,32 +39,25 @@
         <button type="submit">Apply Filters</button>
     </form>
 
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Service Type</th>
-            <th>Created At</th>
-            <th>Actions</th>
-        </tr>
+    <div class="card-grid">
         <th:block th:each="reservation : ${reservations}">
-            <tr>
-                <td th:text="${reservation.customer.user.name}"></td>
-                <td th:text="${reservation.customer.user.surname}"></td>
-                <td th:text="${reservation.customer.user.email}"></td>
-                <td th:text="${reservation.customer.phone}"></td>
-                <td th:text="${reservation.service.name}"></td>
-                <td th:text="${reservation.formattedCreatedAt}"></td>
-                <td>
-                    <a th:href="@{/admin/reservations/{id}(id=${reservation.id})}" class="button">View Details</a>
-                </td>
-            </tr>
+            <a th:href="@{/admin/reservations/{id}(id=${reservation.id})}" class="reservation-card-link">
+                <div class="reservation-card" th:attr="data-status=${reservation.status}">
+                    <div class="card-content">
+                        <h3 th:text="${reservation.customer.user.name + ' ' + reservation.customer.user.surname}"></h3>
+                        <p><strong>Email:</strong> <span th:text="${reservation.customer.user.email}"></span></p>
+                        <p><strong>Phone:</strong> <span th:text="${reservation.customer.phone}"></span></p>
+                        <p><strong>Service:</strong> <span th:text="${reservation.service.name}"></span></p>
+                        <p><strong>Created:</strong> <span th:text="${reservation.formattedCreatedAt}"></span></p>
+                        <p><strong>Status:</strong> <span th:text="${reservation.status}"></span></p>
+                    </div>
+                    <p class="button">View Details</p>
+                </div>
+            </a>
         </th:block>
-    </table>
+    </div>
 
-    <a href="/admin" id="return-button" class="button">Back to Home</a>
+    <a href="/admin" id="return-button">Back to Home</a>
 </div>
 <script th:src="@{/js/filterForm.js}"></script>
 </body>
