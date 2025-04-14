@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" th:href="@{/img/logo.png}" sizes="32x32" type="image/x-icon">
     <title>Weekly Reservation Calendar</title>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 </head>
 <body>
-<h1>Reservation Calendar</h1>
+
+<header>
+    <h1 class="site-title">Reservation Calendar</h1>
+    <nav class="nav-bar">
+        <ul class="nav-options">
+            <li><a href="/admin">Dashboard</a></li>
+            <li><a href="/admin/reservations">Reservations</a></li>
+            <li><a href="/admin/requests">Requests</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
 <div id="calendar"></div>
 
 <div class="return-container">

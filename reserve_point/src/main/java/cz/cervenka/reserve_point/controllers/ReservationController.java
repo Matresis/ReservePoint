@@ -30,16 +30,21 @@ public class ReservationController {
     }
 
     @GetMapping()
-    public String getUserReservations(Authentication authentication, Model model) {
+    public String getUserReservations(@RequestParam(required = false) String name,
+                                      @RequestParam(required = false) String surname,
+                                      @RequestParam(required = false) String date,
+                                      @RequestParam(required = false) String serviceType,
+                                      Authentication authentication, Model model) {
         Optional<CustomerEntity> customerOpt = reservationService.getAuthenticatedCustomer(authentication);
         if (customerOpt.isEmpty()) {
             return "redirect:/home";
         }
 
-        List<ReservationEntity> reservations = reservationService.getUserReservations(customerOpt.get());
+        List<ReservationEntity> reservations = reservationService.getFilteredUserReservations(customerOpt.get(), name, surname, date, serviceType);
 
         model.addAttribute("reservations", reservations);
         model.addAttribute("customer", customerOpt.get());
+        model.addAttribute("services", serviceRepository.findAll());
         return "reservations";
     }
 

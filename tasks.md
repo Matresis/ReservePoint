@@ -42,16 +42,12 @@
 
 # MAIN TASKS
 
-## Pro APPROVE admin klikne na tlačítko Approve (povinnost vyplnění OrderTime) -> zaslání emailu o schválení
-## Pro zamítnutí admin klikne na tlačítko REJECT (povinnost vyplnění důvodu) -> zaslání emailu o zamítnutí
-
 ## Automatické přidání rezervace do kalendáře po schválení requestu pro potvrzení
 ## Hlídat datumy a časy v kalendáři aby nebylo možné schválit dvě rezervace na jeden čas
 
 ## Při klikání usera na tlačítka pro request modifikací nebo potvrzení, napsat pod button důvod proč to nelze (rezervace není APPROVED / CONFIRMED)
 
 ## Opravit zobrazení stránky z emailu
-## Stylování
 ## Authentication tokeny
 
 ---

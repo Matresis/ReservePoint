@@ -3,101 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" th:href="@{/img/logo.png}" sizes="32x32" type="image/x-icon">
     <title>Reservation Details</title>
 </head>
 <body>
-<div class="container">
-    <h1>Reservation Details</h1>
 
-    <p><strong>Name:</strong> <span th:text="${reservation.customer.user.name}"></span></p>
-    <p><strong>Surname:</strong> <span th:text="${reservation.customer.user.surname}"></span></p>
-    <p><strong>Email:</strong> <span th:text="${reservation.customer.user.email}"></span></p>
-    <p><strong>Phone:</strong> <span th:text="${reservation.customer.phone}"></span></p>
-    <p><strong>Service Type:</strong> <span th:text="${reservation.service.name}"></span></p>
-    <p><strong>Created At:</strong> <span th:text="${formattedCreatedAt}"></span></p>
-    <p><strong>Status:</strong> <span id="statusText" th:text="${reservation.status}"></span></p>
-    <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderTime}"></span></p>
-    <p><strong>Note:</strong> <span id="notesText" th:text="${reservation.notes}"></span></p>
+<header>
+    <h1 class="site-title">Reservation Details</h1>
+    <nav class="nav-bar">
+        <ul class="nav-options">
+            <li><a href="/admin">Dashboard</a></li>
+            <li><a href="/admin/reservations">Reservations</a></li>
+            <li><a href="/admin/requests">Requests</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <button id="approveButton" onclick="toggleApproveSection()" th:hidden="${reservation.status.name() != 'PENDING'}">
-        Approve Reservation
-    </button>
+<div class="page-container">
+    <div class="left-container">
+        <h1>Reservation Details</h1>
 
-    <div id="approveSection" style="display: none;">
-        <form th:action="@{/admin/reservations/approve}" method="post">
-            <input type="hidden" name="id" th:value="${reservation.id}">
-
-            <label for="orderedTime">Ordered Time:</label>
-            <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${formattedOrderTime}">
-
-            <button type="submit">Approve Reservation</button>
-        </form>
+        <p><strong>Name:</strong> <span th:text="${reservation.customer.user.name}"></span></p>
+        <p><strong>Surname:</strong> <span th:text="${reservation.customer.user.surname}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${reservation.customer.user.email}"></span></p>
+        <p><strong>Phone:</strong> <span th:text="${reservation.customer.phone}"></span></p>
+        <p><strong>Service Type:</strong> <span th:text="${reservation.service.name}"></span></p>
+        <p><strong>Created At:</strong> <span th:text="${formattedCreatedAt}"></span></p>
+        <p><strong>Status:</strong> <span id="statusText" th:text="${reservation.status}"></span></p>
+        <p><strong>Reserved Date:</strong> <span id="orderedTimeText" th:text="${formattedOrderTime}"></span></p>
+        <p><strong>Note:</strong> <span id="notesText" th:text="${reservation.notes}"></span></p>
     </div>
 
-    <button id="rejectButton" class="deleteButton" onclick="toggleRejectSection()" th:hidden="${reservation.status.name() != 'PENDING'}">
-        Reject Reservation
-    </button>
+    <div class="right-container">
+        <button id="approveButton" onclick="toggleApproveSection()" th:hidden="${reservation.status.name() != 'PENDING'}">
+            Approve Reservation
+        </button>
 
-    <div id="rejectSection" style="display: none;">
-        <form th:action="@{/admin/reservations/reject}" method="post">
+        <div id="approveSection" style="display: none;">
+            <form th:action="@{/admin/reservations/approve}" method="post">
+                <input type="hidden" name="id" th:value="${reservation.id}">
+
+                <label for="orderedTime">Ordered Time:</label>
+                <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${formattedOrderTime}">
+
+                <button type="submit">Approve Reservation</button>
+            </form>
+        </div>
+
+        <button id="rejectButton" class="deleteButton" onclick="toggleRejectSection()" th:hidden="${reservation.status.name() != 'PENDING'}">
+            Reject Reservation
+        </button>
+
+        <div id="rejectSection" style="display: none;">
+            <form th:action="@{/admin/reservations/reject}" method="post">
+                <input type="hidden" name="id" th:value="${reservation.id}">
+                <label for="rejectNotes">Cancellation Reason:</label>
+                <textarea id="rejectNotes" name="notes" rows="2"></textarea>
+                <button type="submit" class="deleteButton" onclick="return confirm('Are you sure?')">Reject Reservation</button>
+            </form>
+        </div>
+
+        <button id="deleteButton" onclick="toggleDeleteSection()" th:hidden="${reservation.status.name() == 'PENDING'}">Delete Reservation</button>
+        <div id="deleteSection" style="display: none;">
+            <form th:action="@{/admin/reservations/delete}" method="post">
+                <input type="hidden" name="id" th:value="${reservation.id}">
+                <label for="deleteNotes">Cancellation Reason:</label>
+                <textarea id="deleteNotes" name="notes" rows="2"></textarea>
+                <button type="submit" class="deleteButton" onclick="return confirm('Are you sure?')">
+                    Delete Reservation
+                </button>
+            </form>
+        </div>
+
+        <form id="addToCalendarForm" th:action="@{/admin/calendar/{id}(id=${reservation.id})}" method="post">
             <input type="hidden" name="id" th:value="${reservation.id}">
-            <label for="rejectNotes">Cancellation Reason:</label>
-            <textarea id="rejectNotes" name="notes" rows="2"></textarea>
-            <button type="submit" class="deleteButton" onclick="return confirm('Are you sure?')">Reject Reservation</button>
-        </form>
-    </div>
-
-    <!--<div id="editSection" style="display: none;">
-        <form th:action="@{/admin/reservations/update}" method="post">
-            <input type="hidden" name="id" th:value="${reservation.id}">
-
-            <label for="orderedTime">Ordered Time:</label>
-            <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${formattedOrderTime}">
-
-            <label for="status">Status:</label>
-            <select id="status" name="status">
-                <option value="PENDING" th:selected="${reservation.status == 'PENDING'}">Pending</option>
-                <option value="APPROVED" th:selected="${reservation.status == 'APPROVED'}">Approved</option>
-                <option value="CONFIRMED" th:selected="${reservation.status == 'CONFIRMED'}">Confirmed</option>
-                <option value="CANCELED" th:selected="${reservation.status == 'CANCELED'}">Canceled</option>
-            </select>
-
-            <label for="notes">Notes:</label>
-            <textarea id="notes" name="notes" rows="4" th:text="${reservation.notes}"></textarea>
-
-            <button type="submit">Save Changes</button>
-        </form>
-    </div>-->
-
-    <button id="deleteButton" onclick="toggleDeleteSection()" th:hidden="${reservation.status.name() == 'PENDING'}">Delete Reservation</button>
-    <div id="deleteSection" style="display: none;">
-        <form th:action="@{/admin/reservations/delete}" method="post">
-            <input type="hidden" name="id" th:value="${reservation.id}">
-            <label for="deleteNotes">Cancellation Reason:</label>
-            <textarea id="deleteNotes" name="notes" rows="2"></textarea>
-            <button type="submit" class="deleteButton" onclick="return confirm('Are you sure?')">
-                Delete Reservation
+            <button type="button" class="button" id="addToCalendarButton" onclick="submitForm()" th:hidden="${reservation.status.name() != 'CONFIRMED'}">
+                View in Calendar
             </button>
         </form>
     </div>
-
-    <form id="addToCalendarForm" th:action="@{/admin/calendar/{id}(id=${reservation.id})}" method="post">
-        <input type="hidden" name="id" th:value="${reservation.id}">
-        <button type="button" id="addToCalendarButton" onclick="submitForm()" th:hidden="${reservation.status.name() == 'PENDING'}">
-            View in Calendar
-        </button>
-    </form>
-
-    <a href="/admin/reservations" class="button">Back to Reservations</a>
 </div>
 
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <p>Reservation was added to the calendar.</p>
-        <p>Do you want to go to the calendar?</p>
-        <button onclick="goToCalendar()">Yes, go to Calendar</button>
-        <button onclick="closePopup()">No, stay here</button>
-    </div>
+<div class="return-container">
+    <a href="/admin/reservations" id="return-button" class="button">Back to Reservations</a>
 </div>
 
 <script th:src="@{/js/reservation.js}" defer></script>

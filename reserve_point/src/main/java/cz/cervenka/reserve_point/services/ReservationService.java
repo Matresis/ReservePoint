@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -89,8 +90,11 @@ public class ReservationService {
         return savedReservation;
     }
 
-    public List<ReservationEntity> getUserReservations(CustomerEntity customer) {
+    public List<ReservationEntity> getFilteredUserReservations(CustomerEntity customer, String name, String surname, String date, String serviceType) {
         List<ReservationEntity> reservations = reservationRepository.findByCustomer(customer);
+
+        LocalDate filterDate = (date != null && !date.isEmpty()) ? LocalDate.parse(date) : null;
+        reservations = reservationRepository.findFilteredReservations(name, surname, filterDate, serviceType);
 
         reservations.forEach(reservation -> {
             reservation.setFormattedCreatedAt(reservation.getCreatedAt().format(formatter));

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" th:href="@{/img/logo.png}" sizes="32x32" type="image/x-icon">
     <title>Reservations</title>
 </head>
 <body>
@@ -11,9 +12,10 @@
     <h1 class="site-title">Reservation Manager</h1>
     <nav class="nav-bar">
         <ul class="nav-options">
-            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin">Dashboard</a></li>
             <li><a href="/admin/reservations">Reservations</a></li>
-            <li><a href="/requests">Logout</a></li>
+            <li><a href="/admin/requests">Requests</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </nav>
 </header>
@@ -34,7 +36,12 @@
         <input type="date" id="date" name="date">
 
         <label for="serviceType">Service:</label>
-        <input type="text" id="serviceType" name="serviceType" placeholder="Service">
+        <select id="serviceType" name="serviceType">
+            <option value="">Choose a service</option>
+            <th:block th:each="service : ${services}">
+                <option th:value="${service.name}" th:text="${service.name}"></option>
+            </th:block>
+        </select>
 
         <button type="submit">Apply Filters</button>
     </form>
@@ -57,7 +64,9 @@
         </th:block>
     </div>
 
-    <a href="/admin" id="return-button">Back to Home</a>
+    <div class="return-container">
+        <a href="/admin" id="return-button" class="button">Back to Dashboard</a>
+    </div>
 </div>
 <script th:src="@{/js/filterForm.js}"></script>
 </body>

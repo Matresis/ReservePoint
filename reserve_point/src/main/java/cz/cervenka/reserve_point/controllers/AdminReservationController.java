@@ -2,6 +2,7 @@ package cz.cervenka.reserve_point.controllers;
 
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
 import cz.cervenka.reserve_point.database.repositories.ReservationRepository;
+import cz.cervenka.reserve_point.database.repositories.ServiceRepository;
 import cz.cervenka.reserve_point.services.AdminReservationService;
 
 import org.springframework.stereotype.Controller;
@@ -18,11 +19,13 @@ public class AdminReservationController {
 
     private final AdminReservationService reservationService;
     private final ReservationRepository reservationRepository;
+    private final ServiceRepository serviceRepository;
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-    public AdminReservationController(AdminReservationService reservationService, ReservationRepository reservationRepository) {
+    public AdminReservationController(AdminReservationService reservationService, ReservationRepository reservationRepository, ServiceRepository serviceRepository) {
         this.reservationService = reservationService;
         this.reservationRepository = reservationRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     @GetMapping
@@ -35,6 +38,7 @@ public class AdminReservationController {
 
         List<ReservationEntity> reservations = reservationService.getFilteredReservations(name, surname, date, serviceType);
         model.addAttribute("reservations", reservations);
+        model.addAttribute("services", serviceRepository.findAll());
         return "admin/reservations";
     }
 

@@ -4,20 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" th:href="@{/img/logo.png}" sizes="32x32" type="image/x-icon">
     <title>Reservation Confirmed</title>
 </head>
 <body>
+
+<header>
+    <h1 class="site-title">Confirmation</h1>
+    <nav class="nav-bar">
+        <ul class="nav-options">
+            <li><a href="/home">Dashboard</a></li>
+            <li><a href="/reserveForm">Create Reservation</a></li>
+            <li><a href="/reservations">Reservations</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
 <div class="container">
     <div class="confirmation">
         <h1>Reservation Confirmed</h1>
+
         <p>Thank you, <span th:text="${customer.user.name}"></span>!</p>
-        <p>Your reservation for <span th:text="${reservation.service.name}"></span> has been received.</p>
-        <p>Reservation Created at: <span th:text="${reservation.formattedCreatedAt}"></span></p>
-        <p>Status: <span th:text="${reservation.status}"></span></p>
-        <p>Confirmation of reservation has been sent to your email: <span th:text="${reservation.customer.user.email}"></span></p>
+        <p>Your request for reservation has been received.</p>
+
+        <h2>Details</h2>
+        <p>Reservation for: <strong><span th:text="${reservation.service.name}"></span></strong></p>
+        <p>Reservation Created at: <strong><span th:text="${reservation.formattedCreatedAt}"></span></strong></p>
+        <p>Confirmation of reservation has been sent to your email: <strong><span th:text="${reservation.customer.user.email}"></span></strong></p>
     </div>
 
-    <a href="/home" id="return-button" class="button">Back to Home</a>
+    <div class="return-container">
+        <a href="/home" id="return-button" class="button">Back to Home</a>
+    </div>
 </div>
 </body>
 </html>
