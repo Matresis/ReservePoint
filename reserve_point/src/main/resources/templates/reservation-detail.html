@@ -56,7 +56,7 @@
                 <input type="text" id="newNotes" name="newNotes" placeholder="New Notes">
 
                 <label for="newService">Service</label>
-                <select id="newService" name="newService" required>
+                <select id="newService" name="newService">
                     <option value="">Choose a service</option>
                     <th:block th:each="service : ${services}">
                         <option th:value="${service.id}" th:text="${service.name}"></option>
@@ -64,7 +64,7 @@
                 </select>
 
                 <label for="newOrderTime">Order Time</label>
-                <input type="datetime-local" id="newOrderTime" name="newOrderTime" required>
+                <input type="datetime-local" id="newOrderTime" name="newOrderTime">
 
                 <button type="submit">Request Modification</button>
             </form>

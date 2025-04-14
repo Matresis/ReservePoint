@@ -44,8 +44,8 @@ public class AdminRequestService {
         CustomerEntity customer = reservation.getCustomer();
         ServiceEntity service = reservation.getService();
 
-        emailService.sendReservationConfirmationEmail(reservation, customer, service);
         confirmationRequestRepository.delete(request);
+        emailService.sendReservationConfirmationEmail(reservation, customer, service);
     }
 
     @Transactional
@@ -61,10 +61,10 @@ public class AdminRequestService {
         CustomerEntity customer = reservation.getCustomer();
         ServiceEntity service = reservation.getService();
 
-        emailService.sendReservationModificationApprovalEmail(reservation, customer, service);
-
         reservationRepository.save(reservation);
         modificationRequestRepository.delete(request);
+
+        emailService.sendReservationModificationApprovalEmail(reservation, customer, service);
     }
 
     @Transactional
@@ -77,11 +77,11 @@ public class AdminRequestService {
         ServiceEntity service = reservation.getService();
 
         reservation.setStatus(ReservationEntity.Status.APPROVED);
+
         reservationRepository.save(reservation);
+        confirmationRequestRepository.delete(request);
 
         emailService.sendReservationCancellationEmail(reservation, customer, service, reason);
-
-        confirmationRequestRepository.delete(request);
     }
 
     @Transactional
@@ -93,9 +93,9 @@ public class AdminRequestService {
         CustomerEntity customer = reservation.getCustomer();
         ServiceEntity service = reservation.getService();
 
-        emailService.sendReservationModificationRejectionEmail(reservation, customer, service, reason);
-
         modificationRequestRepository.delete(request);
+
+        emailService.sendReservationModificationRejectionEmail(reservation, customer, service, reason);
     }
 
     @Transactional
@@ -109,9 +109,10 @@ public class AdminRequestService {
 
         String reason = reservation.getNotes();
 
-        emailService.sendReservationCancellationApprovalEmail(reservation, customer, service, reason);
 
-        reservationRepository.delete(reservation);
         cancellationRequestRepository.delete(request);
+        reservationRepository.delete(reservation);
+
+        emailService.sendReservationCancellationApprovalEmail(reservation, customer, service, reason);
     }
 }

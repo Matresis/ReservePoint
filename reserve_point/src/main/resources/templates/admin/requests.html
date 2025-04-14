@@ -104,7 +104,7 @@
                     <form method="post" th:action="@{/admin/requests/{id}/approve-modification(id=${request.id})}">
                         <button type="submit" class="btn">Approve</button>
                     </form>
-                    <button onclick="toggleRejectSection(this)" class="btn-secondary">Reject</button>
+                    <button onclick="toggleRejectSection(this)" class="btn-danger">Reject</button>
                     <div class="edit-section" style="display: none;">
                         <form method="post" th:action="@{/admin/requests/{id}/reject-modification(id=${request.id})}">
                             <label for="reason2">Reason for rejection:</label><br>
@@ -158,6 +158,6 @@
         <a href="/admin" id="return-button" class="button">Back to Dashboard</a>
     </div>
 </div>
-<script th:src="@{/js/reservation.js}"></script>
+<script th:src="@{/js/request.js}"></script>
 </body>
 </html>

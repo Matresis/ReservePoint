@@ -21,16 +21,19 @@ public class ReservationService {
     private final ServiceRepository serviceRepository;
     private final ReservationModificationRequestRepository modificationRequestRepository;
     private final ReservationConfirmationRequestRepository confirmationRequestRepository;
+    private final ReservationCancellationRequestRepository cancellationRequestRepository;
     private final EmailService emailService;
 
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
     public ReservationService(ReservationRepository reservationRepository,
                               CustomerRepository customerRepository,
                               UserRepository userRepository,
                               ServiceRepository serviceRepository,
                               ReservationModificationRequestRepository modificationRequestRepository,
                               EmailService emailService,
-                              ReservationConfirmationRequestRepository confirmationRequestRepository) {
+                              ReservationConfirmationRequestRepository confirmationRequestRepository,
+                              ReservationCancellationRequestRepository cancellationRequestRepository) {
         this.reservationRepository = reservationRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
@@ -38,6 +41,7 @@ public class ReservationService {
         this.modificationRequestRepository = modificationRequestRepository;
         this.emailService = emailService;
         this.confirmationRequestRepository = confirmationRequestRepository;
+        this.cancellationRequestRepository = cancellationRequestRepository;
     }
 
     public Optional<CustomerEntity> getAuthenticatedCustomer(Authentication authentication) {
@@ -147,6 +151,7 @@ public class ReservationService {
         ReservationCancellationRequestEntity cancellationRequest = new ReservationCancellationRequestEntity();
         cancellationRequest.setReservation(reservation);
         cancellationRequest.setReason(reason);
+        cancellationRequestRepository.save(cancellationRequest);
 
         emailService.sendReservationCancellationRequestEmail(reservation, reservation.getCustomer(), reservation.getService(), reason);
     }

@@ -18,7 +18,7 @@ main {
     justify-content: center;
     padding: 2rem;
     text-align: center;
-    min-height: 80vh;
+    min-height: 70vh;
 }
 
 .site-title {
@@ -505,7 +505,7 @@ th, td {
 
 .reservation-card {
     background-color: white;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     border-radius: 8px;
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
@@ -538,19 +538,19 @@ th, td {
 
 /* Dynamic Status Styling */
 .reservation-card[data-status="PENDING"] {
-    border-top-color: #ff9800;
+    border-color: #ff9800;
 }
 
 .reservation-card[data-status="APPROVED"] {
-    border-top-color: #2196f3;
+    border-color: #2196f3;
 }
 
 .reservation-card[data-status="CONFIRMED"] {
-    border-top-color: #4caf50;
+    border-color: #4caf50;
 }
 
 .reservation-card[data-status="CANCELED"] {
-    border-top-color: #e74c3c;
+    border-color: #e74c3c;
 }
 
 .card-content h3 {
@@ -795,7 +795,8 @@ th, td {
 .styled-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 50px;
+    table-layout: fixed;
 }
 
 .styled-table th,
@@ -803,6 +804,8 @@ th, td {
     border: 1px solid #333;
     padding: 12px;
     text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .btn, .btn-secondary, .btn-danger {
@@ -836,6 +839,7 @@ th, td {
 .section-title {
     margin-top: 40px;
     text-align: center;
+    color: #2c3e50;
 }
 
 .edit-section {
@@ -845,15 +849,6 @@ th, td {
 
 .hidden-section {
     display: none;
-}
-
-.styled-table {
-    table-layout: fixed;
-}
-
-.styled-table td, .styled-table th {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
 }
 
 .edit-section textarea {

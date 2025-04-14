@@ -112,7 +112,7 @@ public class EmailService {
         String subject = "Reservation Confirmation Request: " + service.getName();
         String customerEmailContent = emailConfig.generateStyledEmail(
                 "Dear " + customer.getUser().getName() + ",",
-                "<p>Your request to confirm your reservation scheduled on: <strong> " + reservation.getOrderedTime().format(DATE_FORMATTER) + "for <strong>" + service.getName() + "</strong> has been sent.</p>",
+                "<p>Your request to confirm your reservation scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong> for <strong>" + service.getName() + "</strong> has been sent.</p>",
                 "You will be informed of the result once the request is processed.",
                 "View Reservation",
                 "http://localhost:8080/reservations" + reservation.getId()
@@ -168,7 +168,7 @@ public class EmailService {
 
         String customerEmailContent = emailConfig.generateStyledEmail(
                 "Dear " + customer.getUser().getName() + ",",
-                "<p>Your request to cancel your reservation scheduled on: <strong> " + reservation.getOrderedTime().format(DATE_FORMATTER) + "for <strong>" + service.getName() + "</strong> has been sent.</p>",
+                "<p>Your request to cancel your reservation scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong> for <strong>" + service.getName() + "</strong> has been sent.</p>",
                 "Reason for cancellation: <strong>" + reason + "</strong><br>"
                         + "You will be informed of the result once the request is processed.",
                 "View Reservation",
