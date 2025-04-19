@@ -55,7 +55,14 @@ public class AdminReservationService {
         ServiceEntity service = reservation.getService();
 
         if (orderedTime != null && !orderedTime.isEmpty()) {
-            reservation.setOrderedTime(LocalDateTime.parse(orderedTime));
+            LocalDateTime parsedTime = LocalDateTime.parse(orderedTime);
+
+            boolean timeTaken = reservationRepository.existsByOrderedTimeAndIdNot(parsedTime, reservation.getId());
+            if (timeTaken) {
+                return null;
+            }
+
+            reservation.setOrderedTime(parsedTime);
         }
 
         reservation.setStatus(ReservationEntity.Status.APPROVED);
@@ -65,6 +72,7 @@ public class AdminReservationService {
 
         return reservation;
     }
+
 
     @Transactional
     public void rejectReservation(Long id, String notes) {

@@ -27,7 +27,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Authentication manager bean setup
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
@@ -39,7 +38,6 @@ public class SecurityConfig {
 
         return authenticationManagerBuilder.build();
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -56,7 +54,7 @@ public class SecurityConfig {
                         .loginPage("/loginForm")
                         .loginProcessingUrl("/login")
                         .successHandler(customSuccessHandler())
-                        .failureUrl("/loginForm")
+                        .failureUrl("/loginForm?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout

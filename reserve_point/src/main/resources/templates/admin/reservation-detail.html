@@ -49,6 +49,9 @@
 
                 <button type="submit">Approve Reservation</button>
             </form>
+            <div th:if="${errorMessage}" class="error-message">
+                <p th:text="${errorMessage}"></p>
+            </div>
         </div>
 
         <button id="rejectButton" class="deleteButton" onclick="toggleRejectSection()" th:hidden="${reservation.status.name() != 'PENDING'}">

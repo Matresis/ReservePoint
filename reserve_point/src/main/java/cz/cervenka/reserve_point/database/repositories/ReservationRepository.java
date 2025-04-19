@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -29,4 +30,6 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
     );
 
     List<ReservationEntity> findByCustomer(CustomerEntity customer);
+
+    boolean existsByOrderedTimeAndIdNot(LocalDateTime orderedTime, Long id);
 }

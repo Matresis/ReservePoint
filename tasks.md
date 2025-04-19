@@ -44,7 +44,7 @@
 
 ## Automatické přidání rezervace do kalendáře po schválení requestu pro potvrzení
 ## Hlídat datumy a časy v kalendáři aby nebylo možné schválit dvě rezervace na jeden čas
-
+## Dodělat stylování popup na kalendáři
 ## Při klikání usera na tlačítka pro request modifikací nebo potvrzení, napsat pod button důvod proč to nelze (rezervace není APPROVED / CONFIRMED)
 
 ## Opravit zobrazení stránky z emailu

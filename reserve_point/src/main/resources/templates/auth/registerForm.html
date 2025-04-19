@@ -36,7 +36,8 @@
             <input type="password" id="password" name="password" placeholder="Password" required />
 
             <button type="submit">Register</button>
-            <p th:if="${param.error}" class="error-message">Invalid parameters. Please try again.</p>
+
+            <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}">Invalid email or password. Please try again.</p>
         </form>
         <p>Already have an account? <a href="/loginForm">Login here</a></p>
     </div>

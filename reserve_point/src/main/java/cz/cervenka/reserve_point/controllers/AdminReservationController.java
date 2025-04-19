@@ -8,6 +8,7 @@ import cz.cervenka.reserve_point.services.AdminReservationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -83,15 +84,19 @@ public class AdminReservationController {
     @PostMapping("/approve")
     public String approveReservation(
             @RequestParam Long id,
-            @RequestParam(required = false) String orderedTime) {
+            @RequestParam(required = false) String orderedTime,
+            RedirectAttributes redirectAttributes) {
 
         ReservationEntity updatedReservation = reservationService.approveReservation(id, orderedTime);
+
         if (updatedReservation == null) {
-            return "redirect:/admin/reservations";
+            redirectAttributes.addFlashAttribute("errorMessage", "Selected time is already taken by another reservation.");
+            return "redirect:/admin/reservations/" + id;
         }
 
         return "redirect:/admin/reservations/" + id;
     }
+
 
     @PostMapping("/reject")
     public String rejectReservation(@RequestParam Long id, @RequestParam(required = false) String notes) {

@@ -38,7 +38,9 @@ public class CalendarController {
     @ResponseBody
     public List<Map<String, Object>> getCalendarEvents() {
         return reservationRepository.findAll().stream()
-                .filter(reservation -> reservation.getOrderedTime() != null)
+                .filter(reservation ->
+                        reservation.getOrderedTime() != null &&
+                                "CONFIRMED".equalsIgnoreCase(String.valueOf(reservation.getStatus())))
                 .map(reservation -> {
                     Map<String, Object> event = new HashMap<>();
                     event.put("title", reservation.getService().getName() + " - " + reservation.getCustomer().getUser().getName());

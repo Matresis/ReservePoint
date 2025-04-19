@@ -5,6 +5,7 @@ import cz.cervenka.reserve_point.services.AuthService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
@@ -27,20 +28,20 @@ public class AuthController {
                                @RequestParam String surname,
                                @RequestParam String password,
                                @RequestParam String email,
-                               Model model) {
+                               RedirectAttributes redirectAttributes) {
         try {
             if (name == null || name.isBlank()
                     || surname == null || surname.isBlank()
                     || password == null || password.isBlank()
                     || email == null || email.isBlank()) {
-                model.addAttribute("errorMessage", "Fields cannot be left empty.");
+                redirectAttributes.addFlashAttribute("errorMessage", "Fields cannot be left empty.");
             }
 
             authService.registerUser(user);
             return "redirect:/loginForm";
         } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", "Fields cannot be left empty.");
-            return "auth/registerForm";
+            redirectAttributes.addFlashAttribute("errorMessage", "Email is already registered.");
+            return "redirect:/registerForm";
         }
     }
 
