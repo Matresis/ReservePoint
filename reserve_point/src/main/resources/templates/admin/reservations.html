@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" th:href="@{/img/logo.png}" sizes="32x32" type="image/x-icon">
     <title>Reservations</title>
 </head>
@@ -15,6 +16,7 @@
             <li><a href="/admin">Dashboard</a></li>
             <li><a href="/admin/reservations">Reservations</a></li>
             <li><a href="/admin/requests">Requests</a></li>
+            <li><a href="/admin/calendar">Calendar</a></li>
             <li><a href="/logout">Logout</a></li>
         </ul>
     </nav>
@@ -69,5 +71,6 @@
     </div>
 </div>
 <script th:src="@{/js/filterForm.js}"></script>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

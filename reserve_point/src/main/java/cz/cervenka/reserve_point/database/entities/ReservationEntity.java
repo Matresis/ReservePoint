@@ -7,8 +7,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Setter
-@Getter
 @Entity
 public class ReservationEntity {
 
@@ -41,13 +39,9 @@ public class ReservationEntity {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
-    @Setter
-    @Getter
     @Transient
     private String formattedCreatedAt;
 
-    @Setter
-    @Getter
     @Transient
     private String formattedOrderTime;
 
@@ -59,5 +53,77 @@ public class ReservationEntity {
     public void formatCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         this.formattedCreatedAt = (createdAt != null) ? createdAt.format(formatter) : "N/A";
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
+    public ServiceEntity getService() {
+        return service;
+    }
+
+    public void setService(ServiceEntity service) {
+        this.service = service;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getOrderedTime() {
+        return orderedTime;
+    }
+
+    public void setOrderedTime(LocalDateTime orderedTime) {
+        this.orderedTime = orderedTime;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getFormattedCreatedAt() {
+        return formattedCreatedAt;
+    }
+
+    public void setFormattedCreatedAt(String formattedCreatedAt) {
+        this.formattedCreatedAt = formattedCreatedAt;
+    }
+
+    public String getFormattedOrderTime() {
+        return formattedOrderTime;
+    }
+
+    public void setFormattedOrderTime(String formattedOrderTime) {
+        this.formattedOrderTime = formattedOrderTime;
     }
 }

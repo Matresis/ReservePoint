@@ -87,18 +87,16 @@ public class ReservationController {
     public String requestModification(@PathVariable Long id,
                                       @RequestParam(required = false) String newNotes,
                                       @RequestParam(required = false) ServiceEntity newService,
-                                      @RequestParam(required = false) LocalDateTime newOrderTime,
+                                      @RequestParam(required = false) String newOrderTime,
                                       Model model) {
-        if (newNotes == null || newNotes.isBlank() ||
-                newService == null ||
-                newOrderTime == null) {
 
-            model.addAttribute("errorModificationMessage", "Fields cannot be left empty.");
+        try {
+            reservationService.requestReservationModification(id, newNotes, newService, newOrderTime);
+            return "redirect:/reservations/" + id;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorModificationMessage", e.getMessage());
             return "reservation-detail";
         }
-
-        reservationService.requestReservationModification(id, newNotes, newService, newOrderTime);
-        return "redirect:/reservations/" + id;
     }
 
     @PostMapping("/{id}/request-cancellation")

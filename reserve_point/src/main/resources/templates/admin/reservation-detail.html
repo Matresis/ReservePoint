@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" th:href="@{/img/logo.png}" sizes="32x32" type="image/x-icon">
     <title>Reservation Details</title>
 </head>
@@ -15,6 +16,7 @@
             <li><a href="/admin">Dashboard</a></li>
             <li><a href="/admin/reservations">Reservations</a></li>
             <li><a href="/admin/requests">Requests</a></li>
+            <li><a href="/admin/calendar">Calendar</a></li>
             <li><a href="/logout">Logout</a></li>
         </ul>
     </nav>
@@ -45,7 +47,7 @@
                 <input type="hidden" name="id" th:value="${reservation.id}">
 
                 <label for="orderedTime">Ordered Time:</label>
-                <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${formattedOrderTime}">
+                <input type="datetime-local" id="orderedTime" name="orderedTime" th:value="${formattedOrderTime}" min="${#temporals.format(#dates.createNow(), 'yyyy-MM-dd\'T\'HH:mm')}">
 
                 <button type="submit">Approve Reservation</button>
             </form>
@@ -79,9 +81,8 @@
             </form>
         </div>
 
-        <form id="addToCalendarForm" th:action="@{/admin/calendar/{id}(id=${reservation.id})}" method="post">
-            <input type="hidden" name="id" th:value="${reservation.id}">
-            <button type="button" class="button" id="addToCalendarButton" onclick="submitForm()" th:hidden="${reservation.status.name() != 'CONFIRMED'}">
+        <form id="addToCalendarForm" th:action="@{/admin/calendar(id=${reservation.id})}" method="get">
+            <button type="submit" class="button" id="addToCalendarButton" th:hidden="${reservation.status.name() != 'CONFIRMED'}">
                 View in Calendar
             </button>
         </form>
@@ -93,5 +94,6 @@
 </div>
 
 <script th:src="@{/js/reservation.js}" defer></script>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

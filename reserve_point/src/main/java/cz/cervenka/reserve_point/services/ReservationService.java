@@ -95,10 +95,11 @@ public class ReservationService {
     }
 
     public List<ReservationEntity> getFilteredUserReservations(CustomerEntity customer, String name, String surname, String date, String serviceType) {
-        List<ReservationEntity> reservations = reservationRepository.findByCustomer(customer);
-
         LocalDate filterDate = (date != null && !date.isEmpty()) ? LocalDate.parse(date) : null;
-        reservations = reservationRepository.findFilteredReservations(name, surname, filterDate, serviceType);
+
+        List<ReservationEntity> reservations = reservationRepository.findFilteredReservationsByCustomer(
+                customer, name, surname, filterDate, serviceType
+        );
 
         reservations.forEach(reservation -> {
             reservation.setFormattedCreatedAt(reservation.getCreatedAt().format(formatter));
@@ -129,15 +130,21 @@ public class ReservationService {
     }
 
     @Transactional
-    public void requestReservationModification(Long reservationId, String newNotes, ServiceEntity newService, LocalDateTime newOrderTime) {
+    public void requestReservationModification(Long reservationId, String newNotes, ServiceEntity newService, String newOrderTime) {
         ReservationEntity reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found."));
+
+        LocalDateTime parsedTime = LocalDateTime.parse(newOrderTime);
+        boolean timeConflict = reservationRepository.existsByOrderedTimeAndIdNot(parsedTime, reservationId);
+        if (timeConflict) {
+            throw new IllegalArgumentException("The requested time is already taken.");
+        }
 
         ReservationModificationRequestEntity modificationRequest = new ReservationModificationRequestEntity();
         modificationRequest.setReservation(reservation);
         modificationRequest.setRequestedNotes(newNotes);
         modificationRequest.setRequestedService(newService);
-        modificationRequest.setRequestedOrderTime(newOrderTime);
+        modificationRequest.setRequestedOrderTime(parsedTime);
         modificationRequestRepository.save(modificationRequest);
 
         emailService.sendReservationModificationRequestEmail(reservation, reservation.getCustomer(), reservation.getService());

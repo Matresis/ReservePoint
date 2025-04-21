@@ -2,37 +2,51 @@ document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek', // Weekly view
-        height: 'auto', //
-        weekends: false, // Disable weekends
-        locale: 'en', // Set language
+        initialView: 'timeGridWeek',
+        height: 'auto',
+        weekends: false,
+        locale: 'en',
         headerToolbar: {
             left: 'prev,next',
             center: 'title',
             right: 'timeGridWeek,timeGridDay'
         },
-        events: '/admin/calendar/events', // Fetch events from backend
-        slotMinTime: "08:00:00", // Workday start time
-        slotMaxTime: "18:00:00",  // Workday end time
-        nowIndicator: true, // Show current time indicator
+        events: {
+            url: '/admin/calendar/events',
+            success: function(events) {
+                const highlightId = sessionStorage.getItem("highlightReservationId");
+                if (highlightId) {
+                    events.forEach(event => {
+                        if (event.id && event.id.toString() === highlightId) {
+                            event.color = '#FF7F50';  // Coral highlight color
+                            event.textColor = 'white';
+                        }
+                    });
+                    sessionStorage.removeItem("highlightReservationId");
+                }
+                return events;
+            }
+        },
+        slotMinTime: "08:00:00",
+        slotMaxTime: "18:00:00",
+        nowIndicator: true,
         eventClick: function (info) {
-            console.log("Clicked event:", info.event);  // Debugging log
+            console.log("Clicked event:", info.event);
 
             if (!info.event.id) {
                 console.error("Event ID is missing:", info.event);
                 return;
             }
 
-            // Fetch reservation details
             fetch(`/admin/calendar/${info.event.id}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Fetched reservation:", data);  // Debugging log
+                    console.log("Fetched reservation:", data);
                     showReservationPopup(data);
                 })
                 .catch(error => console.error('Error loading reservation:', error));
         },
-        datesSet: function() {
+        datesSet: function () {
             setTimeout(() => {
                 let timeGridSlots = document.querySelector(".fc-timegrid-slots");
                 let timeGridCols = document.querySelector(".fc-timegrid-cols");
@@ -44,9 +58,22 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 500);
         }
     });
+
     calendar.render();
+
+    // Back button logic
+    const backButton = document.getElementById("return-button");
+
+    if (sessionStorage.getItem("fromReservationPage") === "true") {
+        backButton.href = "/admin/reservations";
+        backButton.textContent = "Back to Reservations";
+        sessionStorage.removeItem("fromReservationPage");
+    } else {
+        backButton.href = "/admin";
+    }
 });
 
+// Toggle edit section
 function toggleEditSection() {
     const editSection = document.getElementById("popup-editSection");
     const editButton = document.getElementById("editButton");
@@ -60,7 +87,7 @@ function toggleEditSection() {
     }
 }
 
-// Function to populate and show the pop-up
+// Show reservation popup
 function showReservationPopup(reservation) {
     if (!reservation || !reservation.id) {
         console.error("Reservation ID is missing:", reservation);
@@ -77,11 +104,6 @@ function showReservationPopup(reservation) {
     document.getElementById("popup-date").textContent = reservation.formattedOrderTime;
     document.getElementById("popup-notes").textContent = reservation.notes;
 
-    // Populate edit form fields
-    document.getElementById("edit-id").value = reservation.id;
-    document.getElementById("edit-orderedTime").value = reservation.formattedOrderTime;
-    document.getElementById("edit-notes").value = reservation.notes || "";
-
     const detailLink = document.getElementById("reservation-detail-link");
     if (reservation.id) {
         detailLink.href = `/admin/reservations/${reservation.id}`;
@@ -92,46 +114,24 @@ function showReservationPopup(reservation) {
     document.getElementById("popup").style.display = "flex";
 }
 
-// Function to close the pop-up
+// Close the pop-up
 function closePopup() {
     document.getElementById("popup").style.display = "none";
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const backButton = document.getElementById("return-button");
+document.addEventListener('DOMContentLoaded', () => {
+    // Get the current URL path
+    const currentPath = window.location.pathname;
 
-    // Check if user came from reservation details page
-    if (sessionStorage.getItem("fromReservationPage") === "true") {
-        backButton.href = "/admin/reservations"; // Change back button link
-        backButton.content = "Back to Reservations";
-        sessionStorage.removeItem("fromReservationPage"); // Clear the flag
-    } else {
-        backButton.href = "/admin";
-    }
-});
+    // Get all nav links
+    const navLinks = document.querySelectorAll('.nav-options li a');
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById("saveEdit").addEventListener("click", function () {
-        const reservationId = document.getElementById("edit-id").value;
-        const orderedTime = document.getElementById("edit-orderedTime").value;
-        const notes = document.getElementById("edit-notes").value;
-
-        fetch("/admin/calendar/update", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: `id=${reservationId}&orderedTime=${orderedTime}&notes=${encodeURIComponent(notes)}`
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert("Reservation updated successfully!");
-                    closePopup();
-                    location.reload();
-                } else {
-                    alert("Error updating reservation.");
-                }
-            })
-            .catch(error => console.error("Error:", error));
+    // Loop through the nav links and set active-tab based on the current page
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active-tab');
+        } else {
+            link.classList.remove('active-tab');
+        }
     });
 });

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" th:href="@{/img/logo.png}" sizes="32x32" type="image/x-icon">
     <title>Make a Reservation</title>
 </head>
@@ -34,10 +35,15 @@
             <input type="email" id="email" name="email" th:value="${customer.user.email}" placeholder="Email" readonly />
 
             <label for="phone"></label>
-            <input type="tel" id="phone" name="phone" placeholder="Phone" required />
+            <input type="tel" id="phone" name="phone" placeholder="Phone" required
+                   pattern="^\+?[0-9\s\-]{7,15}$"
+                   title="Phone number must contain only digits, spaces, dashes, and optionally start with +." />
 
             <label for="address"></label>
-            <input type="text" id="address" name="address" placeholder="Address" required />
+            <input type="text" id="address" name="address" placeholder="Address" required minlength="5"
+                   pattern="^[a-zA-Z0-9\s\.,-]{5,100}$"
+                   title="Please enter a valid address (5-100 characters)." />
+
 
             <label for="serviceId"></label>
             <select id="serviceId" name="serviceId" required>
@@ -48,7 +54,10 @@
             </select>
 
             <label for="notes"></label>
-            <textarea id="notes" name="notes" rows="4" placeholder="Additional Notes..."></textarea>
+            <textarea id="notes" name="notes" rows="4" placeholder="Additional Notes..."
+                      maxlength="500"
+                      pattern="^[a-zA-Z0-9\s\.,!?()\-]*$"
+                      title="Notes can only contain letters, numbers, and punctuation. Max 500 characters."></textarea>
 
             <button type="submit">Reserve</button>
             <p th:if="${param.error}" class="error-message">Invalid parameters. Please try again.</p>
@@ -59,5 +68,6 @@
         </div>
     </div>
 </main>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

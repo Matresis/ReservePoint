@@ -49,6 +49,12 @@ main {
     color: #2196f3; /* Vibrant blue */
 }
 
+.nav-options li a.active-tab {
+    color: #2196f3; /* or whatever highlight color you like */
+    border-bottom: 2px solid #2196f3;
+    font-weight: bold;
+}
+
 .form-container {
     background-color: white;
     padding: 2.5rem 2rem;
@@ -688,23 +694,27 @@ th, td {
     display: none;
     justify-content: center;
     align-items: center;
-    background-color: rgba(18, 18, 18, 0.9);
+    background-color: rgba(52, 52, 52, 0.9);
     z-index: 1000;
 }
 
+.popup-header {
+    border-radius: 20px 20px 0 0;
+}
+
 .popup-content-details {
-    background-color: #222;
-    color: #f0f0f0;
-    padding: 2rem;
-    border-radius: 12px;
+    background-color: #f0f0f0;
+    color: #555;
+    border-radius: 23px;
     width: 90%;
     max-width: 600px;
     box-shadow: 0 0 15px #000;
+    text-align: center;
 }
 
 .popup-content-details h2 {
-    margin-top: 0;
-    color: #00bfff;
+    margin: 0;
+    color: #f0f0f0;
 }
 
 .popup-content-details p {
@@ -713,7 +723,7 @@ th, td {
 
 .popup-content-details button,
 .popup-content-details .button {
-    background-color: #00bfff;
+    background-color: #4caf50;
     color: #fff;
     padding: 0.5rem 1rem;
     margin-top: 1rem;
@@ -726,7 +736,15 @@ th, td {
 
 .popup-content-details button:hover,
 .popup-content-details .button:hover {
-    background-color: #009ac1;
+    background-color: #0b730f;
+}
+
+#reservation-detail-link {
+    margin-bottom: 20px;
+}
+
+.details-container {
+
 }
 
 /* Return button */
@@ -751,6 +769,20 @@ th, td {
 }
 
 #return-button.button:hover {
+    background-color: #666;
+}
+
+.return-button.button {
+    background-color: #444;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.return-button.button:hover {
     background-color: #666;
 }
 
@@ -790,6 +822,12 @@ th, td {
 
 .requests-nav-options li a:hover {
     color: #2196f3; /* Vibrant blue */
+}
+
+.requests-nav-options li a.active-tab {
+    color: #2196f3; /* or whatever highlight color you like */
+    border-bottom: 2px solid #2196f3;
+    font-weight: bold;
 }
 
 .styled-table {
@@ -855,4 +893,123 @@ th, td {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+}
+
+.request-button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.request-button:hover {
+    background-color: #0b730f;
+}
+
+
+/* General mobile styling */
+@media (max-width: 768px) {
+    /* Make navigation stack vertically on smaller screens */
+    .nav-bar ul {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-bar li {
+        margin-bottom: 10px;
+    }
+
+    /* Make form inputs and buttons full width */
+    .filter-form input,
+    .filter-form select,
+    .filter-form button {
+        width: 90%;
+        margin-bottom: 15px;
+    }
+
+    /* Stack the filter form and content vertically */
+    .reservations-container {
+        display: block;
+    }
+
+    /* Make card grid responsive */
+    .card-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Adjust the layout of the table inside each section */
+    .styled-table {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .styled-table th, .styled-table td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    .card-content {
+        padding: 10px;
+    }
+
+    .requests-nav-bar {
+        text-align: center;
+    }
+
+    .requests-nav-bar ul {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin: 0;
+    }
+
+    .requests-nav-bar li {
+        margin-bottom: 10px;
+    }
+
+    /* Make the buttons smaller and more mobile-friendly */
+    .btn, .btn-danger, .button {
+        padding: 10px;
+        font-size: 14px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .return-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .reservation-card .button {
+        width: 94%;
+    }
+
+    .page-container {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .left-container {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .right-container {
+        flex: 1;
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        padding: 1.5rem;
+        max-width: 100%;
+    }
 }

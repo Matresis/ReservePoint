@@ -81,7 +81,7 @@ public class AdminRequestService {
         reservationRepository.save(reservation);
         confirmationRequestRepository.delete(request);
 
-        emailService.sendReservationCancellationEmail(reservation, customer, service, reason);
+        emailService.sendReservationConfirmationRejectionEmail(reservation, customer, service, reason);
     }
 
     @Transactional

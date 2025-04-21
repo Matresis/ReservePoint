@@ -13,10 +13,23 @@ function toggleRejectSection(button) {
 
 function showSection(type) {
     const sections = ['confirmation', 'modification', 'cancellation'];
+
+    // Hide all sections
     sections.forEach(s => {
         document.getElementById('section-' + s).classList.add('hidden-section');
     });
+
+    // Show the selected section
     document.getElementById('section-' + type).classList.remove('hidden-section');
+
+    // Handle nav link highlighting
+    const navLinks = document.querySelectorAll('.requests-nav-options li a');
+    navLinks.forEach(link => link.classList.remove('active-tab'));
+
+    const activeLink = document.querySelector(`.requests-nav-options li a[onclick="showSection('${type}')"]`);
+    if (activeLink) {
+        activeLink.classList.add('active-tab');
+    }
 }
 
 // Optional: show confirmation section by default on load

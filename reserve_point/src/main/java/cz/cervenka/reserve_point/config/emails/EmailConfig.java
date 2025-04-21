@@ -1,4 +1,4 @@
-package cz.cervenka.reserve_point.config;
+package cz.cervenka.reserve_point.config.emails;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,13 +17,11 @@ public class EmailConfig {
 
     public void sendEmail(String to, String subject, String body) {
         try {
-            System.setProperty("mail.smtp.localhost", "localhost");
-
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            helper.setFrom("reservepointtp@gmail.com");
-            helper.setTo(to);
+            helper.setFrom("reservepointtp@gmail.com"); // Sender is always ReservePoint
+            helper.setTo(to); // Recipient can be anyone
             helper.setSubject(subject);
             helper.setText(body, true);
 
@@ -41,7 +39,7 @@ public class EmailConfig {
                 + "body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; background-color: #f4f4f4; }"
                 + ".email-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }"
                 + ".email-content { color: #333; font-size: 16px; }"
-                + ".button { display: inline-block; padding: 10px 15px; margin-top: 15px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }"
+                + ".button { display: inline-block; padding: 10px 15px; margin-top: 15px; background: #007bff; color: white !important; text-decoration: none !important; border-radius: 5px; }"
                 + ".signature { margin-top: 20px; font-size: 14px; color: #777; }"
                 + "</style>"
                 + "</head>"
@@ -52,7 +50,7 @@ public class EmailConfig {
                 + "<p>" + mainMessage + "</p>"
                 + "<p>" + additionalInfo + "</p>"
                 + "<a class='button' href='" + buttonLink + "'>" + buttonText + "</a>"
-                + "<p class='signature'>Best regards,<br><strong>ReservePoint Team</strong><br><em>contact@reservepoint.com</em></p>"
+                + "<p class='signature'>Best regards,<br><strong>ReservePoint Team</strong><br><em>reservepointtp@gmail.com</em></p>"
                 + "</div>"
                 + "</div>"
                 + "</body>"

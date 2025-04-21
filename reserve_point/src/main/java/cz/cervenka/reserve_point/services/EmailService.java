@@ -1,6 +1,6 @@
 package cz.cervenka.reserve_point.services;
 
-import cz.cervenka.reserve_point.config.EmailConfig;
+import cz.cervenka.reserve_point.config.emails.EmailConfig;
 import cz.cervenka.reserve_point.database.entities.CustomerEntity;
 import cz.cervenka.reserve_point.database.entities.ReservationEntity;
 import cz.cervenka.reserve_point.database.entities.ServiceEntity;
@@ -28,7 +28,7 @@ public class EmailService {
                 "We have received your reservation request for <strong>" + service.getName() + "</strong>.",
                 "We will notify you once your reservation is approved.",
                 "View Reservations",
-                "http://localhost:8080/reservations"
+                "http://13.60.50.209/reservations"
         );
 
         String adminEmailContent = emailConfig.generateStyledEmail(
@@ -36,7 +36,7 @@ public class EmailService {
                 "A new reservation request has been made by <strong>" + customer.getUser().getName() + " " + customer.getUser().getSurname() + "</strong>.",
                 "Service: <strong>" + service.getName() + "</strong>",
                 "Review Request",
-                "http://localhost:8080/admin/reservations/" + reservation.getId()
+                "http://13.60.50.209/admin/reservations/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -53,7 +53,7 @@ public class EmailService {
                         + "<p>If you have any questions or the scheduled time does not comply, please contact us.</p>"
                         + "<p>If the scheduled time complies, please visit our website and confirm your reservation.</p>",
                 "View Reservation",
-                "http://localhost:8080/reservations" + reservation.getId()
+                "http://13.60.50.209/reservations/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -69,7 +69,7 @@ public class EmailService {
                         + "<p>If you have any questions or need to make changes, please contact us.</p><br>"
                         + "<p>We look forward to serving you!</p>",
                 "View Reservation",
-                "http://localhost:8080/reservations/" + reservation.getId()
+                "http://13.60.50.209/reservations/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -84,7 +84,7 @@ public class EmailService {
                 "The reason for rejection: <strong>" + notes + "</strong><br>"
                         + "<p>If you have any questions or you wish to recreate the reservation, please contact us or visit our website.</p>",
                 "Make a New Reservation",
-                "http://localhost:8080/"
+                "http://13.60.50.209/"
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -96,17 +96,14 @@ public class EmailService {
         String customerEmailContent = emailConfig.generateStyledEmail(
                 "Dear " + customer.getUser().getName() + ",",
                 "We regret to inform you that your reservation for <strong>" + service.getName() + "</strong> scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong> has been canceled.",
-                "The reason for rejection: <strong>" + reason + "</strong><br>"
+                "The reason for cancellation: <strong>" + reason + "</strong><br>"
                         + "<p>If you wish to reschedule, please visit our website.</p>",
                 "Make a New Reservation",
-                "http://localhost:8080/"
+                "http://13.60.50.209/"
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
     }
-
-
-    // TODO: modify the request viewing for specific reservation (when going from the email => highlight the request specific from that email)
 
     public void sendReservationConfirmationRequestEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service) {
         String subject = "Reservation Confirmation Request: " + service.getName();
@@ -115,7 +112,7 @@ public class EmailService {
                 "<p>Your request to confirm your reservation scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong> for <strong>" + service.getName() + "</strong> has been sent.</p>",
                 "You will be informed of the result once the request is processed.",
                 "View Reservation",
-                "http://localhost:8080/reservations" + reservation.getId()
+                "http://13.60.50.209/reservations/" + reservation.getId()
         );
 
         String adminEmailContent = emailConfig.generateStyledEmail(
@@ -124,7 +121,7 @@ public class EmailService {
                 "Service: <strong>" + service.getName() + "</strong><br>"
                         + "Scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong>",
                 "View Reservation",
-                "http://localhost:8080/admin/reservation/" + reservation.getId()
+                "http://13.60.50.209/admin/reservation/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -146,7 +143,7 @@ public class EmailService {
                         + "</ul><br>"
                         + "You will be informed of the result once the request is processed.",
                 "View Reservation",
-                "http://localhost:8080/reservations/" + reservation.getId()
+                "http://13.60.50.209/reservations/" + reservation.getId()
         );
 
         String adminEmailContent = emailConfig.generateStyledEmail(
@@ -155,7 +152,7 @@ public class EmailService {
                 "Service: <strong>" + service.getName() + "</strong><br>"
                         + "Scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong>",
                 "Review Request",
-                "http://localhost:8080/admin/requests/" + reservation.getId()
+                "http://13.60.50.209/admin/requests/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -172,7 +169,7 @@ public class EmailService {
                 "Reason for cancellation: <strong>" + reason + "</strong><br>"
                         + "You will be informed of the result once the request is processed.",
                 "View Reservation",
-                "http://localhost:8080/reservations/" + reservation.getId()
+                "http://13.60.50.209/reservations/" + reservation.getId()
         );
 
         String adminEmailContent = emailConfig.generateStyledEmail(
@@ -182,11 +179,26 @@ public class EmailService {
                         + "Scheduled on: <strong>" + reservation.getOrderedTime().format(DATE_FORMATTER) + "</strong>"
                         + "Reason: <strong>" + reason + "</strong>",
                 "Review Request",
-                "http://localhost:8080/admin/requests/" + reservation.getId()
+                "http://13.60.50.209/admin/requests/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
         emailConfig.sendEmail(adminEmail, subject, adminEmailContent);
+    }
+
+    @Transactional
+    public void sendReservationConfirmationRejectionEmail(ReservationEntity reservation, CustomerEntity customer, ServiceEntity service, String reason) {
+        String subject = "Reservation Canceled: " + service.getName();
+        String customerEmailContent = emailConfig.generateStyledEmail(
+                "Dear " + customer.getUser().getName() + ",",
+                "Your request for confirmation of your reservation for <strong>" + service.getName() + "</strong> has been rejected.",
+                "The reason for rejection: <strong>" + reason + "</strong><br>"
+                        + "<p>If you wish to reschedule or modify your reservation, please visit our website.</p>",
+                "View Reservation",
+                "http://13.60.50.209/"
+        );
+
+        emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
     }
 
     @Transactional
@@ -202,7 +214,7 @@ public class EmailService {
                         + "<li><strong>Notes:</strong> " + reservation.getNotes() + "</li>"
                         + "</ul>",
                 "View Reservation",
-                "http://localhost:8080/reservations/" + reservation.getId()
+                "http://13.60.50.209/reservations/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -223,7 +235,7 @@ public class EmailService {
                         + "<p>Reason: <strong>" + reason + "</strong><p>"
                         + "<p>If you have any questions, please contact us.</p>",
                 "View Reservation",
-                "http://localhost:8080/reservations/" + reservation.getId()
+                "http://13.60.50.209/reservations/" + reservation.getId()
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);
@@ -238,7 +250,7 @@ public class EmailService {
                 "The reason for cancellation: <strong>" + reason + "</strong><br>"
                         + "<p>If you wish to reschedule, please visit our website.</p>",
                 "Make a New Reservation",
-                "http://localhost:8080/"
+                "http://13.60.50.209/"
         );
 
         emailConfig.sendEmail(customer.getUser().getEmail(), subject, customerEmailContent);

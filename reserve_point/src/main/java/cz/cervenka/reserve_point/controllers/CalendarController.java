@@ -30,7 +30,8 @@ public class CalendarController {
     }
 
     @GetMapping
-    public String showCalendarPage() {
+    public String showCalendarPage(@RequestParam(name = "id", required = false) Long id, Model model) {
+        model.addAttribute("highlightedId", id);
         return "admin/calendar";
     }
 
@@ -104,32 +105,5 @@ public class CalendarController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reservation not found");
         }
-    }
-
-    @PostMapping("/update")
-    public String updateReservation(
-            @RequestParam Long id,
-            @RequestParam(required = false) String orderedTime,
-            @RequestParam("notes") String notes) {
-
-        ReservationEntity updatedReservation = reservationService.updateReservation(id, orderedTime, notes);
-        if (updatedReservation == null) {
-            return "redirect:/admin/calendar";
-        }
-
-        return "redirect:/admin/calendar" + id;
-    }
-
-    @PostMapping("/remove-from-calendar")
-    public ResponseEntity<String> removeFromCalendar(@RequestParam Long id) {
-        Optional<ReservationEntity> reservationOpt = reservationRepository.findById(id);
-
-        if (reservationOpt.isPresent()) {
-            ReservationEntity reservation = reservationOpt.get();
-            reservation.setOrderedTime(null);
-            reservationRepository.save(reservation);
-            return ResponseEntity.ok("Reservation removed from calendar.");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reservation not found.");
     }
 }

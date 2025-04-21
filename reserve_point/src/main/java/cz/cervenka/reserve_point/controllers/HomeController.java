@@ -29,8 +29,8 @@ public class HomeController {
     }
 
     @GetMapping
-    public String redirectToLogin() {
-        return "auth/loginForm";
+    public String index() {
+        return "index";
     }
 
     @PostMapping("/logout")
